@@ -348,6 +348,25 @@ span.namelab {
 label.uploadpre {
     font-size: 20px;
 }
+.activwin{
+    padding: 2%;
+    background-color: rgb(221 221 221 / 31%);
+}
+td.fourfiv {
+    color: #12b3b6;
+    font-size: 20px;
+}
+a.closetrip {
+    color: #fff !important;
+    font-weight: bold;
+}
+.tripclose {
+    background-color: #12b3b6;
+    padding: 20px;
+    width: 50%;
+    text-align: center;
+    margin: 0 auto;
+}
 </style>
 <div class="wrapper">
     <div class="container-fluid">
@@ -472,8 +491,7 @@ label.uploadpre {
         
     </div>
 
-          
-            
+      
       <div class="tab-content" id="myTabContent">
   <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                                      <div class="col-md-12 vimkim">
@@ -536,10 +554,20 @@ label.uploadpre {
                            <label for="Booking Dates">Trip End Date </label>  
                         </div>
                      </div> 
-                       <div class="row" style="width: 100%;">
-                           <div class="col-md-4">
-                               <h4 data-toggle="modal" href="#ignismyModal">Addons</h4>
-                               
+                      
+                       <div class="formrow formtab" style="width:100%;">
+			<div class="col-md-12 ">
+				<nav>
+					<div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+						<a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Addons</a>
+						<a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Extra Accessories</a>
+					
+						<a class="nav-item nav-link" id="nav-about-tab" data-toggle="tab" href="#nav-about" role="tab" aria-controls="nav-about" aria-selected="false">Services</a>
+					</div>
+				</nav>
+				<div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
+					<div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+					  
                                <div class="alert alert-success alert-dismissible">
                                      <button type="button" class="close" data-dismiss="alert">&times;</button>
                                    <div class="row">
@@ -561,14 +589,60 @@ label.uploadpre {
                       
                        
                              </div>
-                           </div>
-                            <div class="col-md-4">
-                               <h4>Extra Accessories</h4>
-                           </div>
-                            <div class="col-md-4">
-                               <h4>Services</h4>
-                           </div>
-                       </div>
+					</div>
+					<div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+					  
+                               <div class="alert alert-success alert-dismissible">
+                                     <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                   <div class="row">
+                                       <div class="col-md-12">
+                                             <label class="spare">Spare Tyre/200</label> 
+                                            <i class="fa fa-check bab ret"></i>
+                                       </div>
+                                         <div class="col-md-12">
+                                             <label class="spare">Baby Seat/200</label> 
+                                             <i class="fa fa-trash bab"></i>
+                                       </div>
+                                        <div class="col-md-12">
+                                             <label class="spare">Cup Stand/100</label> 
+                                             <i class="fa fa-trash bab"></i>
+                                       </div>
+                                     
+                                       
+                                   </div>
+                      
+                       
+                             </div>
+					</div>
+				
+					<div class="tab-pane fade" id="nav-about" role="tabpanel" aria-labelledby="nav-about-tab">
+					  
+                               <div class="alert alert-success alert-dismissible">
+                                     <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                   <div class="row">
+                                       <div class="col-md-12">
+                                             <label class="spare">Spare Tyre/200</label> 
+                                            <i class="fa fa-check bab ret"></i>
+                                       </div>
+                                         <div class="col-md-12">
+                                             <label class="spare">Baby Seat/200</label> 
+                                             <i class="fa fa-trash bab"></i>
+                                       </div>
+                                        <div class="col-md-12">
+                                             <label class="spare">Cup Stand/100</label> 
+                                             <i class="fa fa-trash bab"></i>
+                                       </div>
+                                     
+                                       
+                                   </div>
+                      
+                       
+                             </div>
+					</div>
+				</div>
+			
+			</div>
+		</div>
                
                              
                                         
@@ -707,7 +781,100 @@ label.uploadpre {
     <span class="carousel-control-next-icon"></span>
   </a>
   </div>
-
+  <div class="tab-pane fade" id="partner1" role="tabpanel" aria-labelledby="contact-tab">
+<div class="col-md-12 vimkim">
+                                      <h4 class="customdet">payment details</h4>
+                                      </div>
+                                   <div class="table-responsive formtab">          
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Items</th>
+        <th>Description</th>
+        <th>Total Price</th>
+      
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Vehicle Rent</td>
+        <td>
+            <p>12-5-2020 <span>1000</span></p>
+             <p>12-5-2020 <span>1000</span></p>
+              <p>12-5-2020 <span>1000</span></p>
+            </td>
+        <td>2500</td>
+        
+      </tr>
+      <tr>
+        <td>Addon Charges</td>
+        <td>
+            <p>Baby Seat<span>500</span></p>
+             <p>Sapre TYre<span>1000</span></p>
+             
+            </td>
+        <td>2000</td>
+        
+      </tr>
+       <tr>
+        <td>Discount</td>
+        <td>
+            <p>Admin<span>1200</span></p>
+             <p>Partner<span>1800</span></p>
+             
+            </td>
+        <td>3000</td>
+        
+      </tr>
+         <tr>
+        <td>Total Tax</td>
+        <td>
+         
+            </td>
+        <td>1000</td>
+        
+      </tr>
+      <tr>
+        <td>Total Reservation Amount</td>
+        <td>
+         
+            </td>
+        <td>1000</td>
+        
+      </tr>
+      <tr>
+        <td>Paid Amount(Download Invoice)</td>
+        <td>
+         
+            </td>
+        <td>15000</td>
+        
+      </tr>
+      <tr>
+        <td>Deposite Amount <a href="">Make Payment</a></td>
+        <td>
+         
+            </td>
+        <td>1000</td>
+        
+      </tr>
+      <tr>
+        <td>Expected Refund Amount</td>
+        <td>
+         
+            </td>
+        <td class="fourfiv">45000</td>
+        
+      </tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="form-group formtab">
+                  <input type="hidden" id="csrf_token" value="JDaxfRlKgfw1zwaw8MV2xC7Cj00CuzBIpmvdBBbd">
+                  <button type="button" class="btn btn-primary waves-effect waves-light" id="add_partner">Refund Pay </button>
+                  <button type="button" class="close_location_tab btn btn-default waves-effect waves-light" id="">Cancel</button>
+               </div>
+  </div>
 
   <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
 <div class="col-md-12 vimkim">
@@ -731,6 +898,7 @@ label.uploadpre {
                                     </div>
   
   </div>
+  
   <div class="tab-pane fade" id="partner" role="tabpanel" aria-labelledby="contact-tab">
 <div class="col-md-12 vimkim">
                                       <h4 class="customdet">Pickup and Drop Vehicles</h4>
@@ -740,13 +908,13 @@ label.uploadpre {
 			<div class="col-md-12 ">
 				<nav>
 					<div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
-						<a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Pickup</a>
-						<a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Drop</a>
+						<a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home1" role="tab" aria-controls="nav-home" aria-selected="true">Pickup</a>
+						<a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile1" role="tab" aria-controls="nav-profile" aria-selected="false">Drop</a>
 					
 					</div>
 				</nav>
 				<div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
-					<div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+					<div class="tab-pane fade show active" id="nav-home1" role="tabpanel" aria-labelledby="nav-home-tab">
 					    
 						<div class="form-row formtab">
 					          <div class="col-md-6">
@@ -773,7 +941,7 @@ label.uploadpre {
                                           <button type="button" class="close_location_tab btn btn-default waves-effect waves-light" id="">Cancel</button>
                                        </div>
 					</div>
-					<div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+					<div class="tab-pane fade" id="nav-profile1" role="tabpanel" aria-labelledby="nav-profile-tab">
 						<div class="form-row formtab">
 					       
 					     <div class="col-md-6">
@@ -795,12 +963,55 @@ label.uploadpre {
 					        
 					        
 					    </div>
-					    <div class="form-group">
-                                          <input type="hidden" id="csrf_token" value="JDaxfRlKgfw1zwaw8MV2xC7Cj00CuzBIpmvdBBbd">
-                                          <input type="hidden" value="17" id="partner_id">
-                                          <button type="button" class="btn btn-primary waves-effect waves-light" id="update_partner">Update</button>
-                                          <button type="button" class="close_location_tab btn btn-default waves-effect waves-light" id="">Cancel</button>
-                                       </div>
+					     <div class="form-row bg-shadow activwin">
+					         <div class="col-md-6">
+                         <div class="form-group col-md-12">
+                     <label>Reservation Amount</label>
+                     <input data-parsley-type="number" type="text" class="form-control tribut" maxlength="" required placeholder="Reservation Amount" id="partner_name" />             
+                  </div>
+                  <div class="form-group col-md-12">
+                     <label>Overall Trip Amount</label>
+                     <input data-parsley-type="number" type="text" class="form-control tribut" maxlength="10" required placeholder="Overall Trip Amount" id="phone_no" />
+                  </div>
+                  <div class="form-group col-md-12">
+                     <label>Vehicle Damage Charge</label>
+                     <input data-parsley-type="number" type="text" class="form-control tribut" maxlength="" required placeholder="Vehicle Damage Charge" id="email" />             
+                  </div>
+                   </div>
+                   <div class="col-md-6">
+                          <div class="form-group col-md-12">
+                     <label>Deposit Amount</label>
+                     <input data-parsley-type="number" type="text" class="form-control tribut" maxlength="" required placeholder="Deposit Amount" id="partner_name" />             
+                  </div>
+                  <div class="form-group col-md-12">
+                     <label>Expected Refund Amount</label><span style="color: red;">*</span>
+                     <input data-parsley-type="number" type="text" class="form-control tribut" maxlength="10" required placeholder="Expected Refund Amount" id="phone_no" />
+                  </div>
+                  <div class="form-group col-md-12">
+                     <label>Vehicle Condition Description</label>
+                    
+                     <textarea class="form-control" placeholder="Vehicle Condition Description"></textarea>
+                  </div>
+                   </div>
+                
+                 <div class="form-group">
+                  <input type="hidden" id="csrf_token" value="JDaxfRlKgfw1zwaw8MV2xC7Cj00CuzBIpmvdBBbd">
+                  <button type="button" class="btn btn-primary waves-effect waves-light" id="add_partner">Update</button>
+                  <button type="button" class="close_location_tab btn btn-default waves-effect waves-light" id="">Cancel</button>
+                  
+                    
+               </div>
+               <br>
+                 <div class="form-group" style="width:100%;margin-top: 3%;">
+                     <div class="tripclose">
+                         <a class="closetrip" id="">Close Trip</a>
+                         
+                     </div>
+                   
+               </div>
+             
+               </div>
+					   
 					</div>
 					
 				</div>
