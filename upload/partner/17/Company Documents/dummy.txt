@@ -1,0 +1,17 @@
+ $vehicle_info = DB::table('vehicle_details')
+                            ->where('vehicle_id',$req->id)
+                            ->where('vehicle_id',$vehicle_id)
+                            ->get();  
+
+
+ if(data != ""){
+                        $('#vehicle_id').val(data);
+                        $(".add_vehicle_step2").show();
+                        $('#basic_info_full_size').css('flex', '0 0 75%');
+                    }
+
+
+
+image issue fix
+email website fix
+add insurance and fc fix

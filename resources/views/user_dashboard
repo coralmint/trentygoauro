@@ -1,0 +1,350 @@
+@extends('layouts.adminmaster')
+@section('content')
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<style type="text/css">
+    .search {
+            margin-top: 35%;
+        }
+    .modleft{
+        margin-left: 60%;
+    }    
+    .comment-wrapper .panel-body {
+        max-height:650px;
+        overflow:auto;
+    }
+    .comment-wrapper .media-list .media img {
+        width:64px;
+        height:64px;
+        border:2px solid #e5e7e8;
+    }
+    .comment-wrapper .media-list .media {
+        border-bottom:1px dashed #efefef;
+        margin-bottom:25px;
+    }
+#datatable tr td {
+    height: 10px;
+}
+@media only screen and (max-width: 600px)
+{
+ .search {
+        margin-top: 0%;
+    }
+ .modleft{
+    margin-left: 2%;
+    margin-top: 2%;
+    } 
+}
+</style>
+<style>
+   .form-group.col-md-6.name112 {
+   float: left;
+   }
+   .icon-colored{
+   width:20px;
+   margin:0px ;
+   height:20px;
+   }
+   i.fa.fa-pencil.yoyo {
+   color: #0A819F;
+   font-weight: 600;
+   font-size: 18px;
+   padding: 0px 10px;
+   }
+   i.fa.fa-trash.zoho {
+   color: #F20000;
+   font-weight: 600;
+   font-size: 18px;
+   }
+   .vouc{
+   padding-top:10%;
+   }
+   i.fa.fa-file-excel-o.excelo {
+   font-size: 18px;
+   padding: 0px 10px;
+   color: green;
+   font-weight: 600;
+   }
+   i.fa.fa-file-pdf-o.pdfo {
+   font-size: 18px;
+   padding: 0px 0px;
+   color: #af3450;
+   font-weight: 600;
+   }
+   .plusug{
+   width: 30px;
+   height: 30px;
+   /* padding: 10px; */
+   margin: 35px 10px 35px 35px;
+   }
+   .three{
+   color: #17A6BC;
+   }
+   i.fa.fa-plus.comentplus {
+   color: #187E77;
+   font-size: 16px;
+   padding: 0px 10px;
+   }
+   button.btn.btn-secondary.btn-bordered.waves-effect.w-md {
+   margin-bottom: 3%;
+   color: #FF8204;
+   }
+   span.download {
+   border: 2px solid #EF970A;
+   padding: 5px 10px;
+   font-weight: 600;
+   color: #000;
+   }
+   .col-md-6.downpay {
+   text-align: right;
+   }
+   .card-box1 {
+   -webkit-box-shadow: 0px 0px 7px -1px rgba(84,128,199,1);
+   -moz-box-shadow: 0px 0px 7px -1px rgba(84,128,199,1);
+   box-shadow: 0px 0px 7px -1px rgba(84,128,199,1);
+   }
+   span.paymen {
+   background-color: #276FDB;
+   color: #fff;
+   padding: 13px;
+   font-weight:bold;
+   }
+   .col-md-12.pending {
+   text-align: right;
+   padding: 0px 0px 20px;
+   }
+   .sidenav {
+    height: 100%;
+    width: 0px;
+    position: fixed;
+    z-index: 2;
+    top: 13%;
+    right: 0;
+    background-color: #FFa000;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 0px;
+    border-left: 2px solid #cc6000;
+    }
+    .line {
+    border-bottom: 1px solid #cc6000;
+    margin-left: 10px;
+    margin-right: 10px;
+    display: block;
+    transition: 0.3s;
+    }
+    .sidenav a {
+    padding-top: 16px;
+    padding-bottom: 16px;
+    padding-left: 20px;
+    text-align: left;
+    text-decoration: none;
+    font-size: 25px;
+    color: #000;
+    display: block;
+    transition: 0.3s;
+    }
+    .sidenav a:hover {
+    color: #f1f1f1;
+    }
+    
+    .menuIconToggle {
+    box-sizing: border-box;
+    cursor: pointer;
+    position: fixed;
+    z-index: 10;
+    height: 100%;
+    width: 100%;
+    top: 22px;
+    right: 15px;
+    height: 22px;
+    width: 22px;
+    transition: all 0.3s;
+    z-index: 10;
+    }
+    .hamb-line {
+    box-sizing: border-box;
+    position: absolute;
+    height: 3px;
+    width: 100%;
+    background-color: #000;
+    transition: all 0.25s;
+    }
+    .hor {
+    transition: all 0.3s;
+    box-sizing: border-box;
+    position: relative;
+    float: left;
+    margin-top: 3px;
+    }
+    .dia.p-1 {
+    position: relative;
+    box-sizing: border-box;
+    float: left;
+    transition: all .25s;
+    }
+    .dia.p-2 {
+    box-sizing: border-box;
+    position: relative;
+    float: left;
+    margin-top: 3px;
+    transition: all .25s;
+    }
+    input[type=checkbox]:checked ~ .menuIconToggle > .hor {
+    box-sizing: border-box;
+    opacity: 0;
+    transition: all .25s;
+    }
+    input[type=checkbox]:checked ~ .menuIconToggle > .dia.p-1 {
+    box-sizing: border-box;
+    transform: rotate(135deg);
+    margin-top: 8px;
+    transition: all .25s;
+    }
+    input[type=checkbox]:checked ~ .menuIconToggle > .dia.p-2 {
+    box-sizing: border-box;
+    transform: rotate(-135deg);
+    margin-top: -9px;
+    transition: all .25s;
+    }
+    td:nth-child(1)  {
+ white-space: nowrap;
+     width: 50px; 
+    /* height: 20px; */
+    overflow: hidden;
+}
+ td:nth-child(2)  {
+ white-space: nowrap;
+     /*width: 200px; 
+     height: 20px; */
+    overflow: hidden;
+}
+ td:nth-child(3)  {
+ white-space: nowrap;
+    /* width: 200px; */
+    /* height: 20px; */
+    overflow: hidden;
+}
+ td:nth-child(4)  {
+ white-space: nowrap;
+    /* width: 200px; */
+    /* height: 20px; */
+    overflow: hidden;
+}
+td:nth-child(5)  {
+ white-space: nowrap;
+    /* width: 200px; */
+    /* height: 20px; */
+    overflow: hidden;
+}
+    @media screen and (min-width: 320px) and (max-width: 500px) {
+        .col-md-12.pending {
+        text-align: right;
+        padding: 0px 0px 8px;
+        margin: 18px 0px;
+    }
+    span.paymen {
+        background-color: #276FDB;
+        color: #fff;
+        padding: 3px 3px;
+        font-weight: bold;
+        font-size: 12px;
+        margin-top: 10px;
+    }
+    }
+    .toglediv{margin-top:30%;}
+    .targetdiv {
+        background-color: #fff;
+        position: fixed;
+        height: 100%;
+        width: 30%;
+        z-index: 999;
+        top: 0;
+        left: 0;
+      transform: translateX(-800%);
+        -webkit-transform: translateX(-800%);
+    }
+    .targetdiv1 {
+        background-color: #fff;
+        position: fixed;
+        height: 100%;
+        width: 30%;
+        z-index: 999;
+        top: 0;
+        left: 0;
+        transform: translateX(-800%);
+        -webkit-transform: translateX(-800%);
+    }
+    
+    .slide-in {
+        animation: slide-in 0.7s forwards;
+        -webkit-animation: slide-in 0.7s forwards;
+        overflow-y: scroll;
+    }
+    
+    .slide-out {
+        animation: slide-out 0.5s forwards;
+        -webkit-animation: slide-out 0.5s forwards;
+    }
+        
+    @keyframes slide-in {
+        100% { transform: translateX(0%); }
+    }
+    
+    @-webkit-keyframes slide-in {
+        100% { -webkit-transform: translateX(0%); }
+    }
+        
+    @keyframes slide-out {
+        0% { transform: translateX(0%); }
+        100% { transform: translateX(-100%); }
+    }
+    
+    @-webkit-keyframes slide-out {
+        0% { -webkit-transform: translateX(0%); }
+        100% { -webkit-transform: translateX(-100%); }
+    }
+</style>
+<header id="topnav">
+    @include('admin_dashboard.menu')
+</header>
+<div class="wrapper">
+    <div class="container-fluid">
+        <!-- Page-Title -->
+        <div class="row">
+            <div class="col-sm-12">
+                <h4 class="page-title" style="margin-top: -4%;">Reminder</h4>
+                <div class="page-title-box">
+                    <div class="btn-group pull-right">
+                        <ol class="breadcrumb hide-phone p-0 m-0">
+                            <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                            <li class="breadcrumb-item active">Reminder</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end page title end breadcrumb -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card-box table-responsive">
+                            <div class="panel panel-primary">
+ 
+                                <div class="panel-heading">Charts In Laravel 5 Using Charts Package</div>
+                         
+                                 <div class="panel-body">    
+                                    <div class="row">
+                                        <div class="col-md-6"> 
+                                           {!! $chart->html() !!}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div> <!-- end container -->
+</div>
+<!-- end wrapper -->
+{!! Charts::scripts() !!}
+{!! $chart->script() !!}
+@include('admin_dashboard.footer')
+@endsection
