@@ -345,6 +345,9 @@ button.compare {
 span.namelab {
     color: #12b3b6;
 }
+label.uploadpre {
+    font-size: 20px;
+}
 </style>
 <div class="wrapper">
     <div class="container-fluid">
@@ -742,7 +745,7 @@ span.namelab {
 					
 					</div>
 				</nav>
-				<div class="py-3 px-3 px-sm-0" id="nav-tabContent">
+				<div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
 					<div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
 					    
 						<div class="form-row formtab">
@@ -763,9 +766,41 @@ span.namelab {
 					        
 					        
 					    </div>
+					    <div class="form-group">
+                                          <input type="hidden" id="csrf_token" value="JDaxfRlKgfw1zwaw8MV2xC7Cj00CuzBIpmvdBBbd">
+                                          <input type="hidden" value="17" id="partner_id">
+                                          <button type="button" class="btn btn-primary waves-effect waves-light" id="update_partner">Update</button>
+                                          <button type="button" class="close_location_tab btn btn-default waves-effect waves-light" id="">Cancel</button>
+                                       </div>
 					</div>
 					<div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-						Et et consectetur ipsum labore excepteur est proident excepteur ad velit occaecat qui minim occaecat veniam. Fugiat veniam incididunt anim aliqua enim pariatur veniam sunt est aute sit dolor anim. Velit non irure adipisicing aliqua ullamco irure incididunt irure non esse consectetur nostrud minim non minim occaecat. Amet duis do nisi duis veniam non est eiusmod tempor incididunt tempor dolor ipsum in qui sit. Exercitation mollit sit culpa nisi culpa non adipisicing reprehenderit do dolore. Duis reprehenderit occaecat anim ullamco ad duis occaecat ex.
+						<div class="form-row formtab">
+					       
+					     <div class="col-md-6">
+					        <div class="custom-control custom-checkbox">
+					            <input type="checkbox" class="custom-control-input" id="defaultUnchecked">
+    <label class="custom-control-label uploadpre" for="defaultUnchecked">Key Returned</label>
+    <input type="checkbox" class="custom-control-input" id="defaultUnchecked">
+    <label class="custom-control-label uploadpre" for="defaultUnchecked">Key Given <span class="namelab">by Sathish Kumar</span></label>
+</div>
+					    </div>
+					       <div class="col-md-6">
+					         <div class="col-md-12">
+                                            <label class="uploadpre">Upload Pre Vehicle Condition Photos</label>
+                                            <br>
+                                            <label>Upload</label>
+                                        </div>
+                                        
+					    </div>
+					        
+					        
+					    </div>
+					    <div class="form-group">
+                                          <input type="hidden" id="csrf_token" value="JDaxfRlKgfw1zwaw8MV2xC7Cj00CuzBIpmvdBBbd">
+                                          <input type="hidden" value="17" id="partner_id">
+                                          <button type="button" class="btn btn-primary waves-effect waves-light" id="update_partner">Update</button>
+                                          <button type="button" class="close_location_tab btn btn-default waves-effect waves-light" id="">Cancel</button>
+                                       </div>
 					</div>
 					
 				</div>
