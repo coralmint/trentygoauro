@@ -737,7 +737,7 @@ label.uploadpre {
                                       </div>
                                   <section id="tabs">
 		<div class="row formtab">
-			<div class="col-xs-12 ">
+			<div class="col-md-12 ">
 				<nav>
 					<div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
 						<a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Pickup</a>
@@ -779,7 +779,7 @@ label.uploadpre {
 					     <div class="col-md-6">
 					        <div class="custom-control custom-checkbox">
 					            <input type="checkbox" class="custom-control-input" id="defaultUnchecked">
-    <label class="custom-control-label uploadpre" for="defaultUnchecked">Key Returned</label>
+    <label class="custom-control-label uploadpre" for="defaultUnchecked">Key Returned</label><br>
     <input type="checkbox" class="custom-control-input" id="defaultUnchecked">
     <label class="custom-control-label uploadpre" for="defaultUnchecked">Key Given <span class="namelab">by Sathish Kumar</span></label>
 </div>
