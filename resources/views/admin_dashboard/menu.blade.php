@@ -89,6 +89,9 @@
                <a href="{{ url('reservationlist') }}"><i class="mdi mdi-account-multiple "></i>Reservations</a>
             </li>
             <li class="has-submenu">
+               <a href="{{ url('triplist') }}"><i class="mdi mdi-account-multiple "></i>Trip</a>
+            </li>
+            <li class="has-submenu">
                <a href="{{ url('viewmessage') }}"><i class="mdi mdi-account-multiple "></i>Partner Messages</a>
             </li>
             <li class="has-submenu kikom1">
