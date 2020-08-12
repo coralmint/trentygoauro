@@ -58,7 +58,7 @@ Route::group(['middleware' => ['auth', 'admin']], function() {
 //AdminController
     Route::any('partnerprofile', 'AdminController@partnerprofile');
     Route::any('triplist', 'AdminController@triplist');
-    Route::any('tripdetails', 'AdminController@tripdetails');
+    Route::any('tripdetails/{id}', 'AdminController@tripdetails');
     Route::any('partnertriplist', 'AdminController@partnertriplist');
     Route::any('customerbookingcancel', 'AdminController@customerbookingcancel');
     Route::any('reservations', 'AdminController@reservations');
@@ -117,7 +117,7 @@ Route::group(['middleware' => ['auth', 'admin']], function() {
     
     Route::any('sample_invoice', 'AdminController@sample_invoice');
     
-    
+     Route::any('get_all_trip_details', 'AdminController@get_all_trip_details');
 
 // common
     Route::any('delete_document', 'AdminController@delete_document');

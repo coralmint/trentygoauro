@@ -414,8 +414,7 @@ class AdminController extends Controller
         return view('admin_dashboard/customerbookingcancel');
     }
     public function newvehicle(){
-        return view('admin_dashboard/newvehicle');
-    }
+        return view('admin_dashboard/newvehicle');    }
     public function bookingcancel(){
         return view('admin_dashboard/bookingcancel');
     }
@@ -431,8 +430,33 @@ class AdminController extends Controller
     public function reservations(){
         return view('admin_dashboard/reservations');
     }
-      public function tripdetails(){
-        return view('admin_dashboard/tripdetails');
+      public function tripdetails(Request $req){
+        $partner_id = Crypt::decryptString($req->id);
+        $cus_info = DB :: table('customer_details as cd')
+                     ->join('trip_details as td','cd.customer_id','td.customer_id')
+                     ->select('cd.customer_name','cd.customer_phone','cd.customer_email')
+                     ->where('td.partner_id',$partner_id)
+                    ->get();
+        $res_info = DB :: table('reservation_details as rd')
+                     ->join('trip_details as td','rd.reservation_id','td.reservation_id')
+                     ->select('rd.reserve_unique_id','rd.reservation_date','rd.reserve_through','rd.reservation_amount','rd.start_date','rd.return_date','rd.paid_amount')
+                     ->where('td.partner_id',$partner_id)
+                    ->get();
+        $part_info = DB :: table('partner_details as pd')
+                     ->join('trip_details as td','pd.partner_id','td.partner_id')
+                     ->select('pd.partner_name')
+                     ->where('td.partner_id',$partner_id)
+                    ->get(); 
+        $veh_info = DB :: table('vehicle_details as vd')
+                     ->join('trip_details as td','vd.vehicle_id','td.vehicle_id')
+                     ->select('vd.vehicle_reg_no','vd.vehicle_model')
+                     ->where('td.partner_id',$partner_id)
+                    ->get();             
+        return view('admin_dashboard/tripdetails')
+                    ->with('cus_info', $cus_info)
+                    ->with('res_info', $res_info)
+                    ->with('part_info', $part_info)
+                    ->with('veh_info', $veh_info);
     }
     public function invoice_pdfview(Request $request){
         $reservation_id = Crypt::decryptString($request->id);
@@ -2075,524 +2099,66 @@ $unread_messages = DB::table('admin_partner_messages as apm')
     }
     
     
+    public function get_all_trip_details(){
+        try {
+           
+            $get_all_trip_list = DB::table('trip_details as td')
+                                ->leftJoin('partner_details as pd', 'pd.partner_id', 'td.partner_id')
+                                ->where('td.status','1')
+                                ->get();                    
+
+            return Datatables::of($get_all_trip_list)
+            
+                ->addColumn('trip_id', function ($get_all_trip_list) {
+                        $trip_id = '';
+                        $trip_id .= '<center>'.ucfirst($get_all_trip_list->trip_id).'</center>';
+                       return $trip_id.'';
+                    })
+                ->addColumn('reservation_id', function ($get_all_trip_list) {
+                        $reservation_id = '';
+                        $reservation_id .= '<center>'.$get_all_trip_list->reservation_id.'</center>';
+                       return $reservation_id.'';
+                    })  
+                ->addColumn('pickup_datetime', function ($get_all_trip_list) {
+                        $pickup_datetime = '';
+                        $pickup_datetime .= '<center>'.$get_all_trip_list->pickup_datetime.'</center>';
+                       return $pickup_datetime.'';
+                    })
+                ->addColumn('status', function ($get_all_trip_list) {
+                        $status = '';
+                        if($get_all_trip_list->status == '1'){
+                        $status .= '<a style="cursor:pointer; color:red;" data-toggle="dropdown" class="dropdown-toggle on-default"><span class="label label-primary reject">New</span></a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                <center><span class="border-none btn btn-default btn-outline" onClick="reservation_info('.$get_all_trip_list->trip_id.',2);">Inprogress</span></center>
+                                </li>
+                            </ul>';
+                        }
+                        else{
+                        $status .= '<span class="label label-success reject">Inprogress</span>';
+                        }
+                        return $status.'';
+                    })
+                ->addColumn('action', function ($get_all_trip_list) {
+                  return '<center>
+                        <a href="'.url('tripdetails/'.Crypt::encryptString($get_all_trip_list->partner_id).'').'" class="on-default edit-row" title=""><i class="fa fa-eye" data-toggle="tooltip" title="partner_details!"></i></a></center> 
+                        </center>';
+                        // <a style="cursor:pointer; color:#007bff;" class="on-default remove-row" title="" onclick="return delete_owner( '.$get_all_owner->owner_id.',2);"><i class="fa fa-trash-o"></i></a>
+                    })
+             ->rawColumns(array("trip_id","reservation_id","pickup_datetime","status","action"))
+             ->make(true);
+        } catch (QueryException $e) {
+            echo "Bad Request";
+            dd(); 
+        }
+    }
+    
+    
   
     
     
       //endtrentygo
-    public function owner_list(){
-         $get_all_owner_list = DB::table('owner_info')->get();
-        return view('admin_dashboard/owner_list')->with('get_all_owner_list',$get_all_owner_list);
-    }
-    public function add_owner_details(Request $req){
-        $owner_count = DB::table('owner_info')->where('owner_email',$req->email)->orWhere('owner_phone',$req->phone)->count();
-        $curent_date = date('Y-m-d H:i:s');
-        $data = array(
-            'owner_name' => $req->name,
-            'owner_phone' => $req->phone,
-            'owner_email' => $req->email,
-            'owner_doorno' => $req->doorno,
-            'owner_street' => $req->street,
-            'owner_city' => $req->city,
-            'owner_postalcode' => $req->postalcode,
-            'password' => $req->phone,
-            'created_at' => $curent_date,
-        );
-        if($owner_count == 0){
-            $db = new General();
-            $db->insert('owner_info',$data);
-            $owner_id = DB::getPdo()->lastInsertId();
-            
-            $user_data = array(
-                'name' => $req->name, 
-                'email' => $req->email, 
-                'password' => Hash::make($req->phone),  
-                'role' => '2', 
-                'user_id' => $owner_id, 
-                'created_at' => $curent_date,
-            );
-            $db->insert('users',$user_data);
-                $to_name = $req->name;
-                $to_email = $req->email;
-                $password = $req->phone;
-                $mdata1 = array('name'=>$to_name,'email'=>$to_email,'password'=>$password);
-                Mail::send('mail_content.welcome_new_owner', $mdata1, function($message) use ($to_name, $to_email) {
-                    $message->to($to_email, $to_name)
-                            ->subject('Stephane Plaza | New Registration');
-                    $message->from('info@decorbazaar.in','Stephane Plaza');
-                    $message->cc('vinoth@coralmint.in');
-                    /*$message->bcc('bhavithra.t@coralmint.in');*/
-                });
-        $data = "success";
-        }else{
-            $data = "failed";
-        }
-        return json_encode($data);
-    }
-
-
-    public function update_owner_details(Request $req){
-        $product_info = DB::table('owner_info')->where('owner_email',$req->email)->where('owner_phone',$req->phone)->count();
-        $curent_date = date('Y-m-d H:i:s');
-        $db = new General();
-        $data = array(
-                'owner_name' => $req->update_name,
-                'owner_phone' => $req->update_mobile_number,
-                'owner_email' => $req->update_email,
-                'owner_doorno' => $req->update_door_no,
-                'owner_street' => $req->update_street,
-                'owner_city' => $req->update_city,
-                'owner_postalcode' => $req->update_postal_code,
-                'modified_at' => $curent_date
-            );
-            // if($product_info >= 1){
-                $db->updates('owner_info',$data,'owner_id',$req->owner_id);
-                return json_encode('success');
-            // }else{
-                // return json_encode('failed');
-            // }
-    }
-    public function get_all_owner_list(){
-        try {
-           $get_all_owner = DB::table('owner_info')
-                            ->where('status','1')
-                            ->orWhere('status','0')
-                            ->get();
-            return Datatables::of($get_all_owner)
-                // ->addColumn('owner_name', function ($get_all_owner) {
-                //         $owner_name = '';
-                //         $owner_name .= '<center>'.$get_all_owner->owner_name.'</center>';
-                //       return $owner_name.'';
-                //     })
-                ->addColumn('owner_name', function ($get_all_owner) {
-                        $owner_name = '';
-                        $owner_name .= '<center>'.ucfirst($get_all_owner->owner_name).'</center>';
-                       return $owner_name.'';
-                    })
-                ->addColumn('owner_phone', function ($get_all_owner) {
-                        $owner_phone = '';
-                        $owner_phone .= '<center>'.$get_all_owner->owner_phone.'</center>';
-                       return $owner_phone.'';
-                    })  
-                ->addColumn('owner_email', function ($get_all_owner) {
-                        $owner_email = '';
-                        $owner_email .= '<center>'.$get_all_owner->owner_email.'</center>';
-                       return $owner_email.'';
-                    })
-                ->addColumn('owner_country', function ($get_all_owner) {
-                    $owner_city = '';
-                    $owner_city .= '<center>'.ucfirst($get_all_owner->owner_city).'</center>';
-                   return $owner_city.'';
-                })
-                ->addColumn('status', function ($get_all_owner) {
-                        $status = '';
-                        if($get_all_owner->status == '1'){
-                        $status .= '<a style="cursor:pointer; color:red;" data-toggle="dropdown" class="dropdown-toggle on-default"><span class="label label-primary reject"> Published </span></a>
-                            <ul class="dropdown-menu">
-                                <li>
-                                <center><span class="border-none btn btn-default btn-outline" onClick="delete_owner_info('.$get_all_owner->owner_id.',0);">Unpublish</span></center>
-                                </li>
-                            </ul>';
-                        }
-                        else{
-                        $status .= '<a style="cursor:pointer; color:red;" data-toggle="dropdown" class="dropdown-toggle on-default"><span class="label label-warning reject">Unpublished</span></a>                        
-                            <ul class="dropdown-menu">
-                                <li>
-                                <center><span class="border-none btn btn-default btn-outline" onClick="delete_owner_info('. $get_all_owner->owner_id.',1);">Publish</span></center>
-                                </li>
-                            </ul>';
-                        }
-                        return $status.'';
-                    })
-                ->addColumn('action', function ($get_all_owner) {
-                  return '<center>
-                        <a style="cursor:pointer; color:#007bff;" onclick="return view_owner('.$get_all_owner->owner_id.');" class="openSideMenu_pay on-default remove-row" target="'.$get_all_owner->owner_id.'"><i class="fa fa-eye"></i></a>&nbsp;&nbsp;
-                        <a style="cursor:pointer; color:#007bff;" onclick="return edit_owner( '.$get_all_owner->owner_id.');" class="openSideMenu_pay on-default remove-row" target="'.$get_all_owner->owner_id.'"><i class="fa fa-pencil"></i></a>
-                        <a href="'.url('propertylist/'.Crypt::encryptString($get_all_owner->owner_id).'').'" class="on-default edit-row" title=""><i class="fa fa-cog"></i></a>&nbsp;&nbsp;
-                        <a href="'.url('ownerdocument/'.Crypt::encryptString($get_all_owner->owner_id).'').'" class="on-default edit-row" title="" style="color:#ffa91c;"><i class="fa fa-file-text"></i></a>&nbsp;&nbsp;
-                        </center>';
-                        // <a style="cursor:pointer; color:#007bff;" class="on-default remove-row" title="" onclick="return delete_owner( '.$get_all_owner->owner_id.',2);"><i class="fa fa-trash-o"></i></a>
-                    })
-             ->rawColumns(array("owner_name","owner_phone","owner_email","owner_country","status","action"))
-             ->make(true);
-        } catch (QueryException $e) {
-            echo "Bad Request";
-            dd(); 
-        }
-    }
-    public function delete_owner_details(Request $req){
-        $curent_date = date('Y-m-d H:i:s');
-        $db = new General();
-        $data = array(
-            'status' => $req->status,
-            'modified_at' => $curent_date
-        );
-        $db->updates('owner_info',$data,'owner_id',$req->owner_id);
-        return json_encode('success');
-    }
-    public function delete_owner_data(Request $req){
-        $curent_date = date('Y-m-d H:i:s');
-        $db = new General();
-        $data = array(
-            'status' => $req->status,
-            'modified_at' => $curent_date
-        );
-        $db->updates('owner_info',$data,'owner_id',$req->owner_id);
-        return json_encode('success');
-    }
-    public function propertylist(Request $req){
-    	    $owner_id = Crypt::decryptString($req->id);
-    	    $owner_info = DB::table('owner_info')->where('owner_id',$owner_id)->get();
-    	    $property_info = DB::table('property')->where('owner_id',$owner_id)->get();
-        return view('admin_dashboard/propertylist')
-                        ->with('owner_info',$owner_info)
-                        ->with('owner_id',$owner_id)
-                        ->with('property_info',$property_info);
-    }
-    public function get_all_property_list(Request $req){
-        try {
-           $get_all_property = DB::table('property')
-                            ->where('owner_id',$req->owner_id)
-                            ->get();
-            return Datatables::of($get_all_property)
-                // ->addColumn('owner_name', function ($get_all_owner) {
-                //         $owner_name = '';
-                //         $owner_name .= '<center>'.$get_all_owner->owner_name.'</center>';
-                //       return $owner_name.'';
-                //     })
-                ->addColumn('property_name', function ($get_all_property) {
-                        $property_name = '';
-                        $property_name .= '<center>'.$get_all_property->property_name.'</center>';
-                       return $property_name.'';
-                    })
-                ->addColumn('property_type', function ($get_all_property) {
-                        $property_type = '';
-                        $property_type .= '<center>'.$get_all_property->property_type.'</center>';
-                       return $property_type.'';
-                    })  
-                ->addColumn('room_type', function ($get_all_property) {
-                        $room_type = '';
-                        $room_type .= '<center>'.ucfirst($get_all_property->room_type).'</center>';
-                       return $room_type.'';
-                    })
-                ->addColumn('property_state', function ($get_all_property) {
-                    $property_state = '';
-                    $property_state .= '<center>'.ucfirst($get_all_property->property_state).'</center>';
-                   return $property_state.'';
-                })
-                ->addColumn('status', function ($get_all_property) {
-                        $status = '';
-                        if($get_all_property->status == '1'){
-                        $status .= '<a style="cursor:pointer; color:red;" data-toggle="dropdown" class="dropdown-toggle on-default"><span class="label label-primary reject"> Open </span></a>
-                            <ul class="dropdown-menu">
-                                <li>
-                                <center><span class="border-none btn btn-default btn-outline" onClick="delete_property_info('.$get_all_property->property_id.',0);">Close</span></center>
-                                </li>
-                            </ul>';
-                        }
-                        else{
-                        $status .= '<a style="cursor:pointer; color:red;" data-toggle="dropdown" class="dropdown-toggle on-default"><span class="label label-warning reject">Close</span></a>                        
-                            <ul class="dropdown-menu">
-                                <li>
-                                <center><span class="border-none btn btn-default btn-outline" onClick="delete_property_info('. $get_all_property->property_id.',1);">Open</span></center>
-                                </li>
-                            </ul>';
-                        }
-                        return $status.'';
-                    })
-                ->addColumn('action', function ($get_all_property) {
-                  return '<center>
-                        <a href="'.url('viewproperty/'.Crypt::encryptString($get_all_property->property_id).'').'" class="on-default edit-row" title=""><i class="fa fa-eye"></i></a>&nbsp;&nbsp;
-                        <a href="'.url('manage_property/'.Crypt::encryptString($get_all_property->property_id).'').'" class="on-default edit-row" title=""><i class="fa fa-gear"></i></a>&nbsp;&nbsp;
-                        <a style="cursor:pointer; color:#007bff;" class="on-default remove-row" title="" onclick="return delete_property( '.$get_all_property->property_id.',2);"><i class="fa fa-trash-o"></i></a>
-                        </center>';
-                    })
-             ->rawColumns(array("property_name","property_type","room_type","property_state","action","status"))
-             ->make(true);
-        } catch (QueryException $e) {
-            echo "Bad Request";
-            dd(); 
-        }
-    }
-    
-    public function update_doc_request_detail(Request $req){
-        $curent_date = date('Y-m-d H:i:s');
-        $db = new General();
-        $data = array(
-                'owner_id' => $req->owner_id,
-                'request_name' => $req->update_req_name,
-                'document_type' => $req->update_doc_type,
-                'property_id' => $req->update_doc_for,
-                'due_date' => $req->update_datepicker,
-                'comments' => $req->update_comments,
-                'modified_at' => $curent_date
-            );
-            $db->updates('request_info',$data,'request_info_id',$req->prop_document_id);
-                return json_encode('success');
-            }
-    
-    public function update_property_details(Request $req){
-        $curent_date = date('Y-m-d H:i:s');
-        $db = new General();
-        $data = array(
-                'property_name' => $req->update_property_name,
-                'room_type' => $req->update_room,
-                'room_count' => $req->update_room_count,
-                'property_doorno' => $req->update_doorno,
-                'property_street_name' => $req->update_street_name,
-                'property_postalcode' => $req->update_postalcode,
-                'property_city' => $req->update_area_city,
-                'property_type' => $req->update_type_property,
-                'total_area_of_property' => $req->basic1,
-                'property_area_spft' => $req->basic2,
-                'property_age' => $req->basic,
-                'property_state' => $req->update_property_state,
-                'ical_link' => $req->update_ical_link,
-                'percentage' => $req->update_percentage,
-                'access_code' => $req->update_access_code,
-                'agreement_start_date' => $req->start_date,
-                'agreement_end_date' => $req->end_date,
-                'modified_at' => $curent_date
-            );
-            
-            //    print_r($data);
-    	    //   die();
-
-            $db->updates('property',$data,'property_id',$req->property_id);
-                return json_encode('success');
-            }
-    
-    public function delete_property_details(Request $req){
-        $curent_date = date('Y-m-d H:i:s');
-        $db = new General();
-        $data = array(
-            'status' => $req->status,
-            'modified_at' => $curent_date
-        );
-        $db->updates('property',$data,'property_id',$req->property_id);
-        return json_encode('success');
-    }
-    public function delete_property_image(Request $req){
-        $curent_date = date('Y-m-d H:i:s');
-        $img_path = DB::table('property_image')->where('property_image_id',$req->prop_img_id)->get();
-        $image_path = "upload/".$img_path[0]->owner_id."/property_images/".$img_path[0]->image_orginal_name;
-        if (file_exists($image_path)) {
-            @unlink($image_path);
-            DB::table('property_image')->where('property_image_id',$req->prop_img_id)->delete();
-            return json_encode('success');
-        }else{
-            return json_encode('failed');
-        }
-    }
-    
-    public function delete_property_data(Request $req){
-        $curent_date = date('Y-m-d H:i:s');
-        $db = new General();
-        $data = array(
-            'status' => $req->status,
-            'modified_at' => $curent_date
-        );
-        $db->updates('property',$data,'property_id',$req->property_id);
-        return json_encode('success');
-    }
-     public function add_property_details(Request $req){
-        // $product_info = DB::table('property')->where('property_doorno',$req->email)->count();
-        $curent_date = date('Y-m-d H:i:s');
-        $db = new General();
-        $data = array(
-                'property_name' => $req->add_property_name,
-                'room_type' => $req->add_room,
-                'room_count' => $req->add_room_count,
-                'property_doorno' => $req->add_doorno,
-                'property_street_name' => $req->add_street_name,
-                'property_postalcode' => $req->add_postalcode,
-                'property_city' => $req->add_area_city,
-                'property_type' => $req->add_type_property,
-                'total_area_of_property' => $req->basic1,
-                'property_area_spft' => $req->basic2,
-                'property_age' => $req->basic,
-                'property_state' => $req->add_property_state,
-                'ical_link' => $req->add_ical_link,
-                'percentage' => $req->add_percentage,
-                'access_code' => $req->access_code,
-                'agreement_start_date' => $req->start_date,
-                'agreement_end_date' => $req->end_date,
-                'owner_id' => $req->add_owner_id,
-                'created_at' => $curent_date
-            );
-       
-            
-            // $fileName = $_FILES["myfile"]["name"];
-            // echo $req->direction;
-            // print_r($req->prop_image_id);
-            // if($product_info >= 1){
-            
-                $db->insert('property',$data);
-                $property_id = DB::getPdo()->lastInsertId();
-                
-                $prop_img_id = explode (",", $req->prop_image_id);
-                $data1 = array(
-                    'property_id' => $property_id,
-                    'modified_at' => $curent_date
-                );
-                // print_r($data1);
-                foreach($prop_img_id as $pi){
-                    $db->updates('property_image',$data1,'property_image_id',$pi);
-                    // print_r($pi);
-                    // print_r($db->updates('property_image',$data1,'property_image_id',$pi));
-                }
-                
-                return json_encode('success');
-            }
-           
-    public function upload_property_img(Request $req){
-        if($req->has('property_id') != ''){
-            if (!file_exists('upload/'.$req->owner_id.'/property_images/')) {
-                mkdir('upload/'.$req->owner_id.'/property_images/', 0777, true);
-            }
-            $output_dir = 'upload/'.$req->owner_id.'/property_images/';
-            if(isset($_FILES["myfile"]))
-            {
-                // $ret=array();
-                if(!is_array($_FILES["myfile"]["name"])) //single file
-                {
-                    $fileName = $_FILES["myfile"]["name"];
-                    $duplicate_fileName = $req->owner_id.'property_img';
-                    $ext = (explode(".", $fileName));
-                    $file_ext = $ext[1];
-                    $image_url = "http://coralmint.in/rental/upload/$req->owner_id/property_images/$fileName";
-                    $image_path = "upload/$req->owner_id/property_images";
-                    // $ret[]= $fileName;
-                    $data = array(
-                                    'owner_id' => $req->owner_id,
-                                    'property_id' => $req->property_id,
-                                    'property_image_name' => $duplicate_fileName,
-                                    'image_ext' => $file_ext,
-                                    'image_url' => $image_url,
-                                    'image_path' => $image_path,
-                                    'image_orginal_name' => $fileName,
-                                     );
-                    // echo $fileName.$output_dir ;
-                    DB::table('property_image')->insert($data);
-                    $ret = DB::getPdo()->lastInsertId();
-                    move_uploaded_file($_FILES["myfile"]["tmp_name"],$output_dir.$fileName);
-                    // array_push($ret, $property_image);
-                    // print_r($ret);
-                }
-                else  //Multiple files, file[]
-                {
-                  $fileCount = count($_FILES["myfile"]["name"]);
-                  for($i=0; $i < $fileCount; $i++)
-                  {
-                    $fileName = $_FILES["myfile"]["name"][$i];
-                    $duplicate_fileName = $req->pro_id.'project_img'[$i];
-                    // $ret[]= $fileName;
-                  }            
-                }            
-                return $ret;
-            }
-        }else{
-            if (!file_exists('upload/'.$req->owner_id.'/property_images/')) {
-                mkdir('upload/'.$req->owner_id.'/property_images/', 0777, true);
-            }
-            $output_dir = 'upload/'.$req->owner_id.'/property_images/';
-            if(isset($_FILES["myfile"]))
-            {
-                // $ret=array();
-                if(!is_array($_FILES["myfile"]["name"])) //single file
-                {
-                    $fileName = $_FILES["myfile"]["name"];
-                    $duplicate_fileName = $req->owner_id.'property_img';
-                    $ext = (explode(".", $fileName));
-                    $file_ext = $ext[1];
-                    $image_url = "http://coralmint.in/rental/upload/$req->owner_id/property_images/$fileName";
-                    $image_path = "upload/$req->owner_id/property_images";
-                    // $ret[]= $fileName;
-                    $data = array(
-                                    'owner_id' => $req->owner_id,
-                                    'property_image_name' => $duplicate_fileName,
-                                    'image_ext' => $file_ext,
-                                    'image_url' => $image_url,
-                                    'image_path' => $image_path,
-                                    'image_orginal_name' => $fileName,
-                                     );
-                    // echo $fileName.$output_dir ;
-                    DB::table('property_image')->insert($data);
-                    $ret = DB::getPdo()->lastInsertId();
-                    move_uploaded_file($_FILES["myfile"]["tmp_name"],$output_dir.$fileName);
-                    // array_push($ret, $property_image);
-                    // print_r($ret);
-                }
-                else  //Multiple files, file[]
-                {
-                  $fileCount = count($_FILES["myfile"]["name"]);
-                  for($i=0; $i < $fileCount; $i++)
-                  {
-                    $fileName = $_FILES["myfile"]["name"][$i];
-                    $duplicate_fileName = $req->pro_id.'project_img'[$i];
-                    // $ret[]= $fileName;
-                  }            
-                }            
-                return $ret;
-            }
-        }
-    }
-    public function ownerdocument(Request $req){
-        $owner_id = Crypt::decryptString($req->id);
-        $property_list = DB::table('property')->where('owner_id',$owner_id)->get();
-        $owner_info = DB::table('owner_info')->where('owner_id',$owner_id)->get();
-        $request_list = DB::table('request_info as ri')
-                            ->leftJoin('property as p', 'p.property_id', 'ri.property_id')
-                            ->select('ri.request_name','ri.document_type','ri.due_date','ri.comments','p.property_name','p.property_id','ri.status','ri.request_info_id')
-                            ->where('ri.owner_id',$owner_id)->get();
-        return view('admin_dashboard/ownerdocument')
-                    ->with('owner_id',$owner_id)
-                    ->with('request_list',$request_list)
-                    ->with('owner_info',$owner_info)
-                    ->with('property_list',$property_list);
-    }
-    public function add_new_document_request(Request $req){
-        $curent_date = date('Y-m-d H:i:s');
-        $db = new General();
-        $data = array(
-                'request_name' => $req->req_name,
-                'document_type' => $req->doc_type,
-                'due_date' => $req->due_date,
-                'property_id' => $req->doc_for,
-                'owner_id' => $req->owner_id,
-                'comments' => $req->comments,
-                'created_at' => $curent_date
-            );
-        $db->insert('request_info',$data);
-        return json_encode('success');
-    }
-    
-    
-    public function viewproperty(Request $req){
-        $property_id = Crypt::decryptString($req->id);
-        $property_info = DB::table('property as p')
-                        ->join('owner_info as own', 'own.owner_id', 'p.owner_id')
-                        ->select('own.owner_name','own.owner_id','p.owner_id','p.property_name','p.room_type','p.room_count',
-                        'p.property_doorno','p.property_street_name','p.property_postalcode','p.property_city','p.property_country','p.property_floor',
-                        'p.property_type','p.property_age','p.property_state','p.property_area_spft','p.total_area_of_property','p.percentage',
-                        'p.access_code','p.agreement_start_date','p.agreement_end_date','p.ical_link')
-                        ->where('property_id',$property_id)->get();
-        $property_img = DB::table('property_image')->where('property_id',$property_id)->get();
-        return view('admin_dashboard/viewproperty')
-                    ->with('property_id',$property_id)
-                    ->with('property_info',$property_info)
-                    ->with('property_img',$property_img);
-        //     print_r($property_info);
-    	   // die();
-    }
-    public function manage_property(Request $req){
-        $property_id = Crypt::decryptString($req->id);
-        return view('admin_dashboard/manageproperty')
-                    ->with('property_id',$property_id)
-                    ->with('property_info',$property_info)
-                    ->with('property_img',$property_img);
-        // print_r($property_info);
-    	// die();
-    }
+   
     
     public function reservations1(){
         return view('admin_dashboard/reservations1');

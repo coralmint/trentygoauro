@@ -1115,21 +1115,21 @@ button.multiselect.dropdown-toggle.btn.btn-default1 {
                            </div>
                            <div class="tab-pane fade" id="addon" role="tabpanel" aria-labelledby="contact-tab">
                               <div class="col-md-12 vimkim">
-                                 <h4 class="customdet">Upcoming Reservation</h4>
+                                 <h4 class="customdet">Trip History</h4>
                               </div>
                               <div class="row">
                                  <div class="col-md-12 ">
                                     <div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
                                        <div class="tab-pane  show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
                                           <form id="color_datatable">
-                                             <table class="table table-bordered dataTable no-footer mobile-table" id="partner_list_datatable" style="table-layout:fixed; width: 100%;">
+                                             <table class="table table-bordered dataTable no-footer mobile-table" id="trip_list_datatable" style="table-layout:fixed; width: 100%;">
                                                 <thead>
                                                    <tr>
-                                                      <!--<th>No</th>-->
-                                                      <th>Month</th>
-                                                      <th>Date</th>
-                                                      <th>Reservation status</th>
-                                                      <th>Vehicle ID</th>
+                                                      <th style="width: 15px !important;">#</th>
+                                                      <th>trip_id</th>
+                                                      <th>reservation_id</th>
+                                                      <th>pickup_datetime</th>
+                                                      <th>status</th>
                                                       <th>Action</th>
                                                    </tr>
                                                 </thead>
@@ -1142,7 +1142,7 @@ button.multiselect.dropdown-toggle.btn.btn-default1 {
                            </div>
                            <div class="tab-pane fade" id="vechileview" role="tabpanel" aria-labelledby="contact-tab">
                               <div class="col-md-12 vimkim">
-                                 <h4 class="customdet">Trip History</h4>
+                                 <h4 class="customdet">Invoice List</h4>
                               </div>
                               <div class="row">
                                  <div class="col-md-12 ">
@@ -4168,6 +4168,38 @@ $(document).ready(function() {
                 });
           }
       });
+      
+    $(document).ready(function () {
+       $(function() {
+   	   var table =  $('#trip_list_datatable').DataTable({
+               "pageLength":50,
+               "processing":true,
+               "serverSide": false,
+   	        ajax: {
+   	                url: '{{url('get_all_trip_details')}}',
+   	                error: function (xhr, error, thrown) {
+   	                alert(error);
+   	              }  
+   	            },
+              "fnRowCallback" : function(nRow, aData, iDisplayIndex){
+               $("td:first", nRow).html(iDisplayIndex +1);
+               return nRow;
+            },  
+   
+   	        columns: [
+   	            {data:'trip_id', name: 'trip_id'},
+   	            {data:'trip_id', name: 'trip_id'},
+   	            {data:'reservation_id', name: 'reservation_id'},
+   	            {data:'pickup_datetime', name: 'pickup_datetime'},
+   	            {data:'status', name: 'status'},
+   	            {data:'action', name: 'action'},
+   	        ]
+   	    });
+   	    $('.tab_2').on('click', function () {
+   	       table.ajax.reload();
+   	    });
+   	});
+   });  
 
 </script>
 @endsection
