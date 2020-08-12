@@ -362,16 +362,16 @@ class ReservationController extends Controller
     }
     
     public function upload_trip_vehicle_pic(Request $req){
-        if (!file_exists('upload/'.$req->product_id.'/product_image/')) {
-            mkdir('upload/'.$req->product_id.'/product_image/', 0777, true);
+        if (!file_exists('upload/'.$req->reservation_id.'/vehicle_image/'.$req->image_type.'/')) {
+            mkdir('upload/'.$req->reservation_id.'/vehicle_image/'.$req->image_type.'/', 0777, true);
         }
-        $output_dir = 'upload/'.$req->product_id.'/product_image/';
+        $output_dir = 'upload/'.$req->reservation_id.'/vehicle_image/'.$req->image_type.'/';
         if(isset($_FILES["myfile"]))
         {
             if(!is_array($_FILES["myfile"]["name"])) //single file
             {
                 $fileName = $_FILES["myfile"]["name"];
-                $duplicate_fileName = $req->product_id.'product_img';
+                $duplicate_fileName = $req->vehicle_id.'vehicle_image';
                 $ext = (explode(".", $fileName));
                 $file_ext = $ext[1];
                 $tags = $req->tags;
@@ -380,12 +380,17 @@ class ReservationController extends Controller
                 $image_url = "http://coralmint.in/garments/upload/$req->product_id/product_image/$fileName";
                 $ret[]= $fileName;
                 $data = array(
-                                'product_id' => $product_id,
-                                'product_img_name' => $duplicate_fileName.$direction,
-                                'product_img_ext' => $file_ext,
-                                'product_img_url' => $image_url,
-                                'product_image_direction' => $direction,
-                                'product_image_orginal_name' => $fileName,
+                                'vehicle_id' => $product_id,
+                                'reservation_id' => $product_id,
+                                'trip_id' => $product_id,
+                                'partner_id' => $product_id,
+                                'file_for' => $duplicate_fileName.$direction,
+                                'file_detail' => $file_ext,
+                                'file_type' => $image_url,
+                                'file_name' => $direction,
+                                'file_desc' => $direction,
+                                'file_ext' => $direction,
+                                'file_orginal_name' => $fileName,
                                  );
                 // echo $fileName.$output_dir ;
                 DB::table('product_image')->insert($data);                
