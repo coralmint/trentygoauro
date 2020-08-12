@@ -23,7 +23,7 @@ class ReservationController extends Controller
     
     public function get_all_reservation_list(){
         try {
-           $get_all_reservation = DB::table('reservation_details')->get();
+           $get_all_reservation = DB::table('reservation_details')->where('status','!=','7')->get();
                             
             return Datatables::of($get_all_reservation)
             
@@ -99,7 +99,7 @@ class ReservationController extends Controller
             $filter_return_date = $req->return_date;
             $filter_from = $req->filter_from;
             if($filter_from == '1'){
-                $get_all_reservation = DB::table('reservation_details');
+                $get_all_reservation = DB::table('reservation_details')->where('status','!=','7');
                 if(!empty($filter_status)){
                     $get_all_reservation->where('status',$filter_status);
                 }
@@ -324,4 +324,85 @@ class ReservationController extends Controller
         $db->insert('reservation_line_item',$line_item_data);
         return json_encode('success');
     }
+    
+    public function add_trip_details(Request $req){
+        $curent_date = date('Y-m-d H:i:s');
+        $reservation_id = $req->reservation_id;
+        $info = DB::table('reservation_details')
+                    ->where('reservation_id',$req->reservation_id)
+                    ->get();
+        $db = new General();
+        $data = array(
+                'reservation_id' => $info[0]->reserve_unique_id,
+                'vehicle_id' => $info[0]->vehicle_id,
+                'partner_id' => $info[0]->partner_id,
+                'customer_id' => $info[0]->customer_id,
+                'license_number' => $info[0]->license_number,
+                'license_issue_date' => $info[0]->license_issue_date,
+                'license_issued_country' => $info[0]->license_issued_country,
+                'pick_up_location_id' => $info[0]->pick_up_location_id,
+                'key_given_by' => $req->key_given_user,
+                'default_rent' => $info[0]->vehicle_default_rent,
+                'addon_values' => $info[0]->addon_values,
+            );
+        $db->insert('trip_details',$data);
+        $inserted_id = DB::getPdo()->lastInsertId();
+        $unique_id = 'TGT000'.$inserted_id;
+        $trip_updated_data = array(
+                'trip_id' => $unique_id,
+                'modified_at' => $curent_date
+            );
+        $reservation_updated_data = array(
+                'status' => 7,
+                'modified_at' => $curent_date
+            );
+        $db->updates('trip_details',$trip_updated_data,'trip_details_id',$inserted_id);
+        $db->updates('reservation_details',$reservation_updated_data,'reservation_id',$reservation_id);
+        return json_encode('success');
+    }
+    
+    public function upload_trip_vehicle_pic(Request $req){
+        if (!file_exists('upload/'.$req->product_id.'/product_image/')) {
+            mkdir('upload/'.$req->product_id.'/product_image/', 0777, true);
+        }
+        $output_dir = 'upload/'.$req->product_id.'/product_image/';
+        if(isset($_FILES["myfile"]))
+        {
+            if(!is_array($_FILES["myfile"]["name"])) //single file
+            {
+                $fileName = $_FILES["myfile"]["name"];
+                $duplicate_fileName = $req->product_id.'product_img';
+                $ext = (explode(".", $fileName));
+                $file_ext = $ext[1];
+                $tags = $req->tags;
+                $direction = $req->direction;
+                $product_id = $req->product_id;
+                $image_url = "http://coralmint.in/garments/upload/$req->product_id/product_image/$fileName";
+                $ret[]= $fileName;
+                $data = array(
+                                'product_id' => $product_id,
+                                'product_img_name' => $duplicate_fileName.$direction,
+                                'product_img_ext' => $file_ext,
+                                'product_img_url' => $image_url,
+                                'product_image_direction' => $direction,
+                                'product_image_orginal_name' => $fileName,
+                                 );
+                // echo $fileName.$output_dir ;
+                DB::table('product_image')->insert($data);                
+                move_uploaded_file($_FILES["myfile"]["tmp_name"],$output_dir.$fileName);
+            }
+            else  //Multiple files, file[]
+            {
+              $fileCount = count($_FILES["myfile"]["name"]);
+              for($i=0; $i < $fileCount; $i++)
+              {
+                $fileName = $_FILES["myfile"]["name"][$i];
+                $duplicate_fileName = Session::get('user_id').$req->category.'project_img'[$i];
+                $ret[]= $fileName;
+              }            
+            }            
+            echo json_encode($ret);
+        }
+    }
+    
 }

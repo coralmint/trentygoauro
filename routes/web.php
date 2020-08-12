@@ -57,10 +57,10 @@ Route::group(['middleware' => ['auth', 'admin']], function() {
     
 //AdminController
     Route::any('partnerprofile', 'AdminController@partnerprofile');
-      Route::any('triplist', 'AdminController@triplist');
-       Route::any('tripdetails', 'AdminController@tripdetails');
-        Route::any('partnertriplist', 'AdminController@partnertriplist');
-      Route::any('customerbookingcancel', 'AdminController@customerbookingcancel');
+    Route::any('triplist', 'AdminController@triplist');
+    Route::any('tripdetails', 'AdminController@tripdetails');
+    Route::any('partnertriplist', 'AdminController@partnertriplist');
+    Route::any('customerbookingcancel', 'AdminController@customerbookingcancel');
     Route::any('reservations', 'AdminController@reservations');
     Route::any('reservations_details/{id}', 'AdminController@reservations_details');
     Route::any('viewmessage', 'AdminController@viewmessage');
@@ -161,6 +161,9 @@ Route::group(['middleware' => ['auth', 'admin']], function() {
     Route::any('filter_get_all_reservation_list', 'ReservationController@filter_get_all_reservation_list');
     Route::post('get_vehicle_list_asssign', 'ReservationController@get_vehicle_list_asssign');
     Route::post('assign_new_vehicle', 'ReservationController@assign_new_vehicle');
+    
+    Route::post('add_trip_details', 'ReservationController@add_trip_details');
+    Route::post('upload_trip_vehicle_pic', 'ReservationController@upload_trip_vehicle_pic');
     
 //CustomerController
     Route::any('update_customer_details', 'CustomerController@update_customer_details');

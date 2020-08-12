@@ -198,7 +198,7 @@ class AdminController extends Controller
         return view('admin_dashboard/partner_list')
                     ->with('partner_location',$partner_location);
     }
-     public function partner_get_all_upcoming_reservation(){
+    public function partner_get_all_upcoming_reservation(){
         try {
            $partner_id = Session::get('user_id');
             $get_all_reservation = DB::table('reservation_details as rd')

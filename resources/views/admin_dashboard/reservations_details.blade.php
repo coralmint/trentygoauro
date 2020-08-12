@@ -5,6 +5,7 @@
 </header>
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <link href="{{ asset('theme_files/external_files/css/jquery-confirm.min.css') }}" rel="stylesheet" type="text/css" />
+{!! Html::style('public/assets/jquery_upload/uploadfile.css') !!}
 <style>
    .bredim {
    background-color: #071DAA;
@@ -299,6 +300,9 @@
                </li>
                <li class="nav-item">
                   <a class="nav-link" id="contact-tab" data-toggle="tab" href="#partner1" role="tab" aria-controls="contact" aria-selected="false">Partner Comments</a>
+               </li>
+               <li class="nav-item">
+                  <a class="nav-link" id="contact-tab" data-toggle="tab" href="#trip_pickup" role="tab" aria-controls="contact" aria-selected="false">Pickup Trip</a>
                </li>
             </ul>
          </div>
@@ -1114,6 +1118,54 @@
                      </div>
                   </div>
                </div>
+               <div class="tab-pane fade" id="trip_pickup" role="tabpanel" aria-labelledby="contact-tab">
+                  <div class="col-md-12 vimkim">
+                     <h4 class="customdet">Trip Pickup</h4>
+                  </div>
+                  <div id="content_show">
+                     <div class="form-row formtab">
+                        <div class="form-group col-md-6">
+                            <div class="form-group has-float-label">
+                               <select class="form-control"  class="form-control" id="pick_up_location_id" placeholder="" onfocus="this.placeholder = ''" disabled required autofocus>
+                                  @foreach($pick_up_location as $pl )
+                                  <option value="{{ $pl->location_master_id }}" @if($pl->location_master_id) selected="selected" @else @endif>{{ ucfirst($pl->location_name) }}</option>
+                                  @endforeach
+                               </select>
+                               <label for="status">Pick up location</label>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <div class="form-group has-float-label">
+                               <select class="form-control"  class="form-control" id="key_given_user_id" placeholder="" onfocus="this.placeholder = ''" required autofocus>
+                                  <option value="" hidden="" >Select service person</option>
+                                  <option value="1" >User-1</option>
+                                  <option value="2" >User-2</option>
+                               </select>
+                               <label for="status">Key Given By</label>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <div class="form-group has-float-label">
+                                <label for="vehicle1">
+                                    <input type="checkbox" id="check_key_given_pickup_trip" name="vehicle1"> Key Given 
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <div id="fileuploader1">Upload</div>
+                            <center>
+                                <input type="button" class="btn btn-primary" id="extrabutton" value="Start Upload">
+                                <input type="hidden" name="csrf_token" id="csrf_token" value="{!! csrf_token() !!}">
+                            </center>
+                        </div>
+                        <div class="form-row formtab">
+                           <div class="form-group">
+                              <button type="button" class="btn btn-primary waves-effect waves-light" id="pickup_trip_submit" style="padding:10px 30px !important;">Update</button>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
             </div>
          </div>
       </div>
@@ -1129,6 +1181,7 @@
 @section('script')
 <script src="{{ asset('theme_files/assets/js/jquery.min.js') }}"></script>
 <script type="text/javascript" src="{{ URL::asset('theme_files/external_files/js/jquery-confirm.min.js') }}"></script>
+{!! Html::script('public/assets/jquery_upload/jquery.uploadfile.min.js') !!}
 <!-- plugin js -->
 <script src="{{ asset('theme_files/plugins/timepicker/bootstrap-timepicker.js') }}"></script>
 <script src="{{ asset('theme_files/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js') }}"></script>
@@ -1403,6 +1456,62 @@ function assign_new_vehicle_function(arg,arg2) {
        }); 
    });
         
+    $('#pickup_trip_submit').click(function(){
+       var key_given_user = $("#key_given_user_id").val();
+       var reservation_id = $('#reservation_id').val();
+       var tempcsrf = $('#csrf_token').val();
+       if(($("#check_key_given_pickup_trip").is(":checked"))&&(key_given_user != '')){
+            $.confirm({
+              title: 'Confirm!',
+              content: 'Are you sure to move this reservation as a trip !!!',
+              buttons: {
+              confirm: function () {
+                $.ajax({
+                  type: 'POST',
+                  url: '{{url('add_trip_details')}}',
+                  dataType: "json",
+                  data: {
+                          key_given_user:key_given_user,
+                          reservation_id:reservation_id,
+                          _token:tempcsrf
+                        },
+                  beforeSend: function () {
+                  },
+                  success: function (data) {
+                    if(data == 'success'){
+                    	$.confirm({
+          		            title: 'Success',
+          		            content: 'Updated Successfully.',
+          		            autoClose: 'logoutUser|300',
+          		            buttons: {
+          		                logoutUser: {
+          		                text: 'OK',
+          		                },
+          		            }
+          		        });
+          		        // location.reload();
+          		        window.location.href = "../reservationlist";
+                    }else{
+                      $.alert({
+                        title: 'Alert!',
+                        content: data,
+                      });
+                    }
+                  }
+                });
+                },
+                  cancel: function () {
+                          $("#key_given_check").prop( "checked", false );
+                }
+              }
+            }); 
+       }else{
+            $.alert({
+                title: 'Alert!',
+                content: "Please check the key given checkbox ",
+            });
+       }
+    });
         $('#dob').datepicker({
            autoclose: true,
            format: "yyyy-mm-dd",
@@ -1523,8 +1632,7 @@ function assign_new_vehicle_function(arg,arg2) {
             });
     });
     
-    
-       $("#add_cus_details").click(function(){
+    $("#add_cus_details").click(function(){
            var first_name = $('#first_name').val();
            var last_name = $('#last_name').val();
            var phone = $("#phone").val();
@@ -1593,9 +1701,7 @@ function assign_new_vehicle_function(arg,arg2) {
            }
        });
        
-       
-       
-       $("#content_add_billing").click(function(){
+    $("#content_add_billing").click(function(){
            var for_first_name = $('#for_first_name').val();
            var for_last_name = $('#for_last_name').val();
            var for_phone = $("#for_phone").val();
@@ -1707,7 +1813,8 @@ function assign_new_vehicle_function(arg,arg2) {
            }); 
         }
     });
-       $("#add_reservation").click(function(){
+    
+    $("#add_reservation").click(function(){
            var start_date = $('#start_date').val();
            var return_date = $("#return_date").val();
            var pick_up_location_id = $('#pick_up_location_id').val();
@@ -1758,7 +1865,7 @@ function assign_new_vehicle_function(arg,arg2) {
            }
        });
        
-       $("#send_msg").click(function(){
+    $("#send_msg").click(function(){
               var cus_msg = $("#cus_msg").val();
               var reservation_id = $('#reservation_id').val();
            //   var customer_id = $('#customer_id').val();
@@ -1798,7 +1905,7 @@ function assign_new_vehicle_function(arg,arg2) {
                   }
              });
              
-       $("#part_send_msg").click(function(){
+    $("#part_send_msg").click(function(){
               var part_msg = $("#part_msg").val();
               var reservation_id = $('#reservation_id').val();
            //   var customer_id = $('#customer_id').val();
@@ -1837,7 +1944,76 @@ function assign_new_vehicle_function(arg,arg2) {
                         });
                   }
              });      
-         
+   
+    $(document).ready(function(){
+       var tempcsrf = $('#csrf_token').val();
+       var reservation_id = $('#product_id').val();
+       var trip_id = $('#product_id').val();
+       var partner_id = $('#product_id').val();
+       var vehicle_id = $('#product_id').val();
+       var image_type = "pickup_vehicle_pic";
+       var extraObj = $("#fileuploader1").uploadFile({
+       url: '{{ url('upload_trip_vehicle_pic') }}',
+       fileName:"myfile",
+       id: "test",
+       formData: {
+            image_type:image_type,
+            reservation_id:reservation_id,
+            trip_id:trip_id,
+            partner_id:partner_id,
+            vehicle_id:vehicle_id,
+            action: 'upload_trip_vehicle_pic',
+            _token: tempcsrf
+       },
+       // showDelete: false,
+       // showDone: false,
+       // multiple:false,
+       // dragDrop:false,
+       // //maxFileCount:1,
+       // showProgress: true,
+       // sequential:true,
+       // reset:true,
+       // // maxFileSize:3000*1024,
+       extraHTML:function()
+       {
+         var html = "<div class='row'><div class='form-group col-md-6'><b>Image Direction : </b><select name='direction' id='direction'><option value='front'>Front</option><option value='right'>Right</option><option value='left'>Left</option><option value='back'>Back side</option></select></div>";
+         html += "<div class='form-group col-md-6'><b>Image Type : </b><input type='text' name='description' value='' id='description' /></div>";
+         html += "</div>";
+         return html;        
+       },
+       autoSubmit:false,
+            onSuccess: function (files, data, xhr) {
+                console.log(data);
+                $.confirm({
+                    title: 'Success',
+                    content: 'Vehicle image added successfully',
+                    autoClose: 'logoutUser|300',
+                     buttons: {
+                     logoutUser: {
+                         text: 'OK',
+                         action: function () {
+                          location.reload();
+                      }
+                     },
+                  }
+                });
+               },
+               onError: function(files,status,errMsg,pd)
+               {
+               },
+       });
+       $("#extrabutton").click(function(){
+       extraObj.startUpload();
+       var btemp=document.getElementById('fileuploader1');
+       
+        // alert(document.getElementById('fileuploader1'));
+        //   alert(document.getElementById('fileuploader1')
+        // .getElementsByClassName('ajax-file-upload-container')[0]);
+       
+       //   var btemp1=btemp.getElementsByClassName('ajax-file-upload-filename')[0].innerHTML;
+       //   alert("btemp1".btempl);
+       });
+   });
 </script>
 <script>
    $(document).ready(function(){
