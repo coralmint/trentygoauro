@@ -1947,8 +1947,7 @@ function assign_new_vehicle_function(arg,arg2) {
    
     $(document).ready(function(){
        var tempcsrf = $('#csrf_token').val();
-       var reservation_id = $('#product_id').val();
-       var trip_id = $('#product_id').val();
+       var reservation_id = $('#reservation_id').val();
        var partner_id = $('#product_id').val();
        var vehicle_id = $('#product_id').val();
        var image_type = "pickup_vehicle_pic";
@@ -1959,7 +1958,6 @@ function assign_new_vehicle_function(arg,arg2) {
        formData: {
             image_type:image_type,
             reservation_id:reservation_id,
-            trip_id:trip_id,
             partner_id:partner_id,
             vehicle_id:vehicle_id,
             action: 'upload_trip_vehicle_pic',

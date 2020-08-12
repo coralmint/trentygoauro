@@ -382,7 +382,6 @@ class ReservationController extends Controller
                 $data = array(
                                 'vehicle_id' => $product_id,
                                 'reservation_id' => $product_id,
-                                'trip_id' => $product_id,
                                 'partner_id' => $product_id,
                                 'file_for' => $duplicate_fileName.$direction,
                                 'file_detail' => $file_ext,
@@ -391,9 +390,11 @@ class ReservationController extends Controller
                                 'file_desc' => $direction,
                                 'file_ext' => $direction,
                                 'file_orginal_name' => $fileName,
+                                'file_url' => $fileName,
+                                'file_path' => $fileName,
                                  );
                 // echo $fileName.$output_dir ;
-                DB::table('product_image')->insert($data);                
+                DB::table('document_details')->insert($data);                
                 move_uploaded_file($_FILES["myfile"]["tmp_name"],$output_dir.$fileName);
             }
             else  //Multiple files, file[]
@@ -402,7 +403,7 @@ class ReservationController extends Controller
               for($i=0; $i < $fileCount; $i++)
               {
                 $fileName = $_FILES["myfile"]["name"][$i];
-                $duplicate_fileName = Session::get('user_id').$req->category.'project_img'[$i];
+                $duplicate_fileName = $req->vehicle_id.'vehicle_image'[$i];
                 $ret[]= $fileName;
               }            
             }            
