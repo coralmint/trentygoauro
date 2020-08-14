@@ -376,7 +376,6 @@
                      </div>
                      
                    
-                 
                      <!--<div class="form-group col-md-2">-->
                      <!--   <div class="form-group has-float-label">-->
                      <!--      <select class="form-control" id="status" class="form-control" id="payment" placeholder="" onfocus="this.placeholder = ''" required autofocus>-->
@@ -396,13 +395,12 @@
                         <div class="tab-content py-3 px-3 px-sm-0" id="home">
                            <div class="tab-pane  show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
                               <form id="color_datatable">
-                                 <table class="table table-bordered dataTable no-footer mobile-table" id="" style="table-layout:fixed; width: 100%;">
+                                 <table class="table table-bordered dataTable no-footer mobile-table" id="trip_list_datatable" style="table-layout:fixed; width: 100%;">
                                     <thead>
-                                        <button type="button" class="btn btn-primary waves-effect waves-light" onClick="filter_submit(2);" id="today_filter_submit1111">Trip Exceed</button>
-                                        <button type="button" class="btn btn-primary waves-effect waves-light" onClick="filter_submit(3);" id="today_filter_submit1111" style="    margin-bottom: 2%;"> Current Trip</button>
+                                        
                                        <tr>
                                           <th style="width: 15px !important;">#</th>
-                                          <th>Reservation Id</th>
+                                          <th>Trip Id</th>
                                           <th>Mobile No</th>
                                           <th>Partner</th>
                                           <th>Trip Start Date</th>
@@ -412,14 +410,14 @@
                                        </tr>
                                     </thead>
                                  </table>
-                                 <table class="table table-bordered dataTable no-footer mobile-table" id="" style="table-layout:fixed; width: 100%;display:none;">
+                                 <table class="table table-bordered dataTable no-footer mobile-table" id="filter_trip_list_datatable" style="table-layout:fixed; width: 100%;display:none;">
                                     <thead>
                                        <tr>
                                           <th style="width: 15px !important;">#</th>
-                                          <th>Reservation Id</th>
+                                          <th>Trip Id</th>
                                           <th>Mobile No</th>
                                           <th>Partner</th>
-                                         <th>Trip Start Date</th>
+                                          <th>Trip Start Date</th>
                                           <th>Trip End Date</th>
                                           <th>Status</th>
                                           <th>Action</th>
@@ -445,7 +443,6 @@
 <script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
 <script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 @section('script')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.js"></script>
 <script src="{{ asset('theme_files/plugins/timepicker/bootstrap-timepicker.js') }}"></script>
 <script src="{{ asset('theme_files/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js') }}"></script>
 <script src="{{ asset('theme_files/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
@@ -455,10 +452,10 @@
    
    /*Reservation list*/ 
     $("#filter_clear").click(function(){
-    $('#reservation_list_datatable').show();
+    $('#trip_list_datatable').show();
     $('#filter_reservation_list_datatable').hide();
-    $('#reservation_list_datatable_wrapper').show();
-    $('#filter_reservation_list_datatable_wrapper').hide();
+    $('#trip_list_datatable_wrapper').show();
+    $('#filter_trip_list_datatable_wrapper').hide();
     // $('#a_pdf').hide();
     $("#first_name").val('');
     $("#phone").val('');
@@ -500,12 +497,12 @@
    
    $(document).ready(function () {
        $(function() {
-   	   var table =  $('#reservation_list_datatable').DataTable({
+   	   var table =  $('#trip_list_datatable').DataTable({
                "pageLength":50,
                "processing":true,
                "serverSide": false,
    	        ajax: {
-   	                url: '{{url('get_all_reservation_list')}}',
+   	                url: '{{url('get_all_trip_detail_list')}}',
    	                error: function (xhr, error, thrown) {
    	                alert(error);
    	              }  
@@ -537,10 +534,6 @@
                             window.location = "reservations_details/"+aData['crypt_id'];
                             return false;
                         });
-                        $("td:nth-child(6)",nRow).click(function(){
-                            window.location = "reservations_details/"+aData['crypt_id'];
-                            return false;
-                        });
                         $("td:first", nRow).html(iDisplayIndex +1);
                         return nRow;
                     }
@@ -551,10 +544,10 @@
                 },
    
    	        columns: [
-   	            {data:'reservation_id', name: 'reservation_id'},
-   	            {data:'reservation_id', name: 'reservation_id'},
+   	            {data:'reserve_unique_id', name: 'reserve_unique_id'},
+   	            {data:'reserve_unique_id', name: 'reserve_unique_id'},
    	            {data:'phone', name: 'phone'},
-   	            {data:'first_name', name: 'first_name'},
+   	            {data:'partner_name', name: 'partner_name'},
    	            {data:'start_date', name: 'start_date'},
    	            {data:'return_date', name: 'return_date'},
    	            {data:'status', name: 'status'},
@@ -568,8 +561,8 @@
    });
    
    function filter_submit(arg) {
-        $('#reservation_list_datatable_wrapper').hide();
-        $('#filter_reservation_list_datatable_wrapper').show();
+        $('#trip_list_datatable_wrapper').hide();
+        $('#filter_trip_list_datatable_wrapper').show();
         var filter_from = arg;
         var status = $("#status").val();
         var first_name = $("#first_name").val();
@@ -583,15 +576,15 @@
         var return_date = $("#return_date").val();
         var tempcsrf = $('#csrf_token').val();
         
-        $('#reservation_list_datatable').hide();
-        $('#filter_reservation_list_datatable').show();
+        $('#trip_list_datatable').hide();
+        $('#filter_trip_list_datatable').show();
         $(function() {
             var table =  $('#filter_reservation_list_datatable').DataTable();
             if($.fn.dataTable.isDataTable('#filter_reservation_list_datatable'))
             {
                 table.destroy();
             }
-    	   var table =  $('#filter_reservation_list_datatable').DataTable({
+    	   var table =  $('#filter_trip_list_datatable').DataTable({
           "pageLength":20,
           "processing":true,
           "serverSide": true,
@@ -614,7 +607,7 @@
             		            filter_from:filter_from,
             		            _token:tempcsrf
             		          },
-    	                url: '{{url('filter_get_all_reservation_list')}}',
+    	                url: '{{url('filter_get_all_trip_list')}}',
     	                error: function (xhr, error, thrown) {
     	                alert(thrown);      
     	              }
@@ -646,10 +639,6 @@
                             window.location = "reservations_details/"+aData['crypt_id'];
                             return false;
                         });
-                        $("td:nth-child(6)",nRow).click(function(){
-                            window.location = "reservations_details/"+aData['crypt_id'];
-                            return false;
-                        });
                         $("td:first", nRow).html(iDisplayIndex +1);
                         return nRow;
                     }
@@ -660,10 +649,10 @@
                 },
                    
     	        columns: [
-       	            {data:'reservation_id', name: 'reservation_id'},
-       	            {data:'reservation_id', name: 'reservation_id'},
+       	            {data:'reserve_unique_id', name: 'reserve_unique_id'},
+       	            {data:'reserve_unique_id', name: 'reserve_unique_id'},
        	            {data:'phone', name: 'phone'},
-       	            {data:'first_name', name: 'first_name'},
+       	            {data:'partner_name', name: 'partner_name'},
        	            {data:'start_date', name: 'start_date'},
        	            {data:'return_date', name: 'return_date'},
        	            {data:'status', name: 'status'},
@@ -676,58 +665,7 @@
   
     
    
-   function reservation_info(arg,arg2) {
-    var tempcsrf = $('#csrf_token').val();
-    var reservation_id = arg;
-    var status = arg2;
-    $.confirm({
-        title: 'Confirm!',
-        content: 'Are you sure to conform this reservation !!!',
-        buttons: {
-        confirm: function () {
-          $.ajax({
-            type: 'POST',
-            url: '{{url('change_reservation_details')}}',
-            dataType: "json",
-            data: {
-                    reservation_id:reservation_id,
-                    status:status,
-                    _token:tempcsrf
-                  },
-            beforeSend: function () {
-            },
-            success: function (data) {
-              if(data == 'success')
-              {
-              	$.confirm({
-    		            title: 'Success',
-    		            content: 'Updated Successfully.',
-    		            autoClose: 'logoutUser|300',
-    		            buttons: {
-    		                logoutUser: {
-    		                    text: 'OK',
-    		                },
-    		            }
-    		        });
-                var table =  $('#reservation_list_datatable').DataTable();
-             		table.ajax.reload();
-              }
-              else
-              {
-                $.alert({
-                  title: 'Alert!',
-                  content: data,
-                });
-              }
-            }
-          });
-          },
-            cancel: function () {
-          }
-        }
-      });
-    }
-    
+   
     $("#today").click(function(){
         var tempcsrf = $('#csrf_token').val();
             $.ajax({

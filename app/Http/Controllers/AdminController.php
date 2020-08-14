@@ -418,9 +418,7 @@ class AdminController extends Controller
     public function bookingcancel(){
         return view('admin_dashboard/bookingcancel');
     }
-    public function triplist(){
-        return view('admin_dashboard/triplist');
-    }
+    
      public function partnertriplist(){
         return view('admin_dashboard/partnertriplist');
     }
@@ -430,34 +428,7 @@ class AdminController extends Controller
     public function reservations(){
         return view('admin_dashboard/reservations');
     }
-      public function tripdetails(Request $req){
-        $partner_id = Crypt::decryptString($req->id);
-        $cus_info = DB :: table('customer_details as cd')
-                     ->join('trip_details as td','cd.customer_id','td.customer_id')
-                     ->select('cd.customer_name','cd.customer_phone','cd.customer_email')
-                     ->where('td.partner_id',$partner_id)
-                    ->get();
-        $res_info = DB :: table('reservation_details as rd')
-                     ->join('trip_details as td','rd.reservation_id','td.reservation_id')
-                     ->select('rd.reserve_unique_id','rd.reservation_date','rd.reserve_through','rd.reservation_amount','rd.start_date','rd.return_date','rd.paid_amount')
-                     ->where('td.partner_id',$partner_id)
-                    ->get();
-        $part_info = DB :: table('partner_details as pd')
-                     ->join('trip_details as td','pd.partner_id','td.partner_id')
-                     ->select('pd.partner_name')
-                     ->where('td.partner_id',$partner_id)
-                    ->get(); 
-        $veh_info = DB :: table('vehicle_details as vd')
-                     ->join('trip_details as td','vd.vehicle_id','td.vehicle_id')
-                     ->select('vd.vehicle_reg_no','vd.vehicle_model')
-                     ->where('td.partner_id',$partner_id)
-                    ->get();             
-        return view('admin_dashboard/tripdetails')
-                    ->with('cus_info', $cus_info)
-                    ->with('res_info', $res_info)
-                    ->with('part_info', $part_info)
-                    ->with('veh_info', $veh_info);
-    }
+     
     public function invoice_pdfview(Request $request){
         $reservation_id = Crypt::decryptString($request->id);
         $rent_array = array();
@@ -2103,7 +2074,7 @@ $unread_messages = DB::table('admin_partner_messages as apm')
         try {
            
             $get_all_trip_list = DB::table('trip_details as td')
-                                ->leftJoin('partner_details as pd', 'pd.partner_id', 'td.partner_id')
+                                ->leftJoin('partner_details as pd', 'td.partner_id', 'pd.partner_id')
                                 ->where('td.status','1')
                                 ->get();                    
 
@@ -2153,9 +2124,231 @@ $unread_messages = DB::table('admin_partner_messages as apm')
         }
     }
     
-    
+     public function tripdetails(Request $req){
+        $partner_id = Crypt::decryptString($req->id);
+        $cus_info = DB :: table('customer_details as cd')
+                     ->join('trip_details as td','cd.customer_id','td.customer_id')
+                     ->select('cd.customer_name','cd.customer_phone','cd.customer_email')
+                     ->where('td.partner_id',$partner_id)
+                    ->get();
+        $res_info = DB :: table('reservation_details as rd')
+                     ->join('trip_details as td','rd.reservation_id','td.reservation_id')
+                     ->select('rd.reserve_unique_id','rd.reservation_date','rd.reserve_through','rd.reservation_amount','rd.start_date','rd.return_date','rd.paid_amount')
+                     ->where('td.partner_id',$partner_id)
+                    ->get();
+        $part_info = DB :: table('partner_details as pd')
+                     ->join('trip_details as td','pd.partner_id','td.partner_id')
+                     ->select('pd.partner_name')
+                     ->where('td.partner_id',$partner_id)
+                    ->get(); 
+        $veh_info = DB :: table('vehicle_details as vd')
+                     ->join('trip_details as td','vd.vehicle_id','td.vehicle_id')
+                     ->select('vd.vehicle_reg_no','vd.vehicle_model')
+                     ->where('td.partner_id',$partner_id)
+                    ->get();             
+        return view('admin_dashboard/tripdetails')
+                    ->with('cus_info', $cus_info)
+                    ->with('res_info', $res_info)
+                    ->with('part_info', $part_info)
+                    ->with('veh_info', $veh_info);
+    }
   
+    public function triplist(){
+        $get_all_trip_list = DB::table('trip_details as td')
+                                ->join('reservation_details as rd','td.reservation_id','rd.reservation_id')
+                                ->select('rd.reserve_unique_id','rd.phone','rd.start_date','rd.return_date','td.status')
+                                ->where('td.status','1')->get();
+        return view('admin_dashboard/triplist')
+                        ->with('get_all_trip_list', $get_all_trip_list);
+    }
     
+    public function get_all_trip_detail_list(){
+        try {
+           $get_all_trip_list = DB::table('trip_details as td')
+                                ->join('reservation_details as rd','td.reservation_id','rd.reservation_id')
+                                ->join('partner_details as pd','td.partner_id','pd.partner_id')
+                                ->select('rd.reserve_unique_id','rd.phone','rd.start_date','rd.return_date','td.status','pd.partner_name','pd.partner_id')
+                                ->where('td.status','1')->get();
+                            
+            return Datatables::of($get_all_trip_list)
+            
+                ->addColumn('reserve_unique_id', function ($get_all_trip_list) {
+                        $reserve_unique_id = '';
+                        $reserve_unique_id .= '<center>'.ucfirst($get_all_trip_list->reserve_unique_id).'</center>';
+                       return $reserve_unique_id.'';
+                    })
+                ->addColumn('phone', function ($get_all_trip_list) {
+                        $phone = '';
+                        $phone .= '<center>'.$get_all_trip_list->phone.'</center>';
+                       return $phone.'';
+                    }) 
+                 ->addColumn('partner_name', function ($get_all_trip_list) {
+                        $partner_name = '';
+                        $partner_name .= '<center>'.$get_all_trip_list->partner_name.'</center>';
+                       return $partner_name.'';
+                    })     
+                ->addColumn('start_date', function ($get_all_trip_list) {
+                    $start_date = '';
+                    $start_date .= '<center>'.ucfirst($get_all_trip_list->start_date).'</center>';
+                   return $start_date.'';
+                })
+                ->addColumn('return_date', function ($get_all_trip_list) {
+                    $return_date = '';
+                    $return_date .= '<center>'.ucfirst($get_all_trip_list->return_date).'</center>';
+                   return $return_date.'';
+                })
+                ->addColumn('sst', function ($get_all_trip_list) {
+                    $sst = $get_all_trip_list->status;
+                    return $sst;
+                    })
+                ->addColumn('crypt_id', function ($get_all_trip_list) {
+                    $reser_list = Crypt::encryptString($get_all_trip_list->reserve_unique_id);
+                   return $reser_list.'';
+                })
+                ->addColumn('status', function ($get_all_trip_list) {
+                        $status = '';
+                        if($get_all_trip_list->status == '3'){
+                            $status .= '<span class="label label-success reject">Confirmed</span>';
+                        }else if($get_all_trip_list->status == '6'){
+                            $status .= '<span class="label label-warning reject">Cancelled</span>';
+                        }else{
+                            $status .= '<span class="label label-primary reject">Inprogress</span>';
+                        }
+                        return $status.'';
+                    })
+                
+                ->addColumn('action', function ($get_all_trip_list) {
+                  return '<center><a href="'.url('tripdetails/'.Crypt::encryptString($get_all_trip_list->partner_id).'').'" class="on-default edit-row" title="" target=""><i class="fa fa-eye" data-toggle="tooltip" title="reservation_details!"></i></a></center>';
+
+                    }) 
+             ->rawColumns(array("reserve_unique_id","phone","partner_name","start_date","return_date","status","action","crypt_id"))
+             ->make(true);
+        } catch (QueryException $e) {
+            echo "Bad Request";
+            dd(); 
+        }
+    }
+    
+    
+    public function filter_get_all_trip_list(Request $req){
+        try {
+            $filter_multistatus = $req->status;
+            $filter_status = $req->status;
+            $filter_name = $req->first_name;
+            $filter_phone = $req->phone;
+            $filter_email = $req->email;
+            $filter_vechicle_id = $req->vechicle_id;
+            $filter_reservation_id = $req->reservation_id;
+            $filter_reserve_through = $req->reserve_through;
+            $filter_reservation_date = $req->reservation_date;
+            $filter_start_date = $req->start_date;
+            $filter_return_date = $req->return_date;
+            $filter_from = $req->filter_from;
+            if($filter_from == '1'){
+                $get_all_reservation = DB::table('reservation_details')->where('status','!=','7');
+                if(!empty($filter_status)){
+                    $get_all_reservation->where('status',$filter_status);
+                }
+                if(!empty($filter_multistatus)){
+                    $get_all_reservation->where('status',$filter_multistatus);
+                }
+                if(!empty($filter_name)){
+                    $get_all_reservation->where('first_name',$filter_name);
+                }
+                if(!empty($filter_phone)){
+                    $get_all_reservation->where('phone',$filter_phone);
+                }
+                if(!empty($filter_email)){
+                    $get_all_reservation->where('email',$filter_email);
+                }
+                if(!empty($filter_vechicle_id)){
+                    $get_all_reservation->where('vechicle_id',$filter_vechicle_id);
+                }
+                if(!empty($filter_reservation_id)){
+                    $get_all_reservation->where('reservation_id',$filter_reservation_id);
+                }
+                if(!empty($filter_reserve_through)){
+                    $get_all_reservation->where('reserve_through',$filter_reserve_through);
+                }
+                if(!empty($filter_start_date)){
+                    $get_all_reservation->where('start_date',$filter_start_date);
+                }
+                if(!empty($filter_return_date)){
+                    $get_all_reservation->where('return_date',$filter_return_date);
+                }
+                $result= $get_all_reservation->get();     
+            }else if($filter_from == '2'){
+                $get_all_reservation = DB::table('reservation_details')
+                                        ->whereDay('created_at', '=', date('d'));
+                $result= $get_all_reservation->get();        
+            }
+            else if($filter_from == '2'){
+                $get_all_reservation = DB::table('reservation_details')
+                                        ->whereDay('created_at', '=', date('d'));
+                $result= $get_all_reservation->get();        
+            }
+            else if($filter_from == '3'){
+                $get_all_reservation = DB::table('reservation_details')
+                                        ->where('start_date', '>=', date('Y-m-d'));
+                $result= $get_all_reservation->get();        
+            }
+                               
+            return Datatables::of($result)
+                ->addColumn('reservation_id', function ($result) {
+                        $reservation_id = '';
+                        $reservation_id .= '<center>'.ucfirst($result->reservation_id).'</center>';
+                       return $reservation_id.'';
+                    })
+                ->addColumn('phone', function ($result) {
+                        $phone = '';
+                        $phone .= '<center>'.$result->phone.'</center>';
+                       return $phone.'';
+                    })  
+                ->addColumn('first_name', function ($result) {
+                        $first_name = '';
+                        $first_name .= '<center>'.$result->first_name.'</center>';
+                       return $first_name.'';
+                    })
+                ->addColumn('start_date', function ($result) {
+                    $start_date = '';
+                    $start_date .= '<center>'.ucfirst($result->start_date).'</center>';
+                   return $start_date.'';
+                })
+                ->addColumn('return_date', function ($result) {
+                    $return_date = '';
+                    $return_date .= '<center>'.ucfirst($result->return_date).'</center>';
+                   return $return_date.'';
+                })
+                ->addColumn('sst', function ($result) {
+                    $sst = $result->status;
+                    return $sst;
+                    })
+                ->addColumn('crypt_id', function ($result) {
+                    $reser_list = Crypt::encryptString($result->reservation_id);
+                   return $reser_list.'';
+                })
+                ->addColumn('status', function ($result) {
+                        $status = '';
+                        if($result->status == '3'){
+                            $status .= '<span class="label label-success reject">Confirmed</span>';
+                        }else if($result->status == '6'){
+                            $status .= '<span class="label label-warning reject">Cancelled</span>';
+                        }else{
+                            $status .= '<span class="label label-primary reject">Inprogress</span>';
+                        }
+                        return $status.'';
+                    })
+                ->addColumn('action', function ($result) {
+                  return '<center><a href="'.url('reservations_details/'.Crypt::encryptString($result->reservation_id).'').'" class="on-default edit-row" title="" target=""><i class="fa fa-eye" data-toggle="tooltip" title="reservation_details!"></i></a></center>';
+
+                    }) 
+             ->rawColumns(array("reservation_id","phone","first_name","start_date","return_date","status","action","crypt_id"))
+             ->make(true);
+        } catch (QueryException $e) {
+            echo "Bad Request";
+            dd(); 
+        }
+    }
     
       //endtrentygo
    
