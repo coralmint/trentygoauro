@@ -302,7 +302,7 @@
                   <a class="nav-link" id="contact-tab" data-toggle="tab" href="#partner1" role="tab" aria-controls="contact" aria-selected="false">Partner Comments</a>
                </li>
                <li class="nav-item">
-                  <a class="nav-link" id="contact-tab" data-toggle="tab" href="#trip_pickup" role="tab" aria-controls="contact" aria-selected="false">Pickup Trip</a>
+                  <a class="nav-link" id="pickup_trip_id" aria-controls="contact" aria-selected="false">Pickup Trip</a>
                </li>
             </ul>
          </div>
@@ -1192,6 +1192,63 @@
 <script src="{{ asset('theme_files/assets/pages/jquery.form-pickers.init.js') }}"></script>
 <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
 <script>
+$("#pickup_trip_id").click(function(){
+    var tempcsrf = $('#csrf_token').val();
+    var reservation_id = $('#csrf_token').val();
+    var assign_start_date = $("#assign_start_date").val();
+    var assign_return_date = $("#assign_return_date").val();
+    $.confirm({
+        title: 'Confirm!',
+        content: 'Are you sure to assign this vehicle for this reservation !!!',
+        buttons: {
+        confirm: function () {
+          $.ajax({
+            type: 'POST',
+            url: '{{url('assign_new_vehicle')}}',
+            dataType: "json",
+            data: {
+                    reservation_id:reservation_id,
+                    vehicle_id:vehicle_id,
+                    assign_start_date:assign_start_date,
+                    assign_return_date:assign_return_date,
+                    _token:tempcsrf
+                  },
+            beforeSend: function () {
+            },
+            success: function (data) {
+              if(data == 'success')
+              {
+              	$.confirm({
+    		            title: 'Success',
+    		            content: 'Updated Successfully.',
+    		            autoClose: 'logoutUser|300',
+    		            buttons: {
+                            logoutUser: {
+                                text: 'OK',
+                                action: function () {
+                                location.reload();
+                                }
+                            },
+                         }
+    		        });
+              }
+              else
+              {
+                $.alert({
+                  title: 'Alert!',
+                  content: data,
+                });
+              }
+            }
+          });
+          },
+            cancel: function () {
+          }
+        }
+      });
+});
+
+
 $( ".discount_function_class" ).keyup(function() {
     var cdis = $('#discount').val();
     var pdis = $('#part_amt').val();

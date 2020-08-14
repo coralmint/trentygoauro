@@ -119,6 +119,7 @@ Route::group(['middleware' => ['auth', 'admin']], function() {
     
      Route::any('get_all_trip_details', 'AdminController@get_all_trip_details');
      Route::any('get_all_trip_detail_list', 'AdminController@get_all_trip_detail_list');
+     Route::any('filter_get_all_trip_list', 'AdminController@filter_get_all_trip_list');
 
 // common
     Route::any('delete_document', 'AdminController@delete_document');

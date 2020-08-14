@@ -2202,7 +2202,7 @@ $unread_messages = DB::table('admin_partner_messages as apm')
                     return $sst;
                     })
                 ->addColumn('crypt_id', function ($get_all_trip_list) {
-                    $reser_list = Crypt::encryptString($get_all_trip_list->reserve_unique_id);
+                    $reser_list = Crypt::encryptString($get_all_trip_list->partner_id);
                    return $reser_list.'';
                 })
                 ->addColumn('status', function ($get_all_trip_list) {
@@ -2218,7 +2218,7 @@ $unread_messages = DB::table('admin_partner_messages as apm')
                     })
                 
                 ->addColumn('action', function ($get_all_trip_list) {
-                  return '<center><a href="'.url('tripdetails/'.Crypt::encryptString($get_all_trip_list->partner_id).'').'" class="on-default edit-row" title="" target=""><i class="fa fa-eye" data-toggle="tooltip" title="reservation_details!"></i></a></center>';
+                  return '<center><a href="'.url('tripdetails/'.Crypt::encryptString($get_all_trip_list->partner_id).'').'" class="on-default edit-row" title="" target=""><i class="fa fa-eye" data-toggle="tooltip" title="Trip_details!"></i></a></center>';
 
                     }) 
              ->rawColumns(array("reserve_unique_id","phone","partner_name","start_date","return_date","status","action","crypt_id"))
@@ -2232,82 +2232,79 @@ $unread_messages = DB::table('admin_partner_messages as apm')
     
     public function filter_get_all_trip_list(Request $req){
         try {
-            $filter_multistatus = $req->status;
-            $filter_status = $req->status;
-            $filter_name = $req->first_name;
+            $filter_name = $req->partner_name;
             $filter_phone = $req->phone;
-            $filter_email = $req->email;
-            $filter_vechicle_id = $req->vechicle_id;
-            $filter_reservation_id = $req->reservation_id;
-            $filter_reserve_through = $req->reserve_through;
-            $filter_reservation_date = $req->reservation_date;
+            $filter_res_id = $req->reserve_unique_id;
+            
             $filter_start_date = $req->start_date;
             $filter_return_date = $req->return_date;
             $filter_from = $req->filter_from;
             if($filter_from == '1'){
-                $get_all_reservation = DB::table('reservation_details')->where('status','!=','7');
-                if(!empty($filter_status)){
-                    $get_all_reservation->where('status',$filter_status);
-                }
-                if(!empty($filter_multistatus)){
-                    $get_all_reservation->where('status',$filter_multistatus);
-                }
+                 $get_all_trip_list = DB::table('trip_details as td')
+                                ->join('reservation_details as rd','td.reservation_id','rd.reservation_id')
+                                ->join('partner_details as pd','td.partner_id','pd.partner_id')
+                                ->select('rd.reserve_unique_id','rd.phone','rd.start_date','rd.return_date','td.status','pd.partner_name','pd.partner_id')
+                                ->where('td.status','1')->get();
+                
                 if(!empty($filter_name)){
-                    $get_all_reservation->where('first_name',$filter_name);
+                    $get_all_trip_list->where('partner_name',$filter_name);
                 }
                 if(!empty($filter_phone)){
-                    $get_all_reservation->where('phone',$filter_phone);
+                    $get_all_trip_list->where('phone',$filter_phone);
                 }
-                if(!empty($filter_email)){
-                    $get_all_reservation->where('email',$filter_email);
-                }
-                if(!empty($filter_vechicle_id)){
-                    $get_all_reservation->where('vechicle_id',$filter_vechicle_id);
-                }
-                if(!empty($filter_reservation_id)){
-                    $get_all_reservation->where('reservation_id',$filter_reservation_id);
-                }
-                if(!empty($filter_reserve_through)){
-                    $get_all_reservation->where('reserve_through',$filter_reserve_through);
+                if(!empty($filter_res_id)){
+                    $get_all_trip_list->where('reserve_unique_id',$filter_res_id);
                 }
                 if(!empty($filter_start_date)){
-                    $get_all_reservation->where('start_date',$filter_start_date);
+                    $get_all_trip_list->where('start_date',$filter_start_date);
                 }
                 if(!empty($filter_return_date)){
-                    $get_all_reservation->where('return_date',$filter_return_date);
+                    $get_all_trip_list->where('return_date',$filter_return_date);
                 }
-                $result= $get_all_reservation->get();     
+                $result= $get_all_trip_list->get();  
             }else if($filter_from == '2'){
-                $get_all_reservation = DB::table('reservation_details')
-                                        ->whereDay('created_at', '=', date('d'));
-                $result= $get_all_reservation->get();        
+                 $get_all_trip_list = DB::table('trip_details as td')
+                                ->join('reservation_details as rd','td.reservation_id','rd.reservation_id')
+                                ->join('partner_details as pd','td.partner_id','pd.partner_id')
+                                ->select('rd.reserve_unique_id','rd.phone','rd.start_date','rd.return_date','td.status','pd.partner_name','pd.partner_id')
+                                ->where('td.status','1')
+                                ->whereDay('td.created_at', '=', date('d'));
+                $result= $get_all_trip_list->get();        
             }
             else if($filter_from == '2'){
-                $get_all_reservation = DB::table('reservation_details')
-                                        ->whereDay('created_at', '=', date('d'));
-                $result= $get_all_reservation->get();        
+                $get_all_trip_list = DB::table('trip_details as td')
+                                ->join('reservation_details as rd','td.reservation_id','rd.reservation_id')
+                                ->join('partner_details as pd','td.partner_id','pd.partner_id')
+                                ->select('rd.reserve_unique_id','rd.phone','rd.start_date','rd.return_date','td.status','pd.partner_name','pd.partner_id')
+                                ->where('td.status','1')
+                                ->whereDay('td.created_at', '=', date('d'));
+                $result= $get_all_trip_list->get();         
             }
             else if($filter_from == '3'){
-                $get_all_reservation = DB::table('reservation_details')
-                                        ->where('start_date', '>=', date('Y-m-d'));
-                $result= $get_all_reservation->get();        
+                $get_all_trip_list = DB::table('trip_details as td')
+                                ->join('reservation_details as rd','td.reservation_id','rd.reservation_id')
+                                ->join('partner_details as pd','td.partner_id','pd.partner_id')
+                                ->select('rd.reserve_unique_id','rd.phone','rd.start_date','rd.return_date','td.status','pd.partner_name','pd.partner_id')
+                                ->where('td.status','1')
+                                ->where('rd.start_date', '>=', date('Y-m-d'));
+                $result= $get_all_trip_list->get();         
             }
-                               
+            
             return Datatables::of($result)
-                ->addColumn('reservation_id', function ($result) {
-                        $reservation_id = '';
-                        $reservation_id .= '<center>'.ucfirst($result->reservation_id).'</center>';
-                       return $reservation_id.'';
+                ->addColumn('reserve_unique_id', function ($result) {
+                        $reserve_unique_id = '';
+                        $reserve_unique_id .= '<center>'.ucfirst($result->reserve_unique_id).'</center>';
+                       return $reserve_unique_id.'';
                     })
                 ->addColumn('phone', function ($result) {
                         $phone = '';
                         $phone .= '<center>'.$result->phone.'</center>';
                        return $phone.'';
                     })  
-                ->addColumn('first_name', function ($result) {
-                        $first_name = '';
-                        $first_name .= '<center>'.$result->first_name.'</center>';
-                       return $first_name.'';
+                ->addColumn('partner_name', function ($result) {
+                        $partner_name = '';
+                        $partner_name .= '<center>'.$result->partner_name.'</center>';
+                       return $partner_name.'';
                     })
                 ->addColumn('start_date', function ($result) {
                     $start_date = '';
@@ -2324,7 +2321,7 @@ $unread_messages = DB::table('admin_partner_messages as apm')
                     return $sst;
                     })
                 ->addColumn('crypt_id', function ($result) {
-                    $reser_list = Crypt::encryptString($result->reservation_id);
+                    $reser_list = Crypt::encryptString($result->partner_id);
                    return $reser_list.'';
                 })
                 ->addColumn('status', function ($result) {
@@ -2339,10 +2336,10 @@ $unread_messages = DB::table('admin_partner_messages as apm')
                         return $status.'';
                     })
                 ->addColumn('action', function ($result) {
-                  return '<center><a href="'.url('reservations_details/'.Crypt::encryptString($result->reservation_id).'').'" class="on-default edit-row" title="" target=""><i class="fa fa-eye" data-toggle="tooltip" title="reservation_details!"></i></a></center>';
+                  return '<center><a href="'.url('reservations_details/'.Crypt::encryptString($result->partner_id).'').'" class="on-default edit-row" title="" target=""><i class="fa fa-eye" data-toggle="tooltip" title="Trip_details!"></i></a></center>';
 
                     }) 
-             ->rawColumns(array("reservation_id","phone","first_name","start_date","return_date","status","action","crypt_id"))
+             ->rawColumns(array("reserve_unique_id","phone","partner_name","start_date","return_date","status","action","crypt_id"))
              ->make(true);
         } catch (QueryException $e) {
             echo "Bad Request";

@@ -274,32 +274,20 @@
                   <div class="form-row formtab" style="padding:20px 20px 5px;">
                      <div class="form-group col-md-2">
                         <div class="form-group has-float-label">
-                           <input type="text" class="form-control" id="first_name" placeholder="Customer Name" onfocus="this.placeholder = ''" required autofocus >
-                           <label for="fullname">Customer Name</label>
+                           <input type="text" class="form-control" id="reserve_unique_id" placeholder="Customer Name" onfocus="this.placeholder = ''" required autofocus >
+                           <label for="fullname">Trip ID</label>
                         </div>
                      </div>
                      <div class="form-group col-md-2">
                         <div class="form-group has-float-label">
                            <input type="text" class="form-control" id="phone" placeholder="Phone Number" onfocus="this.placeholder = ''" required autofocus >
-                           <label for="Phone Number">Phone Number</label>
+                           <label for="Phone Number">Moblie Number</label>
                         </div>
                      </div>
                      <div class="form-group col-md-2">
                         <div class="form-group has-float-label">
-                           <input type="text" class="form-control" id="email" placeholder="Email Id" onfocus="this.placeholder = ''" required autofocus >
-                           <label for="Email Id">Email Id</label>
-                        </div>
-                     </div>
-                     <div class="form-group col-md-2">
-                        <div class="form-group has-float-label">
-                           <input type="text" class="form-control" id="vechicle_id" placeholder="Vechicle Id" onfocus="this.placeholder = ''" required autofocus >
-                           <label for="Vechicle Id">Vechicle Id</label>
-                        </div>
-                     </div>
-                     <div class="form-group col-md-2">
-                        <div class="form-group has-float-label">
-                           <input type="text" class="form-control" id="reservation_id" placeholder="Reservation Id" onfocus="this.placeholder = ''" required autofocus >
-                           <label for="Reservation Id">Reservation Id</label>
+                           <input type="text" class="form-control" id="partner_name" placeholder="Reservation Id" onfocus="this.placeholder = ''" required autofocus >
+                           <label for="Reservation Id">Partner Name</label>
                         </div>
                      </div>
                      
@@ -328,64 +316,16 @@
                            <label for="Booking Dates">Trip End Date(Expected) </label>  
                         </div>
                      </div>
-                       <div class="form-group col-md-2">
-                        <div class="form-group has-float-label">
-                           <select class="form-control" id="status" class="form-control" id="status" placeholder="" onfocus="this.placeholder = ''" required autofocus>
-                              <option value="" hidden>Select Option</option>
-                              <option value="">Railway Station</option>
-                              <option value="3">Park</option>
-                              
-                           </select>
-                           <label for="status">Location From</label>
-                        </div>
-                     </div>
-                       <div class="form-group col-md-2">
-                        <div class="form-group has-float-label">
-                           <select class="form-control" id="status" class="form-control" id="status" placeholder="" onfocus="this.placeholder = ''" required autofocus>
-                              <option value="" hidden>Select Option</option>
-                              <option value="">Jeni</option>
-                              <option value="3">vinoth</option>
-                              
-                           </select>
-                           <label for="status">Partners</label>
-                        </div>
-                     </div>
-                  
-                     <!--<div class="form-group col-md-2">-->
-                     <!--      <label>Multiple Status</label>-->
-                     <!--      <select class="select2 form-control select2-multiple" id="multi_select" multiple="multiple" multiple data-placeholder="Select Status ...">-->
-                              <!--<option value="">Show All</option>-->
-                     <!--         <option value="1">New</option>-->
-                     <!--         <option value="2">Inprogress</option>-->
-                     <!--         <option value="3">Confirmed</option>-->
-                     <!--         <option value="4">Reservation Pending</option>-->
-                     <!--         <option value="5">Cancel Inprogress</option>-->
-                     <!--         <option value="6">Cancelled</option>-->
-                     <!--         <option value="7">Trip Pending</option>-->
-                     <!--         <option value="8">Trip Closed</option>-->
-                     <!--      </select>-->
-                     <!--   </div>-->
-                       <div class="form-group col-md-2">
+
+                       <div class="form-group col-md-1">
                         <input type="hidden" id="csrf_token" value="{!! csrf_token() !!}">
                         <button type="button" class="btn btn-primary waves-effect waves-light" onClick="filter_submit(1);" id="filter_submit11" style="padding: 7px 30%;">Search</button>
                      </div>
-                     <div class="form-group col-md-2">
+                     <div class="form-group col-md-1">
                         <div class="form-group has-float-label">
                            <button type="button" class="btn btn-info waves-effect waves-light btn-sm"  id="filter_clear"><i class="mdi mdi-reload"></i></button>
                         </div>
                      </div>
-                     
-                   
-                     <!--<div class="form-group col-md-2">-->
-                     <!--   <div class="form-group has-float-label">-->
-                     <!--      <select class="form-control" id="status" class="form-control" id="payment" placeholder="" onfocus="this.placeholder = ''" required autofocus>-->
-                     <!--         <option value="">Upcoming</option>-->
-                     <!--         <option value="1">Today</option>-->
-                     <!--         <option value="2">Cancelled</option>-->
-                     <!--      </select>-->
-                     <!--      <label for="Payment">Payment</label>-->
-                     <!--   </div>-->
-                     <!--</div>-->
                   </div>
                  
                </div>
@@ -397,7 +337,8 @@
                               <form id="color_datatable">
                                  <table class="table table-bordered dataTable no-footer mobile-table" id="trip_list_datatable" style="table-layout:fixed; width: 100%;">
                                     <thead>
-                                        
+                                        <button type="button" class="btn btn-primary waves-effect waves-light" onClick="filter_submit(2);" id="today_filter_submit1111">Trip Exceed</button>
+                                        <button type="button" class="btn btn-primary waves-effect waves-light" onClick="filter_submit(3);" id="today_filter_submit1111">Current Trip</button>
                                        <tr>
                                           <th style="width: 15px !important;">#</th>
                                           <th>Trip Id</th>
@@ -457,24 +398,16 @@
     $('#trip_list_datatable_wrapper').show();
     $('#filter_trip_list_datatable_wrapper').hide();
     // $('#a_pdf').hide();
-    $("#first_name").val('');
+    $("#reserve_unique_id").val('');
     $("#phone").val('');
-    $("#email").val('');
-    $('#vechicle_id').val('');
-    $("#reservation_id").val('');
-    $("#reserve_through").val('');
-    $('#status').val('');
-    $("#reservation_date").val('');
+    $("#partner_name").val('');
     $("#start_date").val('');
     $('#return_date').val('');
-    $('#multi_select').val('');
+   
     // alert('ok');
    });
    
-   $('#reservation_date').datepicker({
-        autoclose: true,
-        format: "yyyy-mm-dd",
-    });
+  
     
     $('#start_date').datepicker({
         autoclose: true,
@@ -511,27 +444,27 @@
               "fnRowCallback" : function(nRow, aData, iDisplayIndex){
                     if(aData['sst'] != 1){
                         $("td:nth-child(1)",nRow).click(function(){
-                            window.location = "reservations_details/"+aData['crypt_id'];
+                            window.location = "tripdetails/"+aData['crypt_id'];
                             return false;
                         });
                         $("td:nth-child(1)",nRow).click(function(){
-                            window.location = "reservations_details/"+aData['crypt_id'];
+                            window.location = "tripdetails/"+aData['crypt_id'];
                             return false;
                         });
                         $("td:nth-child(2)",nRow).click(function(){
-                            window.location = "reservations_details/"+aData['crypt_id'];
+                            window.location = "tripdetails/"+aData['crypt_id'];
                             return false;
                         });
                         $("td:nth-child(3)",nRow).click(function(){
-                            window.location = "reservations_details/"+aData['crypt_id'];
+                            window.location = "tripdetails/"+aData['crypt_id'];
                             return false;
                         });
                         $("td:nth-child(4)",nRow).click(function(){
-                            window.location = "reservations_details/"+aData['crypt_id'];
+                            window.location = "tripdetails/"+aData['crypt_id'];
                             return false;
                         });
                         $("td:nth-child(5)",nRow).click(function(){
-                            window.location = "reservations_details/"+aData['crypt_id'];
+                            window.location = "tripdetails/"+aData['crypt_id'];
                             return false;
                         });
                         $("td:first", nRow).html(iDisplayIndex +1);
@@ -564,14 +497,9 @@
         $('#trip_list_datatable_wrapper').hide();
         $('#filter_trip_list_datatable_wrapper').show();
         var filter_from = arg;
-        var status = $("#status").val();
-        var first_name = $("#first_name").val();
+        var reserve_unique_id = $("#reserve_unique_id").val();
         var phone = $("#phone").val();
-        var email = $("#email").val();
-        var vechicle_id = $("#vechicle_id").val();
-        var reservation_id = $("#reservation_id").val();
-        var reserve_through = $('#reserve_through').val();
-        var reservation_date = $("#reservation_date").val();
+        var partner_name = $("#partner_name").val();
         var start_date = $("#start_date").val();
         var return_date = $("#return_date").val();
         var tempcsrf = $('#csrf_token').val();
@@ -594,14 +522,9 @@
     	            dataType: 'json',
     	               cache: false,
             		    data: {
-            		            status:status,
-            		            first_name:first_name,
+            		            reserve_unique_id:reserve_unique_id,
             		            phone:phone,
-            		            email:email,
-            		            vechicle_id:vechicle_id,
-            		            reservation_id:reservation_id,
-            		            reserve_through:reserve_through,
-            		            reservation_date:reservation_date,
+            		            partner_name:partner_name,
             		            start_date:start_date,
             		            return_date:return_date,
             		            filter_from:filter_from,
@@ -616,27 +539,27 @@
                   "fnRowCallback" : function(nRow, aData, iDisplayIndex){
                     if(aData['sst'] != 1){
                         $("td:nth-child(1)",nRow).click(function(){
-                            window.location = "reservations_details/"+aData['crypt_id'];
+                            window.location = "tripdetails/"+aData['crypt_id'];
                             return false;
                         });
                         $("td:nth-child(1)",nRow).click(function(){
-                            window.location = "reservations_details/"+aData['crypt_id'];
+                            window.location = "tripdetails/"+aData['crypt_id'];
                             return false;
                         });
                         $("td:nth-child(2)",nRow).click(function(){
-                            window.location = "reservations_details/"+aData['crypt_id'];
+                            window.location = "tripdetails/"+aData['crypt_id'];
                             return false;
                         });
                         $("td:nth-child(3)",nRow).click(function(){
-                            window.location = "reservations_details/"+aData['crypt_id'];
+                            window.location = "tripdetails/"+aData['crypt_id'];
                             return false;
                         });
                         $("td:nth-child(4)",nRow).click(function(){
-                            window.location = "reservations_details/"+aData['crypt_id'];
+                            window.location = "tripdetails/"+aData['crypt_id'];
                             return false;
                         });
                         $("td:nth-child(5)",nRow).click(function(){
-                            window.location = "reservations_details/"+aData['crypt_id'];
+                            window.location = "tripdetails/"+aData['crypt_id'];
                             return false;
                         });
                         $("td:first", nRow).html(iDisplayIndex +1);
