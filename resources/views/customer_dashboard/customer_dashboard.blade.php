@@ -354,25 +354,25 @@
                         <div class="form-row formtab">
                            <div class="form-group col-md-4">
                               <div class="form-group has-float-label">
-                                 <input type="text" class="form-control" id="first_name" value="{{ $cus_reserv_details[0]->first_name }}" onfocus="this.placeholder = ''" required autofocus >
+                                 <input type="text" class="form-control" id="first_name" value="{{ $customer_info[0]->customer_name }}" onfocus="this.placeholder = ''" required disabled autofocus >
                                  <label for="vehicle Model">First Name</label>
                               </div>
                            </div>
                            <div class="form-group col-md-4">
                               <div class="form-group has-float-label">
-                                 <input type="text" class="form-control" id="last_name" value="{{ $cus_reserv_details[0]->last_name }}" onfocus="this.placeholder = ''" required autofocus >
-                                 <label for="Location">Last Name</label>
+                                 <input type="text" class="form-control" id="last_name" value="{{ $customer_info[0]->customer_name }}" onfocus="this.placeholder = ''" required disabled autofocus >
+                                 <label for="vehicle Model">Last Name</label>
                               </div>
                            </div>
                            <div class="form-group col-md-4">
                               <div class="form-group has-float-label">
-                                 <input type="text" class="form-control" id="phone" value="{{ $cus_reserv_details[0]->phone }}" onfocus="this.placeholder = ''" required autofocus >
+                                 <input type="text" class="form-control" id="phone" value="{{ $customer_info[0]->customer_phone }}" onfocus="this.placeholder = ''" required disabled autofocus >
                                  <label for="Vehicle Color">Mobile Number</label>
                               </div>
                            </div>
                            <div class="form-group col-md-4">
                               <div class="form-group has-float-label">
-                                 <input type="text" class="form-control" id="email" value="{{ $cus_reserv_details[0]->email }}" onfocus="this.placeholder = ''" required autofocus >
+                                 <input type="text" class="form-control" id="email" value="{{ $customer_info[0]->customer_email }}" onfocus="this.placeholder = ''" required disabled autofocus >
                                  <label for="Vehicle Color">Email Id</label>
                               </div>
                            </div>
@@ -464,7 +464,7 @@
                </div>
                <div class="tab-pane fade shadow rounded bg-white p-5" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
                   <h4 class="font-italic mb-4 hist">History of User</h4>
-                  <p class="rec">Get recent history of user ride priya@gmail.com </p>
+                  <p class="rec">Get recent history of user ride {{ $customer_info[0]->customer_email }} </p>
                   <div class="usf"></div>
                   <div class="row">
                       @foreach($cus_reserv_details as $cd)
@@ -482,7 +482,7 @@
                            </div>
                            <div class="col-md-2">
                               <div class="col-md-12 cirl">
-                                 <a href="{{ url('customer_reservation',Crypt::encryptString($cus_reserv_details[0]->partner_id)) }}" class="clickher">
+                                 <a href="{{ url('customer_reservation',Crypt::encryptString($cd->reservation_id)) }}" class="clickher">
                                  <i class="fa fa-eye viewicon "> View</i></a>
                               </div>
                            </div>

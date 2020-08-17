@@ -117,9 +117,12 @@ Route::group(['middleware' => ['auth', 'admin']], function() {
     
     Route::any('sample_invoice', 'AdminController@sample_invoice');
     
-     Route::any('get_all_trip_details', 'AdminController@get_all_trip_details');
-     Route::any('get_all_trip_detail_list', 'AdminController@get_all_trip_detail_list');
-     Route::any('filter_get_all_trip_list', 'AdminController@filter_get_all_trip_list');
+    Route::any('get_all_trip_details', 'AdminController@get_all_trip_details');
+    Route::any('get_all_trip_detail_list', 'AdminController@get_all_trip_detail_list');
+    Route::any('filter_get_all_trip_list', 'AdminController@filter_get_all_trip_list');
+     
+    Route::any('upload_customer_document', 'AdminController@upload_customer_document');
+    Route::any('delete_trip_document', 'AdminController@delete_trip_document');
 
 // common
     Route::any('delete_document', 'AdminController@delete_document');
@@ -164,7 +167,9 @@ Route::group(['middleware' => ['auth', 'admin']], function() {
     Route::post('get_vehicle_list_asssign', 'ReservationController@get_vehicle_list_asssign');
     Route::post('assign_new_vehicle', 'ReservationController@assign_new_vehicle');
     
-    Route::post('add_trip_details', 'ReservationController@add_trip_details');
+    Route::any('get_otp', 'ReservationController@get_otp');
+    Route::any('verify_otp', 'ReservationController@verify_otp');
+    Route::post('add_trip_details', 'ReservationController@add_trip_details'); 
     Route::post('upload_trip_vehicle_pic', 'ReservationController@upload_trip_vehicle_pic');
     
 //CustomerController

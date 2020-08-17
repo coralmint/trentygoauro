@@ -422,7 +422,7 @@ class WebsiteController extends Controller
             $unique_id = 'TGR000'.$reservation_id;
             $idata = array(
                         'reserve_unique_id' => $unique_id
-                        );
+                        );  
             $customer_update_data = array(
                         'customer_name' => $customer_first_name,
                         'customer_phone' => $customer_phone,

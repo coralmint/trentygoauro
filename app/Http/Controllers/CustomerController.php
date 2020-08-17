@@ -231,21 +231,7 @@ class CustomerController extends Controller
         
     }
     
-    public function cus_send_message(Request $req){
-        $curent_date = date('Y-m-d H:i:s');
-        $data = array(
-                        'reservation_id' => $req->reservation_id,
-                        'comment' => $req->cus_msg,
-                        'admin_id' => '0',
-                        'sent_from' => $req->customer_id,
-                        'customer_id' => $req->customer_id,
-                        'comment_from' => '1',
-                        'comment_date' => $curent_date,
-                        );
-       
-        DB::table('comments')->insert($data);
-        return json_encode('success');
-    }
+   
     public function customer_reservationlist(){ 
         return view('customer_dashboard/customer_reservationlist');
     }
@@ -340,32 +326,42 @@ class CustomerController extends Controller
         $customer_id = Session::get('user_id');
         $reservation_id = Crypt::decryptString($req->id);
         
-        $cus_reserv_details = DB :: table('reservation_details')
-                        ->where('customer_id',$customer_id)
-                        ->get();
-        
-        $pick_up_location = DB::table('location_master as lm')
-                                ->join('reservation_details as rd','lm.location_master_id','rd.pick_up_location_id')
-                                ->select('lm.location_name','lm.location_master_id','rd.pick_up_location_id')
-                               ->where('rd.customer_id',$customer_id)
-                                ->get();
-                                
-        $drop_up_location = DB::table('location_master as lm')
-                                ->join('reservation_details as rd','lm.location_master_id','rd.drop_location_id')
-                                ->select('lm.location_name','lm.location_master_id','rd.drop_location_id')
-                                ->where('rd.customer_id',$customer_id)
-                                ->get(); 
-                                
+        $reserv_details = DB :: table('reservation_details as rd')
+                            ->join('location_master as lm','rd.pick_up_location_id','lm.location_master_id')
+                            ->join('location_master as lm1','rd.drop_location_id','lm1.location_master_id')
+                            ->where('rd.reservation_id',$reservation_id)
+                            ->get();
+
         $vehicle_details = DB :: table('vehicle_details')
-                            ->where('vehicle_id',$cus_reserv_details[0]->vehicle_id)
+                            ->where('vehicle_id',$reserv_details[0]->vehicle_id)
                             ->get();                        
-    
+        $customercomment = DB::table('comments as cs')
+                        ->where('cs.reservation_id',$reserv_details[0]->reservation_id)
+                        ->where('cs.comment_from',1)
+                        ->orderBy('cs.comment_date', 'asc')
+                        ->get();
         return view('customer_dashboard/customer_reservation')
                     ->with('customer_id',$customer_id)
-                    ->with('cus_reserv_details',$cus_reserv_details)
-                    ->with('pick_up_location',$pick_up_location)
-                    ->with('drop_up_location',$drop_up_location)
-                    ->with('vehicle_details',$vehicle_details);
+                    ->with('reserv_details',$reserv_details)
+                    ->with('vehicle_details',$vehicle_details)
+                    ->with('customercomment',$customercomment);
+    }
+    
+     public function cus_send_message(Request $req){
+        $curent_date = date('Y-m-d H:i:s');
+        $data = array(
+                        'customer_id' => $req->customer_id,
+                        'comment' => $req->customer_msg,
+                        'admin_id' => '0',
+                        'sent_from' => $req->customer_id,
+                        'reservation_id' => $req->reservation_id,
+                        'comment_from' => '1',
+                        'comment_date' => $curent_date,
+                        );
+       /* print_r('$data');
+        die();*/
+        DB::table('comments')->insert($data);
+        return json_encode('success');
     }
     
 }

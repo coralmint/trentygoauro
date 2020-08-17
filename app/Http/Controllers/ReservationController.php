@@ -14,6 +14,7 @@ use DB;
 use Mail;
 use Hash;
 use Illuminate\Support\Facades\Password;
+use Twilio\Rest\Client;
 
 class ReservationController extends Controller
 {
@@ -329,7 +330,7 @@ class ReservationController extends Controller
         $curent_date = date('Y-m-d H:i:s');
         $reservation_id = $req->reservation_id;
         $info = DB::table('reservation_details')
-                    ->where('reservation_id',$req->reservation_id)
+                    ->where('reservation_id',$reservation_id)
                     ->get();
         $db = new General();
         $data = array(
@@ -341,9 +342,9 @@ class ReservationController extends Controller
                 'license_issue_date' => $info[0]->license_issue_date,
                 'license_issued_country' => $info[0]->license_issued_country,
                 'pick_up_location_id' => $info[0]->pick_up_location_id,
-                'key_given_by' => $req->key_given_user,
                 'default_rent' => $info[0]->vehicle_default_rent,
                 'addon_values' => $info[0]->addon_values,
+                'status' => '1',
             );
         $db->insert('trip_details',$data);
         $inserted_id = DB::getPdo()->lastInsertId();
@@ -410,5 +411,40 @@ class ReservationController extends Controller
             echo json_encode($ret);
         }
     }
+    public function get_otp(Request $req){
+        $otp = rand(100000, 999999);
+        $db = new General();
+        $message = "From the team Trentygo for verify your mobile number for geting Esign for security purpose. This is your One Time Password : " .$otp;
+        $recipients = $req->mobile;
+        // $this->sendMessage($message, $req->mobile); 
+        $this->summa($message, $req->mobile); 
+        $data = array(
+                'trip_id' => $req->trip_id,
+                'mobile' => $req->mobile,
+                'otp' => $otp,
+            );
+        $db->insert('otp_reference',$data);
+        $inserted_id = DB::getPdo()->lastInsertId();
+        return json_encode($inserted_id);
+    }
     
+    private function summa($message, $recipients){
+        
+    }
+
+    private function sendMessage($message, $recipients){
+        $account_sid = getenv("TWILIO_SID");
+        $auth_token = getenv("TWILIO_AUTH_TOKEN");
+        $twilio_number = getenv("TWILIO_NUMBER");
+        $client = new Client($account_sid, $auth_token);
+        // $client->messages->create($recipients, 
+        //         ['from' => $twilio_number, 'body' => $message] );
+        $sms = $client->account->messages->create(  
+                $recipients,
+                    array(
+                        'from' => $twilio_number,
+                        'body' => $message,
+                    )  
+                );
+    }
 }

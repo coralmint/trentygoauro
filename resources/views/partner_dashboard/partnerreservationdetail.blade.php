@@ -531,7 +531,7 @@
                            </div>
                            <div class="type_msg">
                               <div class="input_msg_write">
-                                  <input type="hidden" id="csrf_token" value="{!! csrf_token() !!}">
+                                 <input type="hidden" id="csrf_token" value="{!! csrf_token() !!}">
                                  <input type="hidden" value="{{ $reservation_id }}" id="reservation_id">
                                  <input type="hidden" value="{{ $partner_id }}" id="partner_id">
                                  <input type="text" class="write_msg" id="partner_msg" placeholder="Type a message" />

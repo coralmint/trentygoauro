@@ -4,14 +4,25 @@
    @include('admin_dashboard.menu')
 </header>
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<link href="{{ asset('theme_files/external_files/css/jquery-confirm.min.css') }}" rel="stylesheet" type="text/css" />
+{!! Html::style('public/assets/jquery_upload/uploadfile.css') !!}
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
 <style>
    .bredim {
    background-color: #071DAA;
    padding: 2% 10% 10px;
-   }
+   } 
    .wrapper {
    padding-top: 80px;
    }
+   .myButton {
+    padding: .2em 1em;
+    font-size: 1em;
+}
+.mySelect {
+    padding: .2em 0;
+    font-size: 1em;
+}
    .tab-pane {
    background-color: #fff;
    }
@@ -353,6 +364,20 @@
    text-align: center;
    margin: 0 auto;
    }
+   h5.uploaddate {
+    color: #15b5ba;
+    text-align: center;
+    padding: 20px 0px;
+    font-size: 20px;
+}
+p.tagsam {
+    text-align: center;
+    padding: 20px 0px;
+    font-size: 17px;
+    background-color: #e1e1e4;
+    color: #23376c;
+    font-weight: 600;
+}
 </style>
 <div class="wrapper">
    <div class="container-fluid">
@@ -376,6 +401,8 @@
                </li>
             </ul>
          </div>
+         <input type="hidden" class="form-control" id="trip_id" value="{{ $trip_info[0]->trip_details_id }}" >
+         <input type="hidden" class="form-control" id="reservation_id" value="{{ $trip_info[0]->reservation_id }}" >
          <!-- /.col-md-4 -->
          <div class="col-md-10">
             <div class="form-row formtab1 pauim">
@@ -383,19 +410,19 @@
                   <div class="form-group col-md-12">
                      <div class="form-group">
                         <label for="vehicle Model" class="tripdetail">Name:</label>
-                        <div class="namelabel">{{ $cus_info[0]->customer_name }}</div>
+                        <div class="namelabel">{{ $trip_info[0]->customer_name }}</div>
                      </div>
                   </div>
                   <div class="form-group col-md-12">
                      <div class="form-group">
                         <label for="Vehicle Color" class="tripdetail">Phone:</label>
-                        <div class="namelabel">{{ $cus_info[0]->customer_phone }}</div>
+                        <div class="namelabel">{{ $trip_info[0]->customer_phone }}</div>
                      </div>
                   </div>
                   <div class="form-group col-md-12">
                      <div class="form-group">
                         <label for="Vehicle Color" class="tripdetail">Email:</label>
-                        <div class="namelabel">{{ $cus_info[0]->customer_email }}</div>
+                        <div class="namelabel">{{ $trip_info[0]->customer_email }}</div>
                      </div>
                   </div>
                   <div class="form-group col-md-12">
@@ -409,25 +436,25 @@
                   <div class="form-group col-md-12">
                      <div class="form-group">
                         <label for="vehicle Model" class="tripdetail">Reservation Id:</label>
-                        <div class="namelabel">{{ $res_info[0]->reserve_unique_id }}</div>
+                        <div class="namelabel">{{ $trip_info[0]->reserve_unique_id }}</div>
                      </div>
                   </div>
                   <div class="form-group col-md-12">
                      <div class="form-group">
                         <label for="Vehicle Color" class="tripdetail">Partner Name:</label>
-                        <div class="namelabel">{{ $part_info[0]->partner_name }}</div>
+                        <div class="namelabel">{{ $trip_info[0]->partner_name }}</div>
                      </div>
                   </div>
                   <div class="form-group col-md-12">
                      <div class="form-group">
                         <label for="Vehicle Color" class="tripdetail">Reservation Date:</label>
-                        <div class="namelabel">{{ $res_info[0]->reservation_date }}</div>
+                        <div class="namelabel">{{ $trip_info[0]->reservation_date }}</div>
                      </div>
                   </div>
                   <div class="form-group col-md-12">
                      <div class="form-group">
                         <label for="Vehicle Color" class="tripdetail">Vehicle Reg No:</label>
-                        <div class="namelabel">{{ $veh_info[0]->vehicle_reg_no }}</div>
+                        <div class="namelabel">{{ $trip_info[0]->vehicle_reg_no }}</div>
                      </div>
                   </div>
                </div>
@@ -435,25 +462,25 @@
                   <div class="form-group col-md-12">
                      <div class="form-group">
                         <label for="vehicle Model" class="tripdetail">Reservation Via:</label>
-                        <div class="namelabel">{{ $res_info[0]->reserve_through }}</div>
+                        <div class="namelabel">{{ $trip_info[0]->reserve_through }}</div>
                      </div>
                   </div>
                   <div class="form-group col-md-12">
                      <div class="form-group">
                         <label for="Vehicle Color" class="tripdetail">Reservation Amount:</label>
-                        <div class="namelabel">{{ $res_info[0]->reservation_amount }}</div>
+                        <div class="namelabel">{{ $trip_info[0]->reservation_amount }}</div>
                      </div>
                   </div>
                   <div class="form-group col-md-12">
                      <div class="form-group">
                         <label for="Vehicle Color" class="tripdetail">Date</label>
-                        <div class="namelabel">{{ $res_info[0]->start_date }} To {{ $res_info[0]->return_date }}</div>
+                        <div class="namelabel">{{ $trip_info[0]->start_date }} To {{ $trip_info[0]->return_date }}</div>
                      </div>
                   </div>
                   <div class="form-group col-md-12">
                      <div class="form-group">
                         <label for="Location" class="tripdetail">Paid Amount</label>
-                        <div class="namelabel">{{ $res_info[0]->paid_amount }}</div>
+                        <div class="namelabel">{{ $trip_info[0]->paid_amount }}</div>
                      </div>
                   </div>
                </div>
@@ -466,26 +493,26 @@
                   <div class="form-row formtab">
                      <div class="form-group col-md-4">
                         <div class="form-group has-float-label">
-                           <input type="text" class="form-control" id="vehicle_reg_no" value="{{ $veh_info[0]->vehicle_reg_no }}" placeholder="Phone Number" onfocus="this.placeholder = ''" disabled required autofocus >
+                           <input type="text" class="form-control" id="vehicle_reg_no" value="{{ $trip_info[0]->vehicle_reg_no }}" placeholder="Phone Number" onfocus="this.placeholder = ''" disabled required autofocus >
                            <label for="Phone Number">Vehicle Reg No</label>
                         </div>
                      </div>
                      <div class="form-group col-md-4">
                         <div class="form-group has-float-label">
-                           <input type="text" class="form-control" id="phone" value="{{ $veh_info[0]->vehicle_reg_no }}" placeholder="Phone Number" onfocus="this.placeholder = ''" disabled required autofocus >
+                           <input type="text" class="form-control" id="phone" value="{{ $trip_info[0]->vehicle_reg_no }}" placeholder="Phone Number" onfocus="this.placeholder = ''" disabled required autofocus >
                            <label for="Phone Number">Vehicle Model</label>
                         </div>
                      </div>
                      <div class="form-group col-md-4">
                         <div class="form-group has-float-label">
-                           <input type="text" class="form-control" id="phone" value="{{ $part_info[0]->partner_name }}" placeholder="Phone Number" onfocus="this.placeholder = ''" disabled required autofocus >
+                           <input type="text" class="form-control" id="phone" value="{{ $trip_info[0]->partner_name }}" placeholder="Phone Number" onfocus="this.placeholder = ''" disabled required autofocus >
                            <label for="Phone Number">Partner Name</label>
                         </div>
                      </div>
                      <div class="form-group col-md-4">
                         <div class="form-group has-float-label">
                            <div class="input-group">
-                              <input type="text" class="form-control" value="{{ $res_info[0]->start_date }}" placeholder="mm/dd/yyyy" disabled id="return_date">
+                              <input type="text" class="form-control" value="{{ $trip_info[0]->start_date }}" placeholder="mm/dd/yyyy" disabled id="return_date">
                               <div class="input-group-append">
                                  <span class="input-group-text"><i class="mdi mdi-calendar"></i></span>
                               </div>
@@ -497,7 +524,7 @@
                      <div class="form-group col-md-4">
                         <div class="form-group has-float-label">
                            <div class="input-group">
-                              <input type="text" class="form-control" value="{{ $res_info[0]->return_date }}" placeholder="mm/dd/yyyy" disabled id="return_date">
+                              <input type="text" class="form-control" value="{{ $trip_info[0]->return_date }}" placeholder="mm/dd/yyyy" disabled id="return_date">
                               <div class="input-group-append">
                                  <span class="input-group-text"><i class="mdi mdi-calendar"></i></span>
                               </div>
@@ -509,7 +536,7 @@
                      <div class="form-group col-md-4">
                         <div class="form-group has-float-label">
                            <div class="input-group">
-                              <input type="text" class="form-control" value="{{ $res_info[0]->return_date }}" placeholder="mm/dd/yyyy" disabled id="return_date">
+                              <input type="text" class="form-control" value="{{ $trip_info[0]->return_date }}" placeholder="mm/dd/yyyy" disabled id="return_date">
                               <div class="input-group-append">
                                  <span class="input-group-text"><i class="mdi mdi-calendar"></i></span>
                               </div>
@@ -530,11 +557,31 @@
                            <div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
                               <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
                                  <div class="alert alert-success alert-dismissible">
-                                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                    <a class="btn btn-success waves-effect waves-light" id="add_new_add_on" style="float: right;"><i class="fa fa-plus" aria-hidden="true"></i></a>
+                                    <br>
+                                    <div class="targetdiv3 slide-in1" id="mySidenav3" class="sidenav" style="display:none;margin-top: -5%;margin-bottom: -5%;">
+                                       <div class="card-body">
+                                          <form>
+                                             <div class="form-row">
+                                                <div class="form-group col-md-6">
+                                                   <label>Add on Features </label>
+                                                   <input data-parsley-type="number" type="text" class="form-control tribut" required placeholder="name the add on" id="add_on" />
+                                                </div>
+                                                <div class="form-row formtab">
+                                                   <div class="form-group" style="margin-top: 5%;">
+                                                      <input type="hidden" id="csrf_token" value="{!! csrf_token() !!}">
+                                                      <button type="button" class="btn btn-primary waves-effect waves-light" id="add_on_submit">Save</button>
+                                                      <button type="button" onclick="close_slide1();" id="close_tab" class="close_location_tab btn btn-default waves-effect waves-light" id="">Cancel</button>
+                                                   </div>
+                                                </div>
+                                             </div>
+                                          </form>
+                                       </div>
+                                    </div>
                                     <div class="row">
                                        <div class="col-md-12">
                                           <label class="spare">Spare Tyre/200</label> 
-                                          <i class="fa fa-check bab ret"></i>
+                                          <i class="fa fa-trash bab"></i>
                                        </div>
                                        <div class="col-md-12">
                                           <label class="spare">Baby Seat/200</label> 
@@ -591,9 +638,52 @@
                   </div>
                </div>
                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                   
                   <div class="col-md-12 vimkim">
-                     <h4 class="customdet">Vehicle Photos <button class="compare">Compare</button></h4>
+                     <h4 class="customdet">Vehicle Photos <button class="compare" id="add_new_partner_button">Compare</button></h4>
                   </div>
+         <div class="row" style="display : none" id="add_new_partner_tab">
+      <div class="col-lg-12">
+         <div class="card-box" style="padding:20px;">
+            <h4 class="page-title">Compare Vehicle Photos<span id="" style="cursor: pointer;" class="close_location_tab pull-right"><i class="mdi mdi-close"></i></span></h4>
+            <hr>
+            <form>
+                 <div class="form-row">
+                  <div class="form-group col-md-6">
+                          <div class="comparehphoto bg-shadow">
+                              <h5 class="uploaddate">Uploaded Date:20-12-2019</h5>
+                               <img src="http://trentygo.coralmint.in/public/assets/home_screen/trenty/car.jpg" class="img-responsive">
+                              <p class="tagsam">Tag: SampleText</p>
+                          </div> 
+                  </div>
+                  <div class="form-group col-md-6">
+                     <div class="comparehphoto bg-shadow">
+                              <h5 class="uploaddate">Uploaded Date:20-12-2019</h5>
+                               <img src="http://trentygo.coralmint.in/public/assets/home_screen/trenty/car.jpg" class="img-responsive">
+                              <p class="tagsam">Tag: SampleText</p>
+                          </div> 
+                  </div>
+                   <div class="form-group col-md-6">
+                     <div class="comparehphoto bg-shadow">
+                            
+                               <img src="http://trentygo.coralmint.in/public/assets/home_screen/trenty/car.jpg" class="img-responsive">
+                              <p class="tagsam">Tag: SampleText</p>
+                          </div>         
+                  </div>
+                  <div class="form-group col-md-6">
+                     <div class="comparehphoto bg-shadow">
+                              
+                               <img src="http://trentygo.coralmint.in/public/assets/home_screen/trenty/car.jpg" class="img-responsive">
+                              <p class="tagsam">Tag: SampleText</p>
+                          </div>  
+                  </div>
+                  
+               </div>
+              
+            </form>
+         </div>
+      </div>
+    </div>
                   <div class="col-md-12">
                      <h2>Pre Trip Photos</h2>
                   </div>
@@ -725,63 +815,99 @@
                            <tr>
                               <td>Vehicle Rent</td>
                               <td>
-                                 <p>12-5-2020 <span>1000</span></p>
-                                 <p>12-5-2020 <span>1000</span></p>
-                                 <p>12-5-2020 <span>1000</span></p>
+                                @foreach($date_array as $key=> $date)
+                                {{ $date }} ---------- {{ $rent_array[$key] }} <br>
+                                @endforeach
+                                @foreach($default_array as $key=> $date)
+                                {{ $date }} ---------- {{ $reserv_details[0]->vehicle_default_rent }} <br>
+                                @endforeach
                               </td>
-                              <td>2500</td>
+                              <td>
+                                <?php 
+                                    $spl_total = array_sum($rent_array);
+                                    $nrm_total = count($default_array) * $reserv_details[0]->vehicle_default_rent;
+                                    $total_rent = $spl_total + $nrm_total?>
+                                    {{ $total_rent }}
+                                </td>
                            </tr>
                            <tr>
                               <td>Addon Charges</td>
                               <td>
-                                 <p>Baby Seat<span>500</span></p>
-                                 <p>Sapre TYre<span>1000</span></p>
+                                  @foreach($vehicle_addons as $key=> $data)
+                                 <p>{{ $data->master_value }} ---------- <span>{{ $data->addon_value }}</span></p>
+                                 @endforeach
                               </td>
-                              <td>2000</td>
+                              <td>{{ $total_addons_values[0]->addon_total }}</td>
                            </tr>
                            <tr>
                               <td>Discount</td>
                               <td>
-                                 <p>Admin<span>1200</span></p>
-                                 <p>Partner<span>1800</span></p>
+                                 <p>Admin<span>---------- {{ $reserv_details[0]->admin_discount }}</span></p>
+                                 <p>Partner<span>---------- {{ $reserv_details[0]->partner_discount }}</span></p>
                               </td>
-                              <td>3000</td>
+                              <td>{{ $reserv_details[0]->admin_discount + $reserv_details[0]->partner_discount }}</td>
                            </tr>
                            <tr>
                               <td>Total Tax</td>
                               <td>
                               </td>
-                              <td>1000</td>
+                              <td>0</td>
                            </tr>
                            <tr>
                               <td>Total Reservation Amount</td>
                               <td>
                               </td>
-                              <td>1000</td>
+                              <td>{{ $reserv_details[0]->reservation_amount }}</td>
                            </tr>
                            <tr>
-                              <td>Paid Amount(Download Invoice)</td>
+                              <td><?php 
+                             $id = Crypt::encryptString($reserv_details[0]->reservation_id);
+                             ?>Paid Amount
+                            <a  href="{{ route('invoice_pdfview',['download'=>'pdf','id'=> $id]) }}">(Download Invoice)</a> </td>
                               <td>
                               </td>
-                              <td>15000</td>
+                              <td>{{ $reserv_details[0]->paid_amount }}</td>
                            </tr>
                            <tr>
                               <td>Deposite Amount <a href="">Make Payment</a></td>
                               <td>
                               </td>
-                              <td>1000</td>
+                              <td>{{ $reserv_details[0]->deposit_amount }}</td>
                            </tr>
+                           <tr>
+                                <td>Total amount</td>
+                                <td>
+                                    <?php
+                                    $add = $total_rent + $total_addons_values[0]->addon_total + $reserv_details[0]->reservation_amount ;
+                                    $sub = $reserv_details[0]->admin_discount + $reserv_details[0]->partner_discount;
+                                    $over_all_value = $add - $sub;
+                                    $total = $over_all_value;
+                                    ?>
+                                </td>
+                                <td>{{ $total }}</td>
+                            </tr>
+                            <?php
+                                $aa=$total- $reserv_details[0]->paid_amount;
+                            ?>
+                            @if($reserv_details[0]->deposit_amount <= $aa )
+                           <tr>
+                              <td>Expected Amount to pay</td>
+                              <td>
+                              </td>
+                              <td class="fourfiv">{{ $aa-$reserv_details[0]->deposit_amount }}</td>
+                           </tr>
+                           @else
                            <tr>
                               <td>Expected Refund Amount</td>
                               <td>
                               </td>
-                              <td class="fourfiv">45000</td>
+                              <td class="fourfiv">{{ $reserv_details[0]->deposit_amount-$aa }}</td>
                            </tr>
+                           @endif
                         </tbody>
                      </table>
                   </div>
                   <div class="form-group formtab">
-                     <input type="hidden" id="csrf_token" value="JDaxfRlKgfw1zwaw8MV2xC7Cj00CuzBIpmvdBBbd">
                      <button type="button" class="btn btn-primary waves-effect waves-light" id="add_partner">Refund Pay </button>
                      <button type="button" class="close_location_tab btn btn-default waves-effect waves-light" id="">Cancel</button>
                   </div>
@@ -791,18 +917,71 @@
                      <h4 class="customdet">Customer Documents and Agreements</h4>
                   </div>
                   <div class="form-row formtab">
-                     <div class="col-md-12">
+                     <div class="col-md-3">
                         <h4>Customer Documents</h4>
+                        <br>
+                        <label><div id="customer_upload">Upload</div></label>
+                     </div>
+                     <div class="col-md-3">
+                        <?php
+                            $uploaded_doc_info = DB::table('document_details')
+                                        ->where('reservation_id',$trip_info[0]->reservation_id)
+                                        ->where('file_for','Trip Customer Document')
+                                        ->get();
+                        ?>
+                            @if( count($uploaded_doc_info) != '' )
+                              <div class="form-group col-md-12">
+                                <label>Download Customer Document</label>
+                                @foreach($uploaded_doc_info as $udi)
+                                <li>
+                                    <a href="{{$udi->file_url}}" target="_blank">{{ $udi->file_orginal_name }}</a>
+                                    &nbsp;&nbsp;&nbsp; <a onclick="delete_document_detail({{$udi->document_details_id}}, '{{$udi->file_path}}{{$udi->file_orginal_name}}' );"><i class="fa fa-trash" style="color:red; cursor: pointer;"></i></a>
+                                </li>
+                                @endforeach
+                                <div class="download_agreement"></div>
+                            </div>
+                        @else
+                        @endif
+                     </div>
+                     <div class="col-md-6">
+                        <h4>Get Customer's Signature</h4>
+                        <br>
+                        <input type="text" id="otp_mobile_number"/>
+                        <input type="button" value="get OTP" id="get_otp_submt" />
+                     </div>
+                     <div class="col-md-6" style="display:none;" id="signature_upload_function_div">
+                        <h4>Customer's signature</h4>
                         <br>
                         <label>Upload</label>
                      </div>
                   </div>
                   <hr>
                   <div class="form-row formtab">
-                     <div class="col-md-12">
+                     <div class="col-md-6">
                         <h4>Customer Agreements</h4>
                         <br>
-                        <label>Upload</label>
+                        <label><div id="customer_agreement_upload">Upload</div></label>
+                     </div>
+                     <div class="col-md-6">
+                        <?php
+                            $uploaded_doc_info = DB::table('document_details')
+                                        ->where('reservation_id',$trip_info[0]->reservation_id)
+                                        ->where('file_for','Trip Agreement Document')
+                                        ->get();
+                        ?>
+                            @if( count($uploaded_doc_info) != '' )
+                              <div class="form-group col-md-12">
+                                <label>Download Customer Document</label>
+                                @foreach($uploaded_doc_info as $udi)
+                                <li>
+                                    <a href="{{$udi->file_url}}" target="_blank">{{ $udi->file_orginal_name }}</a>
+                                    &nbsp;&nbsp;&nbsp; <a onclick="delete_document_detail({{$udi->document_details_id}}, '{{$udi->file_path}}{{$udi->file_orginal_name}}' );"><i class="fa fa-trash" style="color:red; cursor: pointer;"></i></a>
+                                </li>
+                                @endforeach
+                                <div class="download_agreement"></div>
+                            </div>
+                        @else
+                        @endif
                      </div>
                      <label>Signed Document Copy Upload</label>
                   </div>
@@ -827,7 +1006,13 @@
                                        <div class="col-md-12">
                                           <label class="uploadpre">Upload Pre Vehicle Condition Photos</label>
                                           <br>
-                                          <label>Upload</label>
+                                            <div class="form-group col-md-12">
+                                                <div id="fileuploader1">Upload</div>
+                                                <center>
+                                                    <input type="button" class="btn btn-primary" id="extrabutton" value="Start Upload">
+                                                    <input type="hidden" name="csrf_token" id="csrf_token" value="{!! csrf_token() !!}">
+                                                </center>
+                                            </div>
                                        </div>
                                     </div>
                                     <div class="col-md-6">
@@ -838,7 +1023,7 @@
                                     </div>
                                  </div>
                                  <div class="form-group">
-                                    <input type="hidden" id="csrf_token" value="JDaxfRlKgfw1zwaw8MV2xC7Cj00CuzBIpmvdBBbd">
+                                    <!--<input type="hidden" id="csrf_token" value="JDaxfRlKgfw1zwaw8MV2xC7Cj00CuzBIpmvdBBbd">-->
                                     <input type="hidden" value="17" id="partner_id">
                                     <button type="button" class="btn btn-primary waves-effect waves-light" id="update_partner">Update</button>
                                     <button type="button" class="close_location_tab btn btn-default waves-effect waves-light" id="">Cancel</button>
@@ -892,7 +1077,6 @@
                                        </div>
                                     </div>
                                     <div class="form-group">
-                                       <input type="hidden" id="csrf_token" value="JDaxfRlKgfw1zwaw8MV2xC7Cj00CuzBIpmvdBBbd">
                                        <button type="button" class="btn btn-primary waves-effect waves-light" id="add_partner">Update</button>
                                        <button type="button" class="close_location_tab btn btn-default waves-effect waves-light" id="">Cancel</button>
                                     </div>
@@ -919,6 +1103,21 @@
 @include('admin_dashboard.footer')
 @endsection
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<script src="{{ asset('theme_files/assets/js/jquery.min.js') }}"></script>
+<script type="text/javascript" src="{{ URL::asset('theme_files/external_files/js/jquery-confirm.min.js') }}"></script>
+{!! Html::script('public/assets/jquery_upload/jquery.uploadfile.min.js') !!}
+<!-- plugin js -->
+<script src="{{ asset('theme_files/plugins/timepicker/bootstrap-timepicker.js') }}"></script>
+<script src="{{ asset('theme_files/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js') }}"></script>
+<script src="{{ asset('theme_files/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
+<script src="{{ asset('theme_files/plugins/clockpicker/js/bootstrap-clockpicker.min.js') }}"></script>
+<script src="{{ asset('theme_files/plugins/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
+<!-- Init js -->
+<script src="{{ asset('theme_files/assets/pages/jquery.form-pickers.init.js') }}"></script>
+<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
 <script>
    $(document).ready(function(){
      $("a").click(function(){
@@ -926,3 +1125,904 @@
      });
    });
 </script>
+@section('script')
+<script>
+
+        $('#get_otp_submt').click(function(){
+        var tempcsrf = $('#csrf_token').val();
+   	    var mobile = $('#otp_mobile_number').val();
+   	    var trip_id = $('#trip_id').val();
+   	    $.ajax({
+   	            type: 'post',
+   	            url: '{{url('get_otp')}}',
+   	            dataType: "json",
+   	            data: {
+   	                    mobile:mobile,
+   	                    trip_id:trip_id,
+   	                    _token:tempcsrf
+   	                  },
+   	            beforeSend: function () {
+   	            },
+   	            success: function (data) {
+   	              if(data != ''){
+   	                  $.confirm({
+                            title: 'OTP!',
+                            content: '' +
+                            '<form action="verify_otp" class="formName">' +
+                            '<div class="form-group">' +
+                            '<label>Enter your OTP here</label>' +
+                            '<input type="text" placeholder="Your OTP" class="otp form-control" required />' +
+                            '</div>' +
+                            '</form>',
+                            buttons: {
+                                formSubmit: {
+                                    text: 'Submit',
+                                    btnClass: 'btn-blue',
+                                    action: function () {
+                                        var otp = this.$content.find('.otp').val();
+                                        var otp_id = data;
+                                        var tempcsrf = $('#csrf_token').val();
+                                        if(!otp){
+                                            $.alert('provide your OTP here');
+                                            return false;
+                                        }
+                                        // $.alert('Your OTP is ' + otp);
+                                        $.ajax({
+                                   	            type: 'POST',
+                                   	            url: '{{url('verify_otp')}}',
+                                   	            dataType: "json",
+                                   	            data: {
+                                   	                    otp:otp,
+                                   	                    otp_id:otp_id,
+                                   	                    _token:tempcsrf
+                                   	                  },
+                                   	            beforeSend: function () {
+                                   	            },
+                                   	            success: function (data) {
+                                   	              if(data == 'success')
+                                   	              {
+                                   	              	$.confirm({
+                                   			            title: 'Success',
+                                   			            content: 'OTP verified successfully.',
+                                   			            autoClose: 'logoutUser|300',
+                                   			            buttons: {
+                                   			                logoutUser: {
+                                   			                text: 'OK',
+                                   			                },
+                                   			            }
+                                   			        });
+                                   	              }
+                                   	              else
+                                   	              {
+                                   	                $.alert({
+                                   	                  title: 'Alert!',
+                                   	                  content: data,
+                                   	                });
+                                   	              }
+                                   	            }
+                                   	          });
+                                    }
+                                },
+                                cancel: function () {
+                                    //close
+                                },
+                            },
+                            onContentReady: function () {
+                                // bind to events
+                                var jc = this;
+                                this.$content.find('form').on('submit', function (e) {
+                                    // if the user submits the form by pressing enter in the field.
+                                    e.preventDefault();
+                                    jc.$$formSubmit.trigger('click'); // reference the button and click it
+                                });
+                            }
+                        });
+   	              }else{
+                        
+   	              }
+   	            }
+   	          });
+    });
+
+
+
+
+    $(document).ready(function(){
+       var tempcsrf = $('#csrf_token').val();
+       var reservation_id = $('#reservation_id').val();
+       var partner_id = $('#product_id').val();
+       var vehicle_id = $('#product_id').val();
+       var image_type = "pickup_vehicle_pic";
+       var extraObj = $("#fileuploader1").uploadFile({
+       url: '{{ url('upload_trip_vehicle_pic') }}',
+       fileName:"myfile",
+       id: "test",
+       formData: {
+            image_type:image_type,
+            reservation_id:reservation_id,
+            partner_id:partner_id,
+            vehicle_id:vehicle_id,
+            action: 'upload_trip_vehicle_pic',
+            _token: tempcsrf
+       },
+       // showDelete: false,
+       // showDone: false,
+       // multiple:false,
+       // dragDrop:false,
+       // //maxFileCount:1,
+       // showProgress: true,
+       // sequential:true,
+       // reset:true,
+       // // maxFileSize:3000*1024,
+       extraHTML:function()
+       {
+         var html = "<div class='row'><div class='form-group col-md-6'><b>Image Direction : </b><select name='direction' id='direction'><option value='front'>Front</option><option value='right'>Right</option><option value='left'>Left</option><option value='back'>Back side</option></select></div>";
+         html += "<div class='form-group col-md-6'><b>Image Type : </b><input type='text' name='description' value='' id='description' /></div>";
+         html += "</div>";
+         return html;        
+       },
+       autoSubmit:false,
+            onSuccess: function (files, data, xhr) {
+                console.log(data);
+                $.confirm({
+                    title: 'Success',
+                    content: 'Vehicle image added successfully',
+                    autoClose: 'logoutUser|300',
+                     buttons: {
+                     logoutUser: {
+                         text: 'OK',
+                         action: function () {
+                          location.reload();
+                      }
+                     },
+                  }
+                });
+               },
+               onError: function(files,status,errMsg,pd)
+               {
+               },
+       });
+       $("#extrabutton").click(function(){
+       extraObj.startUpload();
+       var btemp=document.getElementById('fileuploader1');
+       
+        // alert(document.getElementById('fileuploader1'));
+        //   alert(document.getElementById('fileuploader1')
+        // .getElementsByClassName('ajax-file-upload-container')[0]);
+       
+       //   var btemp1=btemp.getElementsByClassName('ajax-file-upload-filename')[0].innerHTML;
+       //   alert("btemp1".btempl);
+       });
+    });
+
+    $('#add_new_partner_button').click(function(){
+        $('#add_new_partner_tab').toggle(500);
+    });
+    $('#add_partner').click(function(){
+        $('#add_new_partner_tab').hide(1000);
+    });
+    $('.close_new_color_tab').click(function(){
+   	    $('#add_new_color_tab').toggle(500);
+    });
+    $('#add_location_button').click(function(){
+        $('#add_new_color_tab').hide(500);
+        $('#add_new_partner_tab').toggle(500);
+    });
+    $('.close_location_tab').click(function(){
+        $('#add_new_partner_tab').toggle(500);
+    });
+   
+   $("#filter_clear").click(function(){
+    $('#partner_list_datatable').show();
+    $('#filter_partner_list_datatable').hide();
+    $('#partner_list_datatable_wrapper').show();
+    $('#filter_partner_list_datatable_wrapper').hide();
+    // $('#a_pdf').hide();
+    $("#status").val('');
+    $("#partner_area").val('');
+    $('#unique_partner_id').val('');
+    $("#partner_name").val('');
+    $("#partner_phone").val('');
+    $('#partner_email').val('');
+    // alert('ok');
+   });
+
+</script>
+<script>
+   var expanded = false;
+   
+   function showCheckboxes() {
+   var checkboxes = document.getElementById("checkboxes");
+   if (!expanded) {
+     checkboxes.style.display = "block";
+     expanded = true;
+   } else {
+     checkboxes.style.display = "none";
+     expanded = false;
+   }
+   }
+</script>
+<script>
+   /*add partner start*/
+   $(document).ready(function () {
+   
+   
+       $(function() {
+   	   var table =  $('#partner_list_datatable').DataTable({
+               "pageLength":50,
+               "processing":true,
+               "serverSide": false,
+   	        ajax: {
+   	                url: '{{url('get_all_partner_list')}}',
+   	                error: function (xhr, error, thrown) {
+   	                alert(error);
+   	              }  
+   	            },
+                
+                "fnRowCallback" : function(nRow, aData, iDisplayIndex){
+                    if(aData['sst'] != 1){
+                        $("td:nth-child(1)",nRow).click(function(){
+                            window.location = "partner_uilist/"+aData['crypt_id'];
+                            return false;
+                        });
+                        $("td:nth-child(1)",nRow).click(function(){
+                            window.location = "partner_uilist/"+aData['crypt_id'];
+                            return false;
+                        });
+                        $("td:nth-child(2)",nRow).click(function(){
+                            window.location = "partner_uilist/"+aData['crypt_id'];
+                            return false;
+                        });
+                        $("td:nth-child(3)",nRow).click(function(){
+                            window.location = "partner_uilist/"+aData['crypt_id'];
+                            return false;
+                        });
+                        $("td:nth-child(4)",nRow).click(function(){
+                            window.location = "partner_uilist/"+aData['crypt_id'];
+                            return false;
+                        });
+                        $("td:nth-child(5)",nRow).click(function(){
+                            window.location = "partner_uilist/"+aData['crypt_id'];
+                            return false;
+                        });
+                        $("td:nth-child(6)",nRow).click(function(){
+                            window.location = "partner_uilist/"+aData['crypt_id'];
+                            return false;
+                        });
+                        $("td:nth-child(7)",nRow).click(function(){
+                            window.location = "partner_uilist/"+aData['crypt_id'];
+                            return false;
+                        });
+                        $("td:nth-child(8)",nRow).click(function(){
+                            window.location = "partner_uilist/"+aData['crypt_id'];
+                            return false;
+                        });
+                        $("td:first", nRow).html(iDisplayIndex +1);
+                        return nRow;
+                    }
+                    else{
+                        $("td:first", nRow).html(iDisplayIndex +1);
+                        return nRow;
+                    }
+                },
+                
+                
+   	        columns: [
+   	            {data:'partner_id', name: 'partner_id'},
+   	            {data:'unique_partner_id', name: 'unique_partner_id'},
+   	            {data:'partner_name', name: 'partner_name'},
+   	            {data:'partner_phone', name: 'partner_phone'},
+   	            {data:'partner_area', name: 'partner_area'},
+   	            {data:'partner_email', name: 'partner_email'},
+   	            {data:'vehicle_count', name: 'vehicle_count'},
+   	            {data:'status_reason', name: 'status_reason'},
+   	            {data:'status', name: 'status'},
+   	            {data:'action', name: 'action'},
+   	        ]
+   	    });
+   	table.column('2').order('asc');
+   	    $('.tab_2').on('click', function () {
+   	       table.ajax.reload();
+   	    });
+   	});
+  });
+       
+    $("#filter_submit").click(function(){
+    $('#partner_list_datatable_wrapper').hide();
+    $('#filter_partner_list_datatable_wrapper').show();
+   
+    var status = $("#status").val();
+    var partner_area = $("#partner_area").val();
+    var unique_partner_id = $("#unique_partner_id").val();
+    var partner_name = $("#partner_name").val();
+    var partner_phone = $("#partner_phone").val();
+    var partner_email = $("#partner_email").val();
+    var tempcsrf = $('#csrf_token').val();
+    
+    $('#partner_list_datatable').hide();
+    $('#filter_partner_list_datatable').show();
+    $(function() {
+        var table =  $('#filter_partner_list_datatable').DataTable();
+        if($.fn.dataTable.isDataTable('#filter_partner_list_datatable'))
+        {
+            table.destroy();
+        }
+	   var table =  $('#filter_partner_list_datatable').DataTable({
+      "pageLength":20,
+      "processing":true,
+      "serverSide": true,
+      "paginate": true,
+	        ajax: {
+	                type: 'POST',
+	            dataType: 'json',
+	               cache: false,
+        		    data: {
+        		            status:status,
+        		            partner_area:partner_area,
+        		            unique_partner_id:unique_partner_id,
+        		            partner_name:partner_name,
+        		            partner_phone:partner_phone,
+        		            partner_email:partner_email,
+        		            _token:tempcsrf
+        		          },
+	                url: '{{url('filter_get_all_partner_list')}}',
+	                error: function (xhr, error, thrown) {
+	                alert(thrown);      
+	              }
+	            },
+      "fnRowCallback" : function(nRow, aData, iDisplayIndex){
+                if(aData['sst'] != 1){
+                    $("td:nth-child(1)",nRow).click(function(){
+                        window.location = "partner_uilist/"+aData['crypt_id'];
+                        return false;
+                    });
+                    $("td:nth-child(2)",nRow).click(function(){
+                        window.location = "partner_uilist/"+aData['crypt_id'];
+                        return false;
+                    });
+                    $("td:nth-child(3)",nRow).click(function(){
+                        window.location = "partner_uilist/"+aData['crypt_id'];
+                        return false;
+                    });
+                    $("td:nth-child(4)",nRow).click(function(){
+                        window.location = "partner_uilist/"+aData['crypt_id'];
+                        return false;
+                    });
+                    $("td:nth-child(5)",nRow).click(function(){
+                        window.location = "partner_uilist/"+aData['crypt_id'];
+                        return false;
+                    });
+                    $("td:nth-child(6)",nRow).click(function(){
+                        window.location = "partner_uilist/"+aData['crypt_id'];
+                        return false;
+                    });
+                    $("td:nth-child(7)",nRow).click(function(){
+                        window.location = "partner_uilist/"+aData['crypt_id'];
+                        return false;
+                    });
+                    $("td:nth-child(8)",nRow).click(function(){
+                        window.location = "partner_uilist/"+aData['crypt_id'];
+                        return false;
+                    });
+                    $("td:first", nRow).html(iDisplayIndex +1);
+                        return nRow;
+                    }
+                else{
+                    $("td:first", nRow).html(iDisplayIndex +1);
+                        return nRow;
+                }
+                },
+	        columns: [
+   	            {data:'partner_id', name: 'partner_id'},
+   	            {data:'unique_partner_id', name: 'unique_partner_id'},
+   	            {data:'partner_name', name: 'partner_name'},
+   	            {data:'partner_phone', name: 'partner_phone'},
+   	            {data:'partner_area', name: 'partner_area'},
+   	            {data:'partner_email', name: 'partner_email'},
+   	            {data:'vehicle_count', name: 'vehicle_count'},
+   	            {data:'status_reason', name: 'status_reason'},
+   	            {data:'status', name: 'status'},
+   	            {data:'action', name: 'action'},
+    	        ]
+	    });
+    });
+});
+    function delete_partner_info(arg,arg2) {
+   	    var tempcsrf = $('#csrf_token').val();
+   	    var partner_id = arg;
+   	    $.confirm({
+   	        title: 'Confirm!',
+   	        content: 'Are you sure to delete this partner entire detail !!!',
+   	        buttons: {
+   	        confirm: function () {
+   	          $.ajax({
+   	            type: 'POST',
+   	            url: '{{url('delete_partner_details')}}',
+   	            dataType: "json",
+   	            data: {
+   	                    partner_id:partner_id,
+   	                    _token:tempcsrf
+   	                  },
+   	            beforeSend: function () {
+   	            },
+   	            success: function (data) {
+   	              if(data == 'success')
+   	              {
+   	              	$.confirm({
+   			            title: 'Success',
+   			            content: 'Partner Delete Successfully.',
+   			            autoClose: 'logoutUser|300',
+   			            buttons: {
+   			                logoutUser: {
+   			                text: 'OK',
+   			                },
+   			            }
+   			        });
+   	                var table =  $('#partner_list_datatable').DataTable();
+   	             		table.ajax.reload();
+   	              }
+   	              else
+   	              {
+   	                $.alert({
+   	                  title: 'Alert!',
+   	                  content: data,
+   	                });
+   	              }
+   	            }
+   	          });
+   	          },
+   	            cancel: function () {
+   	          }
+   	        }
+   	      });
+   	}
+    
+     
+   	function un_delete_partner_info(arg,arg2) {
+   	    var tempcsrf = $('#csrf_token').val();
+   	    var partner_id = arg;
+   	    var status = arg2;
+   	    $.confirm({
+   	        title: 'Confirm!',
+   	        content: 'Are you sure to delete this partner detail !!!',
+   	        buttons: {
+   	        confirm: function () {
+   	          $.ajax({
+   	            type: 'POST',
+   	            url: '{{url('un_delete_partner_list')}}',
+   	            dataType: "json",
+   	            data: {
+   	                    partner_id:partner_id,
+   	                    status:status,
+   	                    _token:tempcsrf
+   	                  },
+   	            beforeSend: function () {
+   	            },
+   	            success: function (data) {
+   	              if(data == 'success')
+   	              {
+   	              	$.confirm({
+   			            title: 'Success',
+   			            content: 'Partner Delete Successfully.',
+   			            autoClose: 'logoutUser|300',
+   			            buttons: {
+   			                logoutUser: {
+   			                text: 'OK',
+   			                },
+   			            }
+   			        });
+   	                var table =  $('#partner_list_datatable').DataTable();
+   	             		table.ajax.reload();
+   	              }
+   	              else
+   	              {
+   	                $.alert({
+   	                  title: 'Alert!',
+   	                  content: data,
+   	                });
+   	              }
+   	            }
+   	          });
+   	          },
+   	            cancel: function () {
+   	          }
+   	        }
+   	      });
+   	}
+   	
+   	
+   	function status_partner_info(arg,arg2) {
+        var tempcsrf = $('#csrf_token').val();
+        var partner_id = arg;
+        var status = arg2;
+        if( status != "6"){
+            $.confirm({
+            title: 'Confirm!',
+            content: 'Are you sure to change this partner status !!!',
+            buttons: {
+            confirm: function () {
+              $.ajax({
+                type: 'POST',
+                url: '{{url('status_partner_details')}}',
+                dataType: "json",
+                data: {
+                        partner_id:partner_id,
+                        status:status,
+                        _token:tempcsrf
+                      },
+                beforeSend: function () {
+                },
+                success: function (data) {
+                  if(data == 'success')
+                  {
+                  	$.confirm({
+        		            title: 'Success',
+        		            content: 'Updated Successfully.',
+        		            autoClose: 'logoutUser|300',
+        		            buttons: {
+        		                logoutUser: {
+        		                    text: 'OK',
+        		                },
+        		            }
+        		        });
+                    var table =  $('#partner_list_datatable').DataTable();
+                 		table.ajax.reload();
+                  }
+                  else
+                  {
+                    $.alert({
+                      title: 'Alert!',
+                      content: data,
+                    });
+                  }
+                }
+              });
+              },
+                cancel: function () {
+              }
+            }
+          });
+        }else{
+        $.confirm({
+            title: 'Why Resend?',
+            type: 'orange',
+            typeAnimated: true,
+            content: '' +
+            '<form action="" class="formName">' +
+            '<div class="form-group">' +
+            '<label>Enter reason for resend <span style="color:red;">*</span> </label>' +
+            '<input type="text" placeholder="Reason for resend" class="name form-control" required />' +
+            '</div>' +
+            '</form>',
+        buttons: {
+            formSubmit: {
+                text: 'Submit',
+                btnClass: 'btn-blue',
+                action: function () {
+                    var reason = this.$content.find('.name').val();
+                    if(!reason){
+                        $.alert('Provide some reason...');
+                        return false;
+                    }
+                      $.post("{{url('status_partner_details')}}", {_token:tempcsrf,partner_id:partner_id,reason:reason,status:status}, function(data) {
+                      $.confirm({
+                          title: '',
+                          content: 'Resend successfully!',
+                          buttons: {
+                              Ok: function () {
+                              location.reload();
+                              },
+                          }
+                        });
+                      });
+                    }
+                  },
+                  cancel: function () {
+                  },
+              },
+              onContentReady: function () {
+                  var jc = this;
+                  this.$content.find('form').on('submit', function (e) {
+                      e.preventDefault();
+                      jc.$$formSubmit.trigger('click');
+                  });
+              }
+        });
+    }
+    }
+    
+    $("#add_partner").click(function(){
+        var partner_name = $('#partner_name').val();
+        var no_vehicles = $("#vehicle_count").val();
+        var phone_no = $('#phone_no').val();
+		var partner_email = $('#email').val();
+		var partner_location = $('#location_name').val();
+		var partner_type = $('#add_new_partner_type').val();
+        var tempcsrf = $('#csrf_token').val();
+        if((email =='')){
+            $.alert({
+		        title: 'Alert!',
+		        content: "Please fill all mandatory fields !!!",
+		    });
+        }else{
+            $.ajax({
+          type: 'POST',
+          url: '{{ url('add_partner_details') }}',
+          dataType: 'json',
+          data: {
+              partner_name:partner_name,
+              phone_no:phone_no,
+			  partner_email:partner_email,
+			  no_vehicles:no_vehicles,
+			  partner_location:partner_location,
+			  partner_type:partner_type,
+              _token:tempcsrf
+              },
+                beforeSend: function () {
+                },
+                success: function (data) {
+                    if(data == "success"){
+                        $.confirm({
+                            title: 'Success',
+                            content: 'partner details added successfully',
+                            autoClose: 'logoutUser|300',
+                             buttons: {
+                             logoutUser: {
+                                 text: 'OK',
+                             },
+                          }
+                        });
+                    var table =  $('#partner_list_datatable').DataTable();
+   	             		table.ajax.reload();
+                        
+                    }else{
+                        $.alert({
+            		        title: 'Alert!',
+            		        content: "partner details already exists !!!",
+            		    });
+                    }
+  	            }
+              });
+        }
+    });
+    
+    $("#partner_name").keyup(function() {
+        var inpObj = document.getElementById("partner_name");
+        var regex = /^[A-Za-z ]+$/;
+        if (regex.test(this.value) !== true)
+        this.value = this.value.replace(/[^A-Za-z +-.,]+/, '');
+        if (!inpObj.checkValidity()) {
+        document.getElementById("demo").innerHTML = inpObj.validationMessage;
+        }
+    });
+    
+    $("#location_name").keyup(function() {
+        var inpObj = document.getElementById("location_name");
+        var regex = /^[A-Za-z ]+$/;
+        if (regex.test(this.value) !== true)
+        this.value = this.value.replace(/[^A-Za-z +-.,]+/, '');
+        if (!inpObj.checkValidity()) {
+        document.getElementById("demo").innerHTML = inpObj.validationMessage;
+        }
+    });
+      
+      $("#phone_no").keyup(function() {
+        var inpObj = document.getElementById("phone_no");
+        var regex = /^[0-9 +.,]+$/;
+        if (regex.test(this.value) !== true)
+        this.value = this.value.replace(/[^0-9 +.,]+/, '');
+        if (!inpObj.checkValidity()) {
+        document.getElementById("demo").innerHTML = inpObj.validationMessage;
+        }
+      });
+   /*end partner*/
+    $(document).on('mouseenter', ".iffyTip", function () {
+     var $this = $(this);
+     if (this.offsetWidth < this.scrollWidth && !$this.attr('title')) {
+         $this.tooltip({
+             title: $this.text(),
+             placement: "top"
+         });
+         $this.tooltip('show');
+     }
+ });
+$('.hideText').css('width',$('.hideText').parent().width());
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+
+
+$(document).ready(function (){
+    var table = $('#example').DataTable({
+        'ajax': '',
+        'dom': 'Rlfrtip',
+    });
+});
+
+</script>
+<script>
+    $(function() {
+        var pressed = false;
+        var start = undefined;
+        var startX, startWidth;
+        
+        $("table th").mousedown(function(e) {
+            start = $(this);
+            pressed = true;
+            startX = e.pageX;
+            startWidth = $(this).width();
+            $(start).addClass("resizing");
+        });
+        
+        $(document).mousemove(function(e) {
+            if(pressed) {
+                $(start).width(startWidth+(e.pageX-startX));
+            }
+        });
+        
+        $(document).mouseup(function() {
+            if(pressed) {
+                $(start).removeClass("resizing");
+                pressed = false;
+            }
+        });
+    });
+</script>
+<script>
+
+    $('#add_new_add_on').click(function(){
+       $('.targetdiv3').slideUp();
+       $('.targetdiv3').hide(500);
+       $('#mySidenav3').slideToggle();
+   });
+   
+    $('#close_tab').click(function(){
+       $('.targetdiv3').hide(500);
+   });
+    
+   var tempcsrf = $('#csrf_token').val();
+   var reservation_id = $('#reservation_id').val();
+//   alert(inserted_vehicle_id);
+   var cust_doc = "Trip Customer Document";
+   var agree_doc = "Trip Agreement Document";
+   
+    var extraObj = $("#customer_upload").uploadFile({
+       dataType: 'json',
+       url:"{{ url('upload_customer_document') }}",
+       fileName:"myfile",
+       formData: {
+            reservation_id: reservation_id,
+            cust_doc: cust_doc,
+            action: 'upload_customer_document',
+             _token: tempcsrf
+       },
+    showDelete: true,
+    // showDone: true,
+    multiple:false,
+    dragDrop:false,
+   // //maxFileCount:1,
+    showProgress: false,
+   // sequential:true,
+   // reset:true,
+   // // maxFileSize:3000*1024,
+    // autoSubmit:true,
+        onSuccess: function (files, data, xhr) {
+            $(".download_agreement").html("<li><a href='../"+data[0]+"' target='_blank'>"+data[1]+"</a><a onclick='delete_document_detail('"+data[2]+","+data[3]+"');'><i class='fa fa-trash' style='color:red; cursor: pointer;margin-left: 15px; display: none;'></i></a></li>");
+            console.log(data);
+            $(".ajax-file-upload-container").hide();
+            $.confirm({
+                    title: 'Success',
+                    content: 'Document Uploaded successfully',
+                    autoClose: 'logoutUser|300',
+                     buttons: {
+                     logoutUser: {
+                         text: 'OK',
+                    //      action: function () {
+                    //       location.reload();
+                    //   }
+                     },
+                  }
+                });
+        
+        },
+   onError: function(files,status,errMsg,pd)
+   {
+   },
+   });
+   var extraObj = $("#customer_agreement_upload").uploadFile({
+       dataType: 'json',
+       url:"{{ url('upload_customer_document') }}",
+       fileName:"myfile",
+       formData: {
+            reservation_id: reservation_id,
+            agree_doc: agree_doc,
+            action: 'upload_customer_document',
+             _token: tempcsrf
+       },
+    showDelete: true,
+    // showDone: true,
+    multiple:false,
+    dragDrop:false,
+   // //maxFileCount:1,
+    showProgress: false,
+   // sequential:true,
+   // reset:true,
+   // // maxFileSize:3000*1024,
+    // autoSubmit:true,
+        onSuccess: function (files, data, xhr) {
+            $(".download_agreement").html("<li><a href='../"+data[0]+"' target='_blank'>"+data[1]+"</a><a onclick='delete_document_detail('"+data[2]+","+data[3]+"');'><i class='fa fa-trash' style='color:red; cursor: pointer;margin-left: 15px; display: none;'></i></a></li>");
+            console.log(data);
+            $(".ajax-file-upload-container").hide();
+            $.confirm({
+                    title: 'Success',
+                    content: 'Document Uploaded successfully',
+                    autoClose: 'logoutUser|300',
+                     buttons: {
+                     logoutUser: {
+                         text: 'OK',
+                    //      action: function () {
+                    //       location.reload();
+                    //   }
+                     },
+                  }
+                });
+        
+        },
+   onError: function(files,status,errMsg,pd)
+   {
+   },
+   });
+   
+   function delete_document_detail(arg, arg1){
+    var document_id = arg;
+    var document_path = arg1;
+    var tempcsrf = $('#csrf_token').val();
+    $.confirm({
+           title: 'Confirm!',
+           content: 'Are you sure to delete this file !!!',
+           buttons: {
+           confirm: function () {
+                $.ajax({
+     type: 'POST',
+     url: '{{ url('delete_trip_document') }}',
+     dataType: 'json',
+     data: {
+            document_id:document_id,
+            document_path:document_path,
+            _token:tempcsrf
+         },
+           beforeSend: function () {
+           },
+           success: function (data) {
+               if(data == "success"){
+                   $.confirm({
+                      title: 'Success',
+                      content: 'File deleted successfully',
+                      autoClose: 'logoutUser|300',
+                        buttons: {
+                        logoutUser: {
+                            text: 'OK',
+                            action: function () {
+                            location.reload();
+                            }
+                        },
+                     }
+                  });
+               }else{
+                   $.alert({
+                       title: 'Alert!',
+                       content: "partner details already exists !!!",
+                   });
+               }
+           }
+         });
+             },
+               cancel: function () {
+             }
+           }
+         });
+}
+
+</script>
+
+@endsection

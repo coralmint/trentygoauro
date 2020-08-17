@@ -2074,7 +2074,6 @@ $unread_messages = DB::table('admin_partner_messages as apm')
         try {
            
             $get_all_trip_list = DB::table('trip_details as td')
-                                ->leftJoin('partner_details as pd', 'td.partner_id', 'pd.partner_id')
                                 ->where('td.status','1')
                                 ->get();                    
 
@@ -2112,7 +2111,7 @@ $unread_messages = DB::table('admin_partner_messages as apm')
                     })
                 ->addColumn('action', function ($get_all_trip_list) {
                   return '<center>
-                        <a href="'.url('tripdetails/'.Crypt::encryptString($get_all_trip_list->partner_id).'').'" class="on-default edit-row" title=""><i class="fa fa-eye" data-toggle="tooltip" title="partner_details!"></i></a></center> 
+                        <a href="'.url('tripdetails/'.Crypt::encryptString($get_all_trip_list->trip_details_id).'').'" class="on-default edit-row" title=""><i class="fa fa-eye" data-toggle="tooltip" title="partner_details!"></i></a></center> 
                         </center>';
                         // <a style="cursor:pointer; color:#007bff;" class="on-default remove-row" title="" onclick="return delete_owner( '.$get_all_owner->owner_id.',2);"><i class="fa fa-trash-o"></i></a>
                     })
@@ -2125,32 +2124,64 @@ $unread_messages = DB::table('admin_partner_messages as apm')
     }
     
      public function tripdetails(Request $req){
-        $partner_id = Crypt::decryptString($req->id);
-        $cus_info = DB :: table('customer_details as cd')
-                     ->join('trip_details as td','cd.customer_id','td.customer_id')
-                     ->select('cd.customer_name','cd.customer_phone','cd.customer_email')
-                     ->where('td.partner_id',$partner_id)
+        $trip_details_id = Crypt::decryptString($req->id);
+        $trip_info = DB :: table('trip_details as td')
+                     ->join('customer_details as cd','td.customer_id','cd.customer_id')
+                     ->join('reservation_details as rd','td.reservation_id','rd.reservation_id')
+                     ->join('partner_details as pd','td.partner_id','pd.partner_id')
+                     ->join('vehicle_details as vd','td.vehicle_id','vd.vehicle_id')
+                     ->where('td.trip_details_id',$trip_details_id)
                     ->get();
-        $res_info = DB :: table('reservation_details as rd')
-                     ->join('trip_details as td','rd.reservation_id','td.reservation_id')
-                     ->select('rd.reserve_unique_id','rd.reservation_date','rd.reserve_through','rd.reservation_amount','rd.start_date','rd.return_date','rd.paid_amount')
-                     ->where('td.partner_id',$partner_id)
-                    ->get();
-        $part_info = DB :: table('partner_details as pd')
-                     ->join('trip_details as td','pd.partner_id','td.partner_id')
-                     ->select('pd.partner_name')
-                     ->where('td.partner_id',$partner_id)
-                    ->get(); 
-        $veh_info = DB :: table('vehicle_details as vd')
-                     ->join('trip_details as td','vd.vehicle_id','td.vehicle_id')
-                     ->select('vd.vehicle_reg_no','vd.vehicle_model')
-                     ->where('td.partner_id',$partner_id)
-                    ->get();             
+                   /* print_r($cus_info);
+                    die();*/
+                    
+        $rent_array = array();
+        $date_array = array();
+        $all_date_array = array();
+        $default_array = array();
+        $reserv_details = DB :: table('trip_details as td')
+                        ->join('reservation_details as rd','td.reservation_id','rd.reservation_id')
+                        ->where('td.trip_details_id',$trip_details_id)
+                        ->get();
+        $Variable1 = strtotime($reserv_details[0]->start_date);
+        $Variable2 = strtotime($reserv_details[0]->return_date);
+        for ($currentDate = $Variable1; $currentDate <= $Variable2; $currentDate += (86400)) {
+            $Store = date('d-m-Y', $currentDate); 
+            $date_value = DB::table('manage_vehicle_rent as mvr')->where('mvr.date',$Store)->where('mvr.vehicle_id',$reserv_details[0]->vehicle_id)->get();
+            // $all_date_array = $Store;
+            array_push($all_date_array, $Store);
+            foreach($date_value as $dv){
+                array_push($rent_array, $dv->rent);
+                array_push($date_array, $dv->date);
+            }
+        }
+        $default_count=count(array_diff($all_date_array,$date_array));
+        $default_array = array_values(array_diff($all_date_array,$date_array));
+        $vehicle_addons = DB::table('vehicle_features as vf')
+                            ->join('master_data as md','vf.option_name','md.master_data_id')
+                            ->where('vf.vehicle_id',$reserv_details[0]->vehicle_id)
+                            ->where('vf.features_for',2)
+                            ->get();
+        $total_addons_values = DB::table('vehicle_features')
+                            ->where('vehicle_id',$reserv_details[0]->vehicle_id)
+                            ->where('features_for',2)
+                            ->select('vehicle_id',DB::raw("sum(addon_value) as addon_total"))
+                            ->groupBy('vehicle_id')
+                            ->get();            
+      
         return view('admin_dashboard/tripdetails')
-                    ->with('cus_info', $cus_info)
-                    ->with('res_info', $res_info)
-                    ->with('part_info', $part_info)
-                    ->with('veh_info', $veh_info);
+                    ->with('trip_info', $trip_info)
+                    ->with('rent_array', $rent_array)
+                    ->with('date_array', $date_array)
+                    ->with('all_date_array', $all_date_array)
+                    ->with('default_array', $default_array)
+                    ->with('reserv_details', $reserv_details)
+                    ->with('Variable1', $Variable1)
+                    ->with('Variable2', $Variable2)
+                    ->with('default_count', $default_count)
+                    ->with('vehicle_addons', $vehicle_addons)
+                    ->with('total_addons_values', $total_addons_values);
+                    
     }
   
     public function triplist(){
@@ -2167,7 +2198,7 @@ $unread_messages = DB::table('admin_partner_messages as apm')
            $get_all_trip_list = DB::table('trip_details as td')
                                 ->join('reservation_details as rd','td.reservation_id','rd.reservation_id')
                                 ->join('partner_details as pd','td.partner_id','pd.partner_id')
-                                ->select('rd.reserve_unique_id','rd.phone','rd.start_date','rd.return_date','td.status','pd.partner_name','pd.partner_id')
+                                ->select('td.trip_details_id','rd.reserve_unique_id','rd.phone','rd.start_date','rd.return_date','td.status','pd.partner_name','pd.partner_id')
                                 ->where('td.status','1')->get();
                             
             return Datatables::of($get_all_trip_list)
@@ -2182,7 +2213,7 @@ $unread_messages = DB::table('admin_partner_messages as apm')
                         $phone .= '<center>'.$get_all_trip_list->phone.'</center>';
                        return $phone.'';
                     }) 
-                 ->addColumn('partner_name', function ($get_all_trip_list) {
+                ->addColumn('partner_name', function ($get_all_trip_list) {
                         $partner_name = '';
                         $partner_name .= '<center>'.$get_all_trip_list->partner_name.'</center>';
                        return $partner_name.'';
@@ -2202,7 +2233,7 @@ $unread_messages = DB::table('admin_partner_messages as apm')
                     return $sst;
                     })
                 ->addColumn('crypt_id', function ($get_all_trip_list) {
-                    $reser_list = Crypt::encryptString($get_all_trip_list->partner_id);
+                    $reser_list = Crypt::encryptString($get_all_trip_list->trip_details_id);
                    return $reser_list.'';
                 })
                 ->addColumn('status', function ($get_all_trip_list) {
@@ -2218,7 +2249,7 @@ $unread_messages = DB::table('admin_partner_messages as apm')
                     })
                 
                 ->addColumn('action', function ($get_all_trip_list) {
-                  return '<center><a href="'.url('tripdetails/'.Crypt::encryptString($get_all_trip_list->partner_id).'').'" class="on-default edit-row" title="" target=""><i class="fa fa-eye" data-toggle="tooltip" title="Trip_details!"></i></a></center>';
+                  return '<center><a href="'.url('tripdetails/'.Crypt::encryptString($get_all_trip_list->trip_details_id).'').'" class="on-default edit-row" title="" target=""><i class="fa fa-eye" data-toggle="tooltip" title="Trip_details!"></i></a></center>';
 
                     }) 
              ->rawColumns(array("reserve_unique_id","phone","partner_name","start_date","return_date","status","action","crypt_id"))
@@ -2344,6 +2375,95 @@ $unread_messages = DB::table('admin_partner_messages as apm')
         } catch (QueryException $e) {
             echo "Bad Request";
             dd(); 
+        }
+    }
+    
+    public function upload_customer_document(Request $req){
+            if($req->has('cust_doc') != ''){
+                $file_for = $req->cust_doc;
+                $file_detail = "Trip Details Upload Customer Document";
+            }else if($req->has('agree_doc') != ''){
+                $file_for = $req->agree_doc;
+                $file_detail = "Trip Details Agreement Document";
+            }
+            
+            if (!file_exists('upload/trip_document/'.$req->reservation_id.'/Trip Documents/')) {
+                mkdir('upload/trip_document/'.$req->reservation_id.'/Trip Documents/', 0777, true);
+            }
+            $output_dir = 'upload/trip_document/'.$req->reservation_id.'/Trip Documents/';
+            if(isset($_FILES["myfile"]))
+            {
+                $ret=array();
+                if(!is_array($_FILES["myfile"]["name"])) //single file
+                {
+                    $fileName = $_FILES["myfile"]["name"];
+                    $duplicate_fileName = $req->reservation_id.'Trip Customer Documents';
+                    $ext = (explode(".", $fileName));
+                    $file_ext = $ext[1];
+                    $image_url = "https://trentygo.coralmint.in/upload/trip_document/$req->reservation_id/Trip Customer Documents/$fileName";
+                    $image_path = "upload/trip_document/$req->reservation_id/Trip Customer Documents/";
+                    $data = array(
+                                    'reservation_id' => $req->reservation_id,
+                                    'file_name' => $duplicate_fileName,
+                                    'file_ext' => $file_ext,
+                                    'file_url' => $image_url,
+                                    'file_path' => $image_path,
+                                    'file_orginal_name' => $fileName,
+                                    'file_for' => $file_for,
+                                    'file_detail' => $file_detail,
+                                );
+                    // echo $fileName.$output_dir ;
+                    $old_data_count = DB::table('document_details')
+                                        ->where('reservation_id',$req->reservation_id)
+                                        ->where('vehicle_id',$req->vehicle_id)
+                                        ->count();
+                    // if($old_data_count == 0){
+                        DB::table('document_details')->insert($data);
+                        $inserted_id = DB::getPdo()->lastInsertId();
+                        move_uploaded_file($_FILES["myfile"]["tmp_name"],$output_dir.$fileName);
+                        array_push($ret, $image_url);
+                        array_push($ret, $fileName);
+                        array_push($ret, $inserted_id);
+                        array_push($ret, $image_path);
+                    // }else{
+                    //     DB::table('document_details')
+                    //             ->where('partner_id',$req->partner_id)
+                    //             ->where('file_name',$duplicate_fileName)
+                    //             ->where('vehicle_id',$req->vehicle_id)
+                    //             ->delete();
+                    //     DB::table('document_details')->insert($data);
+                    //     $ret = DB::getPdo()->lastInsertId();
+                    //     move_uploaded_file($_FILES["myfile"]["tmp_name"],$output_dir.$fileName);
+                    //     $responsedata = $fileName;   
+                    // }
+                    // array_push($ret, $property_image);
+                    // print_r($ret);
+                }
+                else  //Multiple files, file[]
+                {
+                  $fileCount = count($_FILES["myfile"]["name"]);
+                  for($i=0; $i < $fileCount; $i++)
+                  {
+                    $fileName = $_FILES["myfile"]["name"][$i];
+                    $duplicate_fileName = $req->reservation_id.'vehicle_img'[$i];
+                    array_push($ret, $image_url);
+                    array_push($ret, $fileName);
+                    array_push($ret, $inserted_id);
+                    array_push($ret, $image_path);
+                  }            
+                }            
+                return $ret;
+            }
+    }
+    
+     public static function delete_trip_document(Request $req){
+        if (file_exists($req->document_path)) {
+            unlink($req->document_path);
+            DB::table('document_details')->where('document_details_id', '=', $req->document_id)->delete();
+            return json_encode('success');
+        }else{
+            DB::table('document_details')->where('document_details_id', '=', $req->document_id)->delete();
+            return json_encode('success');
         }
     }
     

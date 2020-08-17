@@ -71,7 +71,7 @@
    background: #fff;
    }
    .form-control{
-       font-size:12px;
+   font-size:12px;
    }
    /* Add indicator arrow for the active tab */
    @media (min-width: 992px) {
@@ -273,211 +273,196 @@
    margin-bottom: 10px;
    }
    .form-control{
-       font-size:12px !important;
+   font-size:12px !important;
    }
    button.envoy {
-    padding: 10px 16px !important;
-    font-size: 14px;
-    background-color: #14b3b9;
-    color: #fff;
-    border: none;
-    border-radius: 10px;
-}
-img{ max-width:100%;}
-.inbox_people {
-  background: #f8f8f8 none repeat scroll 0 0;
-  float: left;
-  overflow: hidden;
-  width: 40%; border-right:1px solid #c4c4c4;
-}
-.inbox_msg {
-  border: 1px solid #c4c4c4;
-  clear: both;
-  overflow: hidden;
-}
-.top_spac{ margin: 20px 0 0;}
-
-
-.recent_heading {float: left; width:40%;}
-.srch_bar {
-  display: inline-block;
-  text-align: right;
-  width: 60%; padding:
-}
-.headind_srch{ padding:10px 29px 10px 20px; overflow:hidden; border-bottom:1px solid #c4c4c4;}
-
-.recent_heading h4 {
-  color: #05728f;
-  font-size: 21px;
-  margin: auto;
-}
-.srch_bar input{ border:1px solid #cdcdcd; border-width:0 0 1px 0; width:80%; padding:2px 0 4px 6px; background:none;}
-.srch_bar .input-group-addon button {
-  background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
-  border: medium none;
-  padding: 0;
-  color: #707070;
-  font-size: 18px;
-}
-.srch_bar .input-group-addon { margin: 0 0 0 -27px;}
-
-.chat_ib h5{ font-size:15px; color:#464646; margin:0 0 8px 0;}
-.chat_ib h5 span{ font-size:13px; float:right;}
-.chat_ib p{ font-size:14px; color:#989898; margin:auto}
-.chat_img {
-  float: left;
-  width: 11%;
-}
-.chat_ib {
-  float: left;
-  padding: 0 0 0 15px;
-  width: 88%;
-}
-
-.chat_people{ overflow:hidden; clear:both;}
-.chat_list {
-  border-bottom: 1px solid #c4c4c4;
-  margin: 0;
-  padding: 18px 16px 10px;
-}
-.inbox_chat { height: 550px; overflow-y: scroll;}
-
-.active_chat{ background:#ebebeb;}
-
-.incoming_msg_img {
-  display: inline-block;
-  width: 6%;
-}
-.received_msg {
-  display: inline-block;
-  padding: 0 0 0 10px;
-  vertical-align: top;
-  width: 92%;
- }
- .received_withd_msg p {
-  background: #ebebeb none repeat scroll 0 0;
-  border-radius: 3px;
-  color: #646464;
-  font-size: 14px;
-  margin: 0;
-  padding: 5px 10px 5px 12px;
-  width: 100%;
-}
-.time_date {
-  color: #747474;
-  display: block;
-  font-size: 12px;
-  margin: 8px 0 0;
-}
-.received_withd_msg { width: 57%;}
-.mesgs {
-  float: left;
-  padding: 30px 15px 0 25px;
-  width: 60%;
-}
-
- .sent_msg p {
-  background: #05728f none repeat scroll 0 0;
-  border-radius: 3px;
-  font-size: 14px;
-  margin: 0; color:#fff;
-  padding: 5px 10px 5px 12px;
-  width:100%;
-}
-.outgoing_msg{ overflow:hidden; margin:26px 0 26px;}
-.sent_msg {
-  float: right;
-  width: 46%;
-}
-.input_msg_write input {
-  background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
-  border: medium none;
-  color: #4c4c4c;
-  font-size: 15px;
-  min-height: 48px;
-  width: 100%;
-}
-
-.type_msg {border-top: 1px solid #c4c4c4;position: relative;}
-.msg_send_btn {
-  background: #05728f none repeat scroll 0 0;
-  border: medium none;
-  border-radius: 50%;
-  color: #fff;
-  cursor: pointer;
-  font-size: 17px;
-  height: 33px;
-  position: absolute;
-  right: 0;
-  top: 11px;
-  width: 33px;
-}
-.messaging { padding: 0 0 50px 0;}
-.msg_history {
-  height: 516px;
-  overflow-y: auto;
-}
-.bredim {
-    background-color: #071DAA;
-    padding: 2% 10% 10px;
-}
-.wrapper {
-    padding-top: 80px;
-}
-.tab-pane {
-    background-color: #fff;
-   
-}
-.form-row.formtab {
-    padding: 0px 15px;
-}
-
-h3.detailbook {
-       font-size: 16px;
-    background-color: #15b1ba;
-    color: #fff;
-    padding: 5px;
-    margin: 0px 0px 10px;
-}
-.warnbtn {
-    /* margin: 10px 0px 20px; */
-    padding: 15px 0px;
-}
-.formtab .form-group.col-md-3 {
-    margin-bottom: 0px !important;
-}
-.pauim{
--webkit-box-shadow: 0px 0px 7px -2px rgba(21,179,182,1);
--moz-box-shadow: 0px 0px 7px -2px rgba(21,179,182,1);
-box-shadow: 0px 0px 7px -2px rgba(21,179,182,1);
-   
-    background-color:#fff;
-}
-button#btnFA {
-    display: block;
-    margin: 0 auto;
-}
-.prolabel {
-    color: #223770;
-    font-weight: bold;
-    font-size:14px;
-    
-}
-
-
-textarea.description {
-    border: 1px solid #ddd;
-    border-radius: 3px;
-}
-.namelabel {
-    font-size: 13px;
-}
-textarea.description.refun {
-    height: 100px;
-}
-input.form-control.refun{
-     height: 50px;
-}
+   padding: 10px 16px !important;
+   font-size: 14px;
+   background-color: #14b3b9;
+   color: #fff;
+   border: none;
+   border-radius: 10px;
+   }
+   img{ max-width:100%;}
+   .inbox_people {
+   background: #f8f8f8 none repeat scroll 0 0;
+   float: left;
+   overflow: hidden;
+   width: 40%; border-right:1px solid #c4c4c4;
+   }
+   .inbox_msg {
+   border: 1px solid #c4c4c4;
+   clear: both;
+   overflow: hidden;
+   }
+   .top_spac{ margin: 20px 0 0;}
+   .recent_heading {float: left; width:40%;}
+   .srch_bar {
+   display: inline-block;
+   text-align: right;
+   width: 60%; padding:
+   }
+   .headind_srch{ padding:10px 29px 10px 20px; overflow:hidden; border-bottom:1px solid #c4c4c4;}
+   .recent_heading h4 {
+   color: #05728f;
+   font-size: 21px;
+   margin: auto;
+   }
+   .srch_bar input{ border:1px solid #cdcdcd; border-width:0 0 1px 0; width:80%; padding:2px 0 4px 6px; background:none;}
+   .srch_bar .input-group-addon button {
+   background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+   border: medium none;
+   padding: 0;
+   color: #707070;
+   font-size: 18px;
+   }
+   .srch_bar .input-group-addon { margin: 0 0 0 -27px;}
+   .chat_ib h5{ font-size:15px; color:#464646; margin:0 0 8px 0;}
+   .chat_ib h5 span{ font-size:13px; float:right;}
+   .chat_ib p{ font-size:14px; color:#989898; margin:auto}
+   .chat_img {
+   float: left;
+   width: 11%;
+   }
+   .chat_ib {
+   float: left;
+   padding: 0 0 0 15px;
+   width: 88%;
+   }
+   .chat_people{ overflow:hidden; clear:both;}
+   .chat_list {
+   border-bottom: 1px solid #c4c4c4;
+   margin: 0;
+   padding: 18px 16px 10px;
+   }
+   .inbox_chat { height: 550px; overflow-y: scroll;}
+   .active_chat{ background:#ebebeb;}
+   .incoming_msg_img {
+   display: inline-block;
+   width: 6%;
+   }
+   .received_msg {
+   display: inline-block;
+   padding: 0 0 0 10px;
+   vertical-align: top;
+   width: 92%;
+   }
+   .received_withd_msg p {
+   background: #ebebeb none repeat scroll 0 0;
+   border-radius: 3px;
+   color: #646464;
+   font-size: 14px;
+   margin: 0;
+   padding: 5px 10px 5px 12px;
+   width: 100%;
+   }
+   .time_date {
+   color: #747474;
+   display: block;
+   font-size: 12px;
+   margin: 8px 0 0;
+   }
+   .received_withd_msg { width: 57%;}
+   .mesgs {
+   float: left;
+   padding: 30px 15px 0 25px;
+   width: 60%;
+   }
+   .sent_msg p {
+   background: #05728f none repeat scroll 0 0;
+   border-radius: 3px;
+   font-size: 14px;
+   margin: 0; color:#fff;
+   padding: 5px 10px 5px 12px;
+   width:100%;
+   }
+   .outgoing_msg{ overflow:hidden; margin:26px 0 26px;}
+   .sent_msg {
+   float: right;
+   width: 46%;
+   }
+   .input_msg_write input {
+   background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+   border: medium none;
+   color: #4c4c4c;
+   font-size: 15px;
+   min-height: 48px;
+   width: 100%;
+   }
+   .type_msg {border-top: 1px solid #c4c4c4;position: relative;}
+   .msg_send_btn {
+   background: #05728f none repeat scroll 0 0;
+   border: medium none;
+   border-radius: 50%;
+   color: #fff;
+   cursor: pointer;
+   font-size: 17px;
+   height: 33px;
+   position: absolute;
+   right: 0;
+   top: 11px;
+   width: 33px;
+   }
+   .messaging { padding: 0 0 50px 0;}
+   .msg_history {
+   height: 516px;
+   overflow-y: auto;
+   }
+   .bredim {
+   background-color: #071DAA;
+   padding: 2% 10% 10px;
+   }
+   .wrapper {
+   padding-top: 80px;
+   }
+   .tab-pane {
+   background-color: #fff;
+   }
+   .form-row.formtab {
+   padding: 0px 15px;
+   }
+   h3.detailbook {
+   font-size: 16px;
+   background-color: #15b1ba;
+   color: #fff;
+   padding: 5px;
+   margin: 0px 0px 10px;
+   }
+   .warnbtn {
+   /* margin: 10px 0px 20px; */
+   padding: 15px 0px;
+   }
+   .formtab .form-group.col-md-3 {
+   margin-bottom: 0px !important;
+   }
+   .pauim{
+   -webkit-box-shadow: 0px 0px 7px -2px rgba(21,179,182,1);
+   -moz-box-shadow: 0px 0px 7px -2px rgba(21,179,182,1);
+   box-shadow: 0px 0px 7px -2px rgba(21,179,182,1);
+   background-color:#fff;
+   }
+   button#btnFA {
+   display: block;
+   margin: 0 auto;
+   }
+   .prolabel {
+   color: #223770;
+   font-weight: bold;
+   font-size:14px;
+   }
+   textarea.description {
+   border: 1px solid #ddd;
+   border-radius: 3px;
+   }
+   .namelabel {
+   font-size: 13px;
+   }
+   textarea.description.refun {
+   height: 100px;
+   }
+   input.form-control.refun{
+   height: 50px;
+   }
 </style>
 <div id="preloader">
    <div id="status">&nbsp;</div>
@@ -522,11 +507,10 @@ input.form-control.refun{
                <a class="nav-link p-3" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="true">
                <i class="fa fa-check mr-2"></i>
                <span class="font-weight-bold small text-uppercase">Billing Details</span></a>
-               
-                <a class="nav-link p-3" id="v-pills-cancelbook-tab" data-toggle="pill" href="#v-pills-cancelbook" role="tab" aria-controls="v-pills-cancelbook" aria-selected="true">
+               <a class="nav-link p-3" id="v-pills-cancelbook-tab" data-toggle="pill" href="#v-pills-cancelbook" role="tab" aria-controls="v-pills-cancelbook" aria-selected="true">
                <i class="fa fa-calendar mr-2"></i>
                <span class="font-weight-bold small text-uppercase">Cancellation Booking</span></a>
-                <a class="nav-link p-3" id="v-pills-comment-tab" data-toggle="pill" href="#v-pills-comment" role="tab" aria-controls="v-pills-comment" aria-selected="true">
+               <a class="nav-link p-3" id="v-pills-comment-tab" data-toggle="pill" href="#v-pills-comment" role="tab" aria-controls="v-pills-comment" aria-selected="true">
                <i class="fa fa-user mr-2"></i>
                <span class="font-weight-bold small text-uppercase">Comments</span></a>
             </div>
@@ -535,11 +519,11 @@ input.form-control.refun{
             <!-- Tabs content -->
             <div class="tab-content" id="v-pills-tabContent">
                <div class="tab-pane fade shadow rounded bg-white show active p-5" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
-                    <div class="form-row formtab">
+                  <div class="form-row formtab">
                      <div class="form-group col-md-4">
                         <div class="form-group has-float-label">
                            <div class="input-group">
-                              <input type="text" class="form-control" value="{{ $cus_reserv_details[0]->reservation_date }}" disabled id="reservation_date">
+                              <input type="text" class="form-control" value="{{ $reserv_details[0]->reservation_date }}" disabled id="reservation_date">
                               <div class="input-group-append">
                                  <span class="input-group-text"><i class="mdi mdi-calendar"></i></span>
                                  <label for="Vehicle Color">Reservation Date</label>
@@ -552,7 +536,7 @@ input.form-control.refun{
                         <input type="hidden" value="" id="vehicle_id" />
                         <div class="form-group has-float-label">
                            <div class="input-group">
-                              <input type="text" class="form-control" value="{{ $cus_reserv_details[0]->start_date }}" id="reservation_start_date">
+                              <input type="text" class="form-control" value="{{ $reserv_details[0]->start_date }}" id="reservation_start_date">
                               <div class="input-group-append">
                                  <span class="input-group-text"><i class="mdi mdi-calendar"></i></span>
                                  <label for="Vehicle Color">Booked Date From</label>
@@ -563,7 +547,7 @@ input.form-control.refun{
                      <div class="form-group col-md-4">
                         <div class="form-group has-float-label">
                            <div class="input-group">
-                              <input type="text" class="form-control" value="{{ $cus_reserv_details[0]->return_date }}" id="reservation_return_date">
+                              <input type="text" class="form-control" value="{{ $reserv_details[0]->return_date }}" id="reservation_return_date">
                               <div class="input-group-append">
                                  <span class="input-group-text"><i class="mdi mdi-calendar"></i></span>
                                  <label for="Vehicle Color">Booked Date To</label>
@@ -573,31 +557,29 @@ input.form-control.refun{
                      </div>
                      <div class="form-group col-md-4">
                         <div class="form-group has-float-label">
-                            <input type="text" class="form-control" value="{{ $pick_up_location[0]->location_name }}" onfocus="this.placeholder = ''" disabled required autofocus >
+                           <input type="text" class="form-control" value="{{ $reserv_details[0]->location_name }}" onfocus="this.placeholder = ''" disabled required autofocus >
                            <label for="status">Pick up location</label>
                         </div>
                      </div>
                      <div class="form-group col-md-4">
                         <div class="form-group has-float-label">
-                           <input type="text" class="form-control" value="{{ $drop_up_location[0]->location_name }}" onfocus="this.placeholder = ''" disabled required autofocus >
+                           <input type="text" class="form-control" value="{{ $reserv_details[0]->location_name }}" onfocus="this.placeholder = ''" disabled required autofocus >
                            <label for="status">Drop up location</label>
                         </div>
                      </div>
-                  
                      <div class="form-group col-md-4">
                         <div class="form-group has-float-label">
-                        <div class="input-group">
-                            <input type="text" class="form-control" value="{{ $cus_reserv_details[0]->vehicle_reg_no }}" onfocus="this.placeholder = ''" disabled required autofocus >
-                            <div class="input-group-append">
-                                
+                           <div class="input-group">
+                              <input type="text" class="form-control" value="{{ $reserv_details[0]->vehicle_reg_no }}" onfocus="this.placeholder = ''" disabled required autofocus >
+                              <div class="input-group-append">
                                  <label for="Vehicle Color">Vehicle Reg No</label>
-                            </div>
-                        </div>
+                              </div>
+                           </div>
                         </div>
                      </div>
                      <div class="form-group col-md-4">
                         <div class="form-group has-float-label">
-                           <input type="text" id="dynamic_rent_value" class="form-control" value="{{ $cus_reserv_details[0]->vehicle_default_rent }}" onfocus="this.placeholder = ''" disabled autofocus >
+                           <input type="text" id="dynamic_rent_value" class="form-control" value="{{ $reserv_details[0]->vehicle_default_rent }}" onfocus="this.placeholder = ''" disabled autofocus >
                            <label for="Vehicle Color">Vehicle Rent</label>
                         </div>
                      </div>
@@ -613,54 +595,35 @@ input.form-control.refun{
                            <label for="Vehicle Color">Adult Seat Counting</label>
                         </div>
                      </div>
-                     <!--<div class="form-group col-md-4">-->
-                     <!--   <div class="form-group has-float-label">-->
-                     <!--      <select class="form-control"  class="form-control" id="status" placeholder="" onfocus="this.placeholder = ''" required autofocus>-->
-                     <!--         <option value="" hidden>Pending</option>-->
-                     <!--         <option value="">Cancelled</option>-->
-                     <!--         <option value="1">Reserved</option>-->
-                     <!--         <option value="2">Trip Started</option>-->
-                     <!--         <option value="2">Trip Aborted</option>-->
-                     <!--      </select>-->
-                     <!--      <label for="fullname">Reservation Status</label>--> 
-                     <!--   </div>-->
-                     <!--</div>-->
-                    
                   </div>
-                 
                </div>
                <div class="tab-pane fade shadow rounded bg-white p-5" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
                   <div class="form-row formtab">
-                    
-                    <div class="form-group col-md-3">
+                     <div class="form-group col-md-3">
                         <div class="form-group has-float-label">
-                        <div class="input-group">
-                            <input type="text" class="form-control" value="" onfocus="this.placeholder = ''" disabled required autofocus >
-                            <div class="input-group-append">
-                                
+                           <div class="input-group">
+                              <input type="text" class="form-control" value="" onfocus="this.placeholder = ''" disabled required autofocus >
+                              <div class="input-group-append">
                                  <label for="Vehicle Color">Bank Name</label>
-                            </div>
-                        </div>
+                              </div>
+                           </div>
                         </div>
                      </div>
-                      <div class="form-group col-md-3">
+                     <div class="form-group col-md-3">
                         <div class="form-group has-float-label">
-                        <div class="input-group">
-                            <input type="text" class="form-control" value="" onfocus="this.placeholder = ''" disabled required autofocus >
-                            <div class="input-group-append">
-                                
+                           <div class="input-group">
+                              <input type="text" class="form-control" value="" onfocus="this.placeholder = ''" disabled required autofocus >
+                              <div class="input-group-append">
                                  <label for="Vehicle Color">Account No</label>
-                            </div>
-                        </div>
+                              </div>
+                           </div>
                         </div>
                      </div>
-                    
                      <div class="form-group col-md-3">
                         <div class="form-group has-float-label">
                            <select class="form-control"  class="form-control" id="pick_up_location_id" placeholder="" onfocus="this.placeholder = ''" disabled required autofocus>
-                            
-                              <option value=""></option></option>
-                            
+                              <option value=""></option>
+                              </option>
                            </select>
                            <label for="status">Payment Method</label>
                         </div>
@@ -668,327 +631,236 @@ input.form-control.refun{
                      <div class="form-group col-md-3">
                         <div class="form-group has-float-label">
                            <select class="form-control"  class="form-control" id="drop_location_id" placeholder="" onfocus="this.placeholder = ''" disabled required autofocus>
-                               
-                              <option value=""></option></option>
-                            
+                              <option value=""></option>
+                              </option>
                            </select>
                            <label for="status">Payment Status</label>
                         </div>
                      </div>
-                  
-                    
-                    
                   </div>
                </div>
-                <div class="tab-pane fade shadow rounded bg-white" id="v-pills-cancelbook" role="tabpanel" aria-labelledby="v-pills-cancelbook-tab">
+               <div class="tab-pane fade shadow rounded bg-white" id="v-pills-cancelbook" role="tabpanel" aria-labelledby="v-pills-cancelbook-tab">
                   <div class="row">
-       
-        
-        <div class="col-md-9">
-            <div class="">
-          <h3 class="detailbook">Personal Details</h3>  
-           <div class="form-row formtab">
-                     <div class="form-group col-md-3">
-                        <div class="form-group">
-                             <label for="vehicle Model" class="prolabel">Name</label>
-                          <div class="namelabel">Vinoth</div>
-                          
+                     <div class="col-md-9">
+                        <div class="">
+                           <h3 class="detailbook">Personal Details</h3>
+                           <div class="form-row formtab">
+                              <div class="form-group col-md-3">
+                                 <div class="form-group">
+                                    <label for="vehicle Model" class="prolabel">Name</label>
+                                    <div class="namelabel">{{ $reserv_details[0]->first_name }}{{ $reserv_details[0]->last_name }}</div>
+                                 </div>
+                              </div>
+                              <div class="form-group col-md-3">
+                                 <div class="form-group ">
+                                    <label for="Vehicle Color" class="prolabel">Phone</label>
+                                    <div class="namelabel">{{ $reserv_details[0]->phone }}</div>
+                                 </div>
+                              </div>
+                              <div class="form-group col-md-3">
+                                 <div class="form-group">
+                                    <label for="Vehicle Color" class="prolabel">Email</label>
+                                    <div class="namelabel">{{ $reserv_details[0]->email }}</div>
+                                 </div>
+                              </div>
+                              <div class="form-group col-md-3">
+                                 <div class="form-group">
+                                    <label for="Location" class="prolabel">Address</label>
+                                    <div class="namelabel">{{ $reserv_details[0]->door_no }}{{ $reserv_details[0]->appartment_name }}{{ $reserv_details[0]->street_name }}
+                                       {{ $reserv_details[0]->city }}{{ $reserv_details[0]->state }}
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <h3 class="detailbook">Reservation Details</h3>
+                           <div class="form-row formtab">
+                              <div class="form-group col-md-3">
+                                 <div class="form-group">
+                                    <label for="vehicle Model" class="prolabel">Reservation Id</label>
+                                    <div class="namelabel">{{ $reserv_details[0]->reserve_unique_id }}</div>
+                                 </div>
+                              </div>
+                              <div class="form-group col-md-3">
+                                 <div class="form-group">
+                                    <label for="Vehicle Color" class="prolabel">Partner Name</label>
+                                    <div class="namelabel">{{ $reserv_details[0]->city }}</div>
+                                 </div>
+                              </div>
+                              <div class="form-group col-md-3">
+                                 <div class="form-group">
+                                    <label for="Vehicle Color" class="prolabel">Reservation Date</label>
+                                    <div class="namelabel">{{ $reserv_details[0]->reservation_date }}</div>
+                                 </div>
+                              </div>
+                              <div class="form-group col-md-3">
+                                 <div class="form-group">
+                                    <label for="Location" class="prolabel">Vehicle Reg No</label>
+                                    <div class="namelabel">{{ $reserv_details[0]->vehicle_reg_no }}</div>
+                                 </div>
+                              </div>
+                           </div>
+                           <h3 class="detailbook">Payment Details</h3>
+                           <div class="form-row formtab">
+                              <div class="form-group col-md-3">
+                                 <div class="form-group">
+                                    <label for="vehicle Model" class="prolabel">Reservation Via</label>
+                                    <div class="namelabel">{{ $reserv_details[0]->reserve_through }}</div>
+                                 </div>
+                              </div>
+                              <div class="form-group col-md-3">
+                                 <div class="form-group">
+                                    <label for="Vehicle Color" class="prolabel">Reservation Amount</label>
+                                    <div class="namelabel">{{ $reserv_details[0]->paid_amount }}</div>
+                                 </div>
+                              </div>
+                              <div class="form-group col-md-3">
+                                 <div class="form-group">
+                                    <label for="Location" class="prolabel">Date</label>
+                                    <div class="namelabel">{{ $reserv_details[0]->start_date }}To{{ $reserv_details[0]->return_date }}</div>
+                                 </div>
+                              </div>
+                              <div class="form-group col-md-3">
+                                 <div class="form-group">
+                                    <div class="namelabel">2 Days Go to trip</div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="warnbtn"> <button id="btnFA" class="btn btn-warning">
+                              Download Invoice
+                              <i class="fa fa-download"></i>
+                              </button>
+                           </div>
                         </div>
                      </div>
-                    
-                     <div class="form-group col-md-3">
-                        <div class="form-group ">
-                             <label for="Vehicle Color" class="prolabel">Phone</label>
-                            <div class="namelabel">985648756</div>
-                          
+                     <div class="col-md-3">
+                        <div class="" style="padding-top:10px;">
+                           <div class="form-group col-md-12">
+                              <div class="form-group has-float-label">
+                                 <label for="vehicle Model" class="prolabel">Description</label>
+                                 <textarea class="description refun" name="" style="width:100%;"></textarea>
+                              </div>
+                           </div>
+                           <div class="form-group col-md-12">
+                              <div class="form-group has-float-label">
+                                 <label for="Location" class="prolabel">Cancellation Charge</label>
+                                 <input type="text" class="form-control refun" id="last_name" value="" onfocus="this.placeholder = ''" required autofocus >
+                              </div>
+                           </div>
+                           <div class="form-group col-md-12">
+                              <div class="form-group has-float-label">
+                                 <label for="Location" class="prolabel">Paid Amount</label>
+                                 <input type="text" class="form-control refun" id="last_name" value="" onfocus="this.placeholder = ''" required autofocus >
+                              </div>
+                           </div>
+                           <div class="form-group col-md-12">
+                              <div class="form-group has-float-label">
+                                 <label for="Location" class="prolabel">Refund Amount</label>
+                                 <input type="text" class="form-control refun" id="last_name" value="" onfocus="this.placeholder = ''" required autofocus >
+                              </div>
+                           </div>
+                           <div class="form-group col-md-12">
+                              <div class="form-row formtab">
+                                 <div class="form-group" style=" margin: 0 auto 18px;
+                                    display: block;    width: 100%;   ">
+                                    <input type="hidden" id="csrf_token" value="{!! csrf_token() !!}">
+                                    <button type="button" class="btn btn-primary waves-effect waves-light" id="add_cus_details" style="    background-color: #ffa91c !important;
+                                       border: none !important;    width: 100%;   ">Pay Refund</button>
+                                 </div>
+                              </div>
+                           </div>
                         </div>
-                     </div>
-                     <div class="form-group col-md-3">
-                        <div class="form-group">
-                             <label for="Vehicle Color" class="prolabel">Email</label>
-                            <div class="namelabel">vinoth@coralmint.in</div>
-                          
-                        </div>
-                     </div>
-                      <div class="form-group col-md-3">
-                        <div class="form-group">
-                            <label for="Location" class="prolabel">Address</label>
-                             <div class="namelabel">NO:4, Kamarajar Street,Pondicherry-605004</div>
-                           
-                        </div>
-                     </div>
-                    
-                   
-                  </div>
-                  <h3 class="detailbook">Reservation Details</h3>  
-           <div class="form-row formtab">
-                     <div class="form-group col-md-3">
-                        <div class="form-group">
-                             <label for="vehicle Model" class="prolabel">Reservation Id</label>
-                          <div class="namelabel">12345</div>
-                          
-                        </div>
-                     </div>
-                    
-                     <div class="form-group col-md-3">
-                        <div class="form-group">
-                             <label for="Vehicle Color" class="prolabel">Partner Name</label>
-                            <div class="namelabel">Vicky</div>
-                          
-                        </div>
-                     </div>
-                     <div class="form-group col-md-3">
-                        <div class="form-group">
-                             <label for="Vehicle Color" class="prolabel">Reservation Date</label>
-                            <div class="namelabel">16-7-2020</div>
-                          
-                        </div>
-                     </div>
-                      <div class="form-group col-md-3">
-                        <div class="form-group">
-                            <label for="Location" class="prolabel">Vehicle Reg No</label>
-                             <div class="namelabel">AN2098</div>
-                           
-                        </div>
-                     </div>
-                     
-                    
-                   
-                  </div>
-                    <h3 class="detailbook">Payment Details</h3>  
-           <div class="form-row formtab">
-                     <div class="form-group col-md-3">
-                        <div class="form-group">
-                             <label for="vehicle Model" class="prolabel">Reservation Via</label>
-                          <div class="namelabel">Online/Walkin</div>
-                          
-                        </div>
-                     </div>
-                    
-                     <div class="form-group col-md-3">
-                        <div class="form-group">
-                             <label for="Vehicle Color" class="prolabel">Reservation Amount</label>
-                            <div class="namelabel">1254</div>
-                          
-                        </div>
-                     </div>
-                   
-                      <div class="form-group col-md-3">
-                        <div class="form-group">
-                            <label for="Location" class="prolabel">Date</label>
-                             <div class="namelabel">12-7-2020,14-7-2020</div>
-                           
-                        </div>
-                     </div>
-                     <div class="form-group col-md-3">
-                        <div class="form-group">
-                          
-                            <div class="namelabel">2 Days Go to trip</div>
-                           
-                        </div>
-                     </div>
-                     
-                    
-                   
-                  </div>
-                  <div class="warnbtn"> <button id="btnFA" class="btn btn-warning">
-		Download Invoice
-			<i class="fa fa-download"></i>
-		</button></div>
-                 
-        </div>
-        </div>
-        <div class="col-md-3">
-             
-            <div class="" style="padding-top:10px;">
-                 <div class="form-group col-md-12">
-           <div class="form-group has-float-label">
-                <label for="vehicle Model" class="prolabel">Description</label>
-                          <textarea class="description refun" name="" style="width:100%;"></textarea>
-                          </div>
-                        </div>
-                          <div class="form-group col-md-12">
-                        <div class="form-group has-float-label">
-                             <label for="Location" class="prolabel">Cancellation Charge</label>
-                           <input type="text" class="form-control refun" id="last_name" value="" onfocus="this.placeholder = ''" required autofocus >
-                          
-                        </div>
-                     </div>
-                      <div class="form-group col-md-12">
-                        <div class="form-group has-float-label">
-                             <label for="Location" class="prolabel">Paid Amount</label>
-                           <input type="text" class="form-control refun" id="last_name" value="" onfocus="this.placeholder = ''" required autofocus >
-                          
-                        </div>
-                     </div>
-                      <div class="form-group col-md-12">
-                        <div class="form-group has-float-label">
-                             <label for="Location" class="prolabel">Refund Amount</label>
-                           <input type="text" class="form-control refun" id="last_name" value="" onfocus="this.placeholder = ''" required autofocus >
-                          
-                        </div>
-                     </div>
-                      <div class="form-group col-md-12">
-                        <div class="form-row formtab">
-                     <div class="form-group" style=" margin: 0 auto 18px;
-    display: block;    width: 100%;   ">
-                        <input type="hidden" id="csrf_token" value="{!! csrf_token() !!}">
-                        <input type="hidden" value="" id="reservation_id">
-                        <button type="button" class="btn btn-primary waves-effect waves-light" id="add_cus_details" style="    background-color: #ffa91c !important;
-    border: none !important;    width: 100%;   ">Pay Refund</button>
-                    </div>
                      </div>
                   </div>
-           
-        </div>
-        </div>
-         
-    </div>
                </div>
                <div class="tab-pane fade shadow rounded bg-white p-5" id="v-pills-comment" role="tabpanel" aria-labelledby="v-pills-comment-tab">
-                <div class="messaging">
-      <div class="inbox_msg">
-        <div class="inbox_people">
-          <div class="headind_srch">
-            <div class="recent_heading">
-              <h4>Recent</h4>
-            </div>
-            <div class="srch_bar">
-              <div class="stylish-input-group">
-                <input type="text" class="search-bar"  placeholder="Search" >
-                <span class="input-group-addon">
-                <button type="button"> <i class="fa fa-search" aria-hidden="true"></i> </button>
-                </span> </div>
-            </div>
-          </div>
-          <div class="inbox_chat">
-            <div class="chat_list active_chat">
-              <div class="chat_people">
-                <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-                <div class="chat_ib">
-                  <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-                  <p>Test, which is a new approach to have all solutions 
-                    astrology under one roof.</p>
-                </div>
-              </div>
-            </div>
-            <div class="chat_list">
-              <div class="chat_people">
-                <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-                <div class="chat_ib">
-                  <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-                  <p>Test, which is a new approach to have all solutions 
-                    astrology under one roof.</p>
-                </div>
-              </div>
-            </div>
-            <div class="chat_list">
-              <div class="chat_people">
-                <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-                <div class="chat_ib">
-                  <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-                  <p>Test, which is a new approach to have all solutions 
-                    astrology under one roof.</p>
-                </div>
-              </div>
-            </div>
-            <div class="chat_list">
-              <div class="chat_people">
-                <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-                <div class="chat_ib">
-                  <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-                  <p>Test, which is a new approach to have all solutions 
-                    astrology under one roof.</p>
-                </div>
-              </div>
-            </div>
-            <div class="chat_list">
-              <div class="chat_people">
-                <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-                <div class="chat_ib">
-                  <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-                  <p>Test, which is a new approach to have all solutions 
-                    astrology under one roof.</p>
-                </div>
-              </div>
-            </div>
-            <div class="chat_list">
-              <div class="chat_people">
-                <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-                <div class="chat_ib">
-                  <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-                  <p>Test, which is a new approach to have all solutions 
-                    astrology under one roof.</p>
-                </div>
-              </div>
-            </div>
-            <div class="chat_list">
-              <div class="chat_people">
-                <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-                <div class="chat_ib">
-                  <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-                  <p>Test, which is a new approach to have all solutions 
-                    astrology under one roof.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="mesgs">
-          <div class="msg_history">
-            <div class="incoming_msg">
-              <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-              <div class="received_msg">
-                <div class="received_withd_msg">
-                  <p>Test which is a new approach to have all
-                    solutions</p>
-                  <span class="time_date"> 11:01 AM    |    June 9</span></div>
-              </div>
-            </div>
-            <div class="outgoing_msg">
-              <div class="sent_msg">
-                <p>Test which is a new approach to have all
-                  solutions</p>
-                <span class="time_date"> 11:01 AM    |    June 9</span> </div>
-            </div>
-            <div class="incoming_msg">
-              <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-              <div class="received_msg">
-                <div class="received_withd_msg">
-                  <p>Test, which is a new approach to have</p>
-                  <span class="time_date"> 11:01 AM    |    Yesterday</span></div>
-              </div>
-            </div>
-            <div class="outgoing_msg">
-              <div class="sent_msg">
-                <p>Apollo University, Delhi, India Test</p>
-                <span class="time_date"> 11:01 AM    |    Today</span> </div>
-            </div>
-            <div class="incoming_msg">
-              <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-              <div class="received_msg">
-                <div class="received_withd_msg">
-                  <p>We work directly with our designers and suppliers,
-                    and sell direct to you, which means quality, exclusive
-                    products, at a price anyone can afford.</p>
-                  <span class="time_date"> 11:01 AM    |    Today</span></div>
-              </div>
-            </div>
-          </div>
-          <div class="type_msg">
-            <div class="input_msg_write">
-              <input type="text" class="write_msg" placeholder="Type a message" />
-              <button class="msg_send_btn" type="button"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-    </div></div>
+                  <div class="messaging">
+                     <div class="inbox_msg">
+                        <div class="inbox_people">
+                           <div class="headind_srch">
+                              <div class="recent_heading">
+                                 <h4>Recent</h4>
+                              </div>
+                              <div class="srch_bar">
+                                 <div class="stylish-input-group">
+                                    <input type="text" class="search-bar"  placeholder="Search" >
+                                    <span class="input-group-addon">
+                                    <button type="button"> <i class="fa fa-search" aria-hidden="true"></i> </button>
+                                    </span> 
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="inbox_chat">
+                              <div class="chat_list active_chat">
+                                 @foreach($customercomment as $incomt)
+                                 @if($incomt->sent_from != 0)
+                                 @else
+                                 <div class="chat_people">
+                                    <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+                                    <div class="chat_ib">
+                                       <?php
+                                          $date = strtotime($incomt->comment_date);
+                                          $dd = date('H:i:A',$date);
+                                          $dd1 = date('M d',$date);
+                                          ?>
+                                       <h5>Admin <span class="chat_date">{{ $dd1 }}/{{ $dd }}</span></h5>
+                                       <p>{{ $incomt->comment }}</p>
+                                    </div>
+                                 </div>
+                                 @endif
+                                 @endforeach
+                              </div>
+                           </div>
+                        </div>
+                        <div class="mesgs">
+                           <div class="msg_history">
+                               @foreach($customercomment as $cuscomt)
+                              @if($cuscomt->sent_from != 0)
+                              <div class="outgoing_msg">
+                                 <div class="sent_msg">
+                                    <p>{{ $cuscomt->comment }}</p>
+                                    <?php
+                                       $date = strtotime($cuscomt->comment_date);
+                                       $dd = date('H:i:s',$date);
+                                       $dd1 = date('M d',$date);
+                                       ?>
+                                    <span class="time_date"> {{ $dd }}       |       {{ $dd1 }}</span> 
+                                 </div>
+                              </div>
+                              @else
+                              <div class="incoming_msg">
+                                 <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+                                 <div class="received_msg">
+                                    <div class="received_withd_msg">
+                                       <p>{{ $cuscomt->comment }}</p>
+                                       <?php
+                                          $date = strtotime($cuscomt->comment_date);
+                                          $dd = date('H:i:A',$date);
+                                          $dd1 = date('M d',$date);
+                                          ?>
+                                       <span class="time_date"> {{ $dd }}     |      {{ $dd1 }}</span>
+                                    </div>
+                                 </div>
+                              </div>
+                              @endif
+                              @endforeach
+                           </div>
+                           <div class="type_msg">
+                              <div class="input_msg_write">
+                                 <input type="hidden" id="csrf_token" value="{!! csrf_token() !!}">
+                                 <input type="hidden" value="{{ $reserv_details[0]->reservation_id }}" id="reservation_id">
+                                 <input type="hidden" value="{{ $reserv_details[0]->customer_id }}" id="customer_id">
+                                 <input type="text" class="write_msg" id="customer_msg" placeholder="Type a message" />
+                                 <button class="msg_send_btn" id="cus_send_msg" type="button"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
                </div>
             </div>
          </div>
       </div>
+   </div>
    </div>
 </section>
 <!-- ======= Footer ======= -->
@@ -1032,108 +904,47 @@ input.form-control.refun{
 @section('script')
 <script type="text/javascript" src="{{ URL::asset('theme_files/external_files/js/jquery-confirm.min.js') }}"></script>
 <script>
-   $("#update_cust_details").click(function(){
-        var reservation_id = $('#reservation_id').val();
-        var customer_id = $('#customer_id').val();
-        var first_name = $('#first_name').val();
-        var last_name = $('#last_name').val();
-   		var phone = $('#phone').val();
-   		var email = $('#email').val();
-   		var dob = $('#dob').val();
-   		var door_no = $('#door_no').val();
-   		var appartment_name = $('#appartment_name').val();
-   		var street_name = $('#street_name').val();
-   		var city = $('#city').val();
-   		var state = $('#state').val();
-   		var pincode = $('#pincode').val();
-   		var country_code = $('#country_code').val();
-   		var license_number = $('#license_number').val();
-   		var license_issue_date = $('#license_issue_date').val();
-           var tempcsrf = $('#csrf_token').val();
-           if((email =='')){
-               $.alert({
-   		        title: 'Alerte!',
-   		        content: "Veuillez remplir tous les champs obligatoires !!!",
-   		    });
-           }
-           else{
-               $.ajax({
-             type: 'POST',
-             url: '{{ url('update_customer_details') }}',
-             dataType: 'json',
-             data: {
-                 reservation_id:reservation_id,
-                 customer_id:customer_id,
-                 first_name:first_name,
-                 last_name:last_name,
-       			  phone:phone,
-       			  email:email,
-       			  dob:dob,
-       			  door_no:door_no,
-       			  appartment_name:appartment_name,
-       			  street_name:street_name,
-       			  city:city,
-       			  state:state,
-       			  pincode:pincode,
-       			  country_code:country_code,
-       			  license_number:license_number,
-       			  license_issue_date:license_issue_date,
-                 _token:tempcsrf
-                 },
-                   beforeSend: function () {
-                   },
-                   success: function (data) {
-                       if(data == "success"){
-                           location.reload();
-                       }else{
-                           $.alert({
-               		        title: 'Alerte!',
-               		        content: "cet identifiant de messagerie existe déjà !!!",
-               		    });
-                       }
-     	            }
-                 });
-           }
-       });
-       $("#com_name").keyup(function() {
-           var inpObj = document.getElementById("com_name");
-           var regex = /^[A-Za-z ]+$/;
-           if (regex.test(this.value) !== true)
-           this.value = this.value.replace(/[^A-Za-z +-.,]+/, '');
-           if (!inpObj.checkValidity()) {
-           document.getElementById("demo").innerHTML = inpObj.validationMessage;
-           }
-       });
-       $("#no_vehicles").keyup(function() {
-           var inpObj = document.getElementById("no_vehicles");
-           var regex = /^[0-9 +.,]+$/;
-           if (regex.test(this.value) !== true)
-           this.value = this.value.replace(/[^0-9 +.,]+/, '');
-           if (!inpObj.checkValidity()) {
-           document.getElementById("demo").innerHTML = inpObj.validationMessage;
-           }
-         });
-       $("#phone_no").keyup(function() {
-           var inpObj = document.getElementById("phone_no");
-           var regex = /^[0-9 +.,]+$/;
-           if (regex.test(this.value) !== true)
-           this.value = this.value.replace(/[^0-9 +.,]+/, '');
-           if (!inpObj.checkValidity()) {
-           document.getElementById("demo").innerHTML = inpObj.validationMessage;
-           }
-         });
-         
-         function ValidateEmail() {
-           var email = document.getElementById("partner_email").value;
-           var lblError = document.getElementById("lblError");
-           lblError.innerHTML = "";
-           var expr = /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
-           if (!expr.test(email)) {
-               lblError.innerHTML = "Adresse e-mail invalide.";
-           }
-       }
+   
        
-       
+        $("#cus_send_msg").click(function(){
+              var customer_msg = $("#customer_msg").val();
+              var reservation_id = $('#reservation_id').val();
+              var customer_id = $('#customer_id').val();
+              var tempcsrf = $('#csrf_token').val();
+              if(customer_msg ==''){
+                  $.alert({
+                      title: 'Alert!',
+                      content: "Body of the message is empty !!!",
+                  });
+              }else{
+                  $.ajax({
+                type: 'POST',
+                url: '{{ url('cus_send_message') }}',
+                dataType: 'json',
+                data: {
+                      customer_msg:customer_msg,
+                      reservation_id:reservation_id,
+                      customer_id:customer_id,
+                    _token:tempcsrf
+                    },
+                      beforeSend: function () {
+                      },
+                      success: function (data) {
+                              $.confirm({
+                                 title: 'Success',
+                                 content: 'Message sent successfully',
+                                 autoClose: 'logoutUser|300',
+                                   buttons: {
+                                   logoutUser: {
+                                       text: 'OK',
+                                   },
+                                }
+                             });
+                             location.reload();
+                          }
+                        });
+                  }
+             });     
        
        $("#submit_contact").click(function(){
            var form_name = $('#form_name').val();

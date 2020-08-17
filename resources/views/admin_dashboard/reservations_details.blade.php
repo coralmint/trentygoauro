@@ -1192,64 +1192,8 @@
 <script src="{{ asset('theme_files/assets/pages/jquery.form-pickers.init.js') }}"></script>
 <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
 <script>
-$("#pickup_trip_id").click(function(){
-    var tempcsrf = $('#csrf_token').val();
-    var reservation_id = $('#csrf_token').val();
-    var assign_start_date = $("#assign_start_date").val();
-    var assign_return_date = $("#assign_return_date").val();
-    $.confirm({
-        title: 'Confirm!',
-        content: 'Are you sure to assign this vehicle for this reservation !!!',
-        buttons: {
-        confirm: function () {
-          $.ajax({
-            type: 'POST',
-            url: '{{url('assign_new_vehicle')}}',
-            dataType: "json",
-            data: {
-                    reservation_id:reservation_id,
-                    vehicle_id:vehicle_id,
-                    assign_start_date:assign_start_date,
-                    assign_return_date:assign_return_date,
-                    _token:tempcsrf
-                  },
-            beforeSend: function () {
-            },
-            success: function (data) {
-              if(data == 'success')
-              {
-              	$.confirm({
-    		            title: 'Success',
-    		            content: 'Updated Successfully.',
-    		            autoClose: 'logoutUser|300',
-    		            buttons: {
-                            logoutUser: {
-                                text: 'OK',
-                                action: function () {
-                                location.reload();
-                                }
-                            },
-                         }
-    		        });
-              }
-              else
-              {
-                $.alert({
-                  title: 'Alert!',
-                  content: data,
-                });
-              }
-            }
-          });
-          },
-            cancel: function () {
-          }
-        }
-      });
-});
 
-
-$( ".discount_function_class" ).keyup(function() {
+    $( ".discount_function_class" ).keyup(function() {
     var cdis = $('#discount').val();
     var pdis = $('#part_amt').val();
     var adis = $('#admin_amt').val();
@@ -1266,7 +1210,7 @@ $( ".discount_function_class" ).keyup(function() {
     $('#total_amount').val(total4);
 });
 
-// $("#discount").change( function(){
+    // $("#discount").change( function(){
 //       var main = $('#overall_total_amount').val();
 //       var disc = $('#discount').val();
 //       var tax_amt = $('#tax_amt').val();
@@ -1277,7 +1221,7 @@ $( ".discount_function_class" ).keyup(function() {
 //       $('#total_amount').val(total2);
 //   });
 
-$("#filtered_assign_location").change(function(){
+    $("#filtered_assign_location").change(function(){
    var location = $(this).val();
    var from_date = $('#assign_start_date').val();
    var to_date = $('#assign_return_date').val();
@@ -1311,7 +1255,7 @@ $("#filtered_assign_location").change(function(){
     });
 });
 
-function assign_new_vehicle_function(arg,arg2) {
+    function assign_new_vehicle_function(arg,arg2) {
     var tempcsrf = $('#csrf_token').val();
     var reservation_id = arg;
     var assign_start_date = $("#assign_start_date").val();
@@ -1368,7 +1312,7 @@ function assign_new_vehicle_function(arg,arg2) {
       });
     }
 
-   $(function() {
+    $(function() {
              var $form         = $(".require-validation");
            $('form.require-validation').bind('submit', function(e) {
              var $form         = $(".require-validation"),
@@ -1421,7 +1365,7 @@ function assign_new_vehicle_function(arg,arg2) {
            
          });
    
-       document.onreadystatechange = function () {
+    document.onreadystatechange = function () {
              var state = document.readyState
              if (state == 'interactive') {
            //   document.getElementById('contents').style.visibility="hidden";
@@ -1437,7 +1381,7 @@ function assign_new_vehicle_function(arg,arg2) {
              }
        }  
    
-   $('#content_same').click(function(){
+    $('#content_same').click(function(){
        var for_first_name = $("#for_first_name").val();
        var for_last_name = $("#for_last_name").val();
        var for_phone = $("#for_phone").val();
@@ -1513,12 +1457,10 @@ function assign_new_vehicle_function(arg,arg2) {
        }); 
    });
         
-    $('#pickup_trip_submit').click(function(){
-       var key_given_user = $("#key_given_user_id").val();
-       var reservation_id = $('#reservation_id').val();
-       var tempcsrf = $('#csrf_token').val();
-       if(($("#check_key_given_pickup_trip").is(":checked"))&&(key_given_user != '')){
-            $.confirm({
+    $('#pickup_trip_id').click(function(){
+        var reservation_id = $('#reservation_id').val();
+        var tempcsrf = $('#csrf_token').val();
+        $.confirm({
               title: 'Confirm!',
               content: 'Are you sure to move this reservation as a trip !!!',
               buttons: {
@@ -1528,7 +1470,6 @@ function assign_new_vehicle_function(arg,arg2) {
                   url: '{{url('add_trip_details')}}',
                   dataType: "json",
                   data: {
-                          key_given_user:key_given_user,
                           reservation_id:reservation_id,
                           _token:tempcsrf
                         },
@@ -1558,16 +1499,9 @@ function assign_new_vehicle_function(arg,arg2) {
                 });
                 },
                   cancel: function () {
-                          $("#key_given_check").prop( "checked", false );
                 }
               }
             }); 
-       }else{
-            $.alert({
-                title: 'Alert!',
-                content: "Please check the key given checkbox ",
-            });
-       }
     });
         $('#dob').datepicker({
            autoclose: true,
