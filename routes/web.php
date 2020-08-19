@@ -114,6 +114,10 @@ Route::group(['middleware' => ['auth', 'admin']], function() {
     Route::any('partner_filter_get_all_upcoming_reservation_lists', 'AdminController@partner_filter_get_all_upcoming_reservation_lists');
     
     
+    Route::get('signaturepad','AdminController@index');
+    Route::post('signaturepad','AdminController@upload')->name('signaturepad.upload');
+    
+    
     
     Route::any('sample_invoice', 'AdminController@sample_invoice');
     
@@ -123,6 +127,11 @@ Route::group(['middleware' => ['auth', 'admin']], function() {
      
     Route::any('upload_customer_document', 'AdminController@upload_customer_document');
     Route::any('delete_trip_document', 'AdminController@delete_trip_document');
+    Route::any('cancellation_value', 'AdminController@cancellation_value');
+    Route::any('add_cancel_details', 'AdminController@add_cancel_details');
+    Route::any('get_all_cancel_data', 'AdminController@get_all_cancel_data');
+    Route::any('edit_cancel_value_submit', 'AdminController@edit_cancel_value_submit');
+    Route::any('un_delete_value_list', 'AdminController@un_delete_value_list');
 
 // common
     Route::any('delete_document', 'AdminController@delete_document');

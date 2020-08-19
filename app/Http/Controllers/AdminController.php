@@ -2467,6 +2467,99 @@ $unread_messages = DB::table('admin_partner_messages as apm')
         }
     }
     
+    
+    public function upload(Request $request)
+    {
+	    $folderPath = public_path('upload/');
+	  
+	    $image_parts = explode(";base64,", $request->signed);
+	        
+	    $image_type_aux = explode("image/", $image_parts[0]);
+	      
+	    $image_type = $image_type_aux[1];
+	      
+	    $image_base64 = base64_decode($image_parts[1]);
+	      
+	    $file = $folderPath . uniqid() . '.'.$image_type;
+	    file_put_contents($file, $image_base64);
+	    return back()->with('success', 'success Full upload signature');
+    }
+    
+    public function cancellation_value(){
+        
+        $cancel_details = DB::table('master_data')
+                            ->where('master_for','cancel_value')
+                            ->where('status',1)
+                            ->get();
+        return view('admin_dashboard/cancellation_value')
+                        ->with('cancel_details',$cancel_details);
+    }
+    
+    public static function un_delete_value_list(Request $req){
+        DB::table('master_data')->where('master_data_id', '=', $req->master_data_id)->delete();
+        return json_encode('success');
+      }
+    
+    public function add_cancel_details(Request $req){
+            DB::table('master_data')
+                ->updateOrInsert(
+                    ['master_value' => $req->master_value],
+                    ['master_key' => $req->master_key,
+                    'master_value' => $req->master_value,
+                    'master_charge' => $req->master_charge,
+                    'master_for' => 'cancel_value']
+                );
+            return json_encode("success");
+    }
+    
+    public function edit_cancel_value_submit(Request $req){
+            DB::table('master_data')
+                ->updateOrInsert(
+                    ['master_data_id' => $req->master_data_id],
+                    ['master_key' => $req->edit_master_key,
+                    'master_value' => $req->edit_master_value,
+                    'master_charge' => $req->edit_master_charge,
+                    'master_data_id' => $req->master_data_id,
+                    'master_for' => 'cancel_value']
+                );
+            return json_encode("success");
+    }
+    
+    public function get_all_cancel_data(){
+        try {
+            $get_all_cancel_data = DB::table('master_data')
+                            ->where('master_for','cancel_value')
+                            ->where('status','1')
+                            ->get();
+            return Datatables::of($get_all_cancel_data)
+            ->addColumn('master_key', function ($get_all_cancel_data) {
+                $master_key = '';
+                $master_key .= '<center>'.ucfirst($get_all_cancel_data->master_key).'</center>';
+               return $master_key.'';
+            })
+             ->addColumn('master_charge', function ($get_all_cancel_data) {
+                $master_charge = '';
+                $master_charge .= '<center>'.ucfirst($get_all_cancel_data->master_charge).'</center>';
+               return $master_charge.'';
+            })
+            ->addColumn('master_value', function ($get_all_cancel_data) {
+                $master_value = '';
+                $master_value .= '<center>'.ucfirst($get_all_cancel_data->master_value).'</center>';
+               return $master_value.'';
+            })
+             ->addColumn('action', function ($get_all_cancel_data) {
+               return '<a style="cursor:pointer; color:#007bff;" class="on-default remove-row" title="" data-original-title="Delete" onclick="return edit_master_tab( '.$get_all_cancel_data->master_data_id.' );"><i class="fa fa-pencil"></i></a>&nbsp;
+               
+               <a style="cursor:pointer; color:#007bff;" class="on-default remove-row" title="" data-original-title="Delete" onclick="return un_delete_value_info( '.$get_all_cancel_data->master_data_id.',0);"><i class="fa fa-trash-o"></i></a>';
+                })
+             ->rawColumns(array("master_data_id","action","master_value","master_key","master_charge"))
+             ->make(true);
+        } catch (QueryException $e) {
+            echo "Bad Request";
+            dd(); 
+        }
+    }
+    
       //endtrentygo
    
     
