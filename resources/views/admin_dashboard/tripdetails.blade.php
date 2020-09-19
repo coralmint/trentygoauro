@@ -7,11 +7,7 @@
 <link href="{{ asset('theme_files/external_files/css/jquery-confirm.min.css') }}" rel="stylesheet" type="text/css" />
 {!! Html::style('public/assets/jquery_upload/uploadfile.css') !!}
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-
 <script src="{{ asset('theme_files/external_files/esign/signature.js') }}"></script>
-
-
-
 <style>
    .bredim {
    background-color: #071DAA;
@@ -555,8 +551,10 @@
                            <nav>
                               <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
                                  <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Addons</a>
+                                 @if(count($add_on_features) != 0)
                                  <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Extra Accessories</a>
-                                 <a class="nav-item nav-link" id="nav-about-tab" data-toggle="tab" href="#nav-about" role="tab" aria-controls="nav-about" aria-selected="false">Services</a>
+                                 <!--<a class="nav-item nav-link" id="nav-about-tab" data-toggle="tab" href="#nav-about" role="tab" aria-controls="nav-about" aria-selected="false">Services</a>-->
+                                 @endif
                               </div>
                            </nav>
                            <div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
@@ -575,7 +573,7 @@
                                                 <div class="form-row formtab">
                                                    <div class="form-group" style="margin-top: 5%;">
                                                       <input type="hidden" id="csrf_token" value="{!! csrf_token() !!}">
-                                                      <button type="button" class="btn btn-primary waves-effect waves-light" id="add_on_submit">Save</button>
+                                                      <button type="button" class="btn btn-primary waves-effect waves-light" id="add_on_submit">Update</button>
                                                       <button type="button" onclick="close_slide1();" id="close_tab" class="close_location_tab btn btn-default waves-effect waves-light" id="">Cancel</button>
                                                    </div>
                                                 </div>
@@ -584,37 +582,24 @@
                                        </div>
                                     </div>
                                     <div class="row">
-                                       <div class="col-md-12">
-                                          <label class="spare">Spare Tyre/200</label> 
-                                          <i class="fa fa-trash bab"></i>
-                                       </div>
-                                       <div class="col-md-12">
-                                          <label class="spare">Baby Seat/200</label> 
-                                          <i class="fa fa-trash bab"></i>
-                                       </div>
-                                       <div class="col-md-12">
-                                          <label class="spare">Cup Stand/100</label> 
-                                          <i class="fa fa-trash bab"></i>
-                                       </div>
+                                       @foreach($trip_addons as $ta)
+                                        <div class="col-md-12">
+                                          <label class="spare">{{ $ta->addons }} / {{ $ta->addons_values }}</label> 
+                                          <i class="fa fa-check bab ret"></i>
+                                        </div>
+                                        @endforeach
                                     </div>
                                  </div>
                               </div>
                               <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
                                  <div class="alert alert-success alert-dismissible">
-                                    <button type="button" class="close" data-dismiss="alert">&times;</button>
                                     <div class="row">
-                                       <div class="col-md-12">
-                                          <label class="spare">Spare Tyre/200</label> 
+                                        @foreach($add_on_features as $ta)
+                                        <div class="col-md-12">
+                                          <label class="spare">{{ $ta->option_value }}</label> 
                                           <i class="fa fa-check bab ret"></i>
-                                       </div>
-                                       <div class="col-md-12">
-                                          <label class="spare">Baby Seat/200</label> 
-                                          <i class="fa fa-trash bab"></i>
-                                       </div>
-                                       <div class="col-md-12">
-                                          <label class="spare">Cup Stand/100</label> 
-                                          <i class="fa fa-trash bab"></i>
-                                       </div>
+                                        </div>
+                                        @endforeach
                                     </div>
                                  </div>
                               </div>
@@ -967,31 +952,22 @@
                         @else
                         @endif
                      </div>
-                     <div class="col-md-6">
+                     <div class="col-md-6" id="otp_div">
                         <h4>Get Customer's Signature</h4>
                         <br>
-                        <input type="text" id="otp_mobile_number"/>
+                        <input type="text" id="otp_mobile_number" placeholder="Enter mobile number"/>
                         <input type="button" value="get OTP" id="get_otp_submt" />
                      </div>
-                     
-                     <div>
-                         <div id="canvas">
-      <canvas class="roundCorners" id="newSignature"
-      style="position: relative; margin: 0; padding: 0; border: 1px solid #c4caac;"></canvas>
-    </div>
-    <script>signatureCapture();</script>
-    <button type="button" onclick="signatureSave()">Save signature</button>
-    <button type="button" onclick="signatureClear()">Clear signature</button>
-    </br>
-    Saved Image
-    </br>
-    <img id="saveSignature" alt="Saved image png"/>
-                     </div>
-                     
-                     <div class="col-md-6" style="display:none;" id="signature_upload_function_div">
+                     <div class="col-md-6" style="display:none;" id="signature_div">
                         <h4>Customer's signature</h4>
                         <br>
-                        <label>Upload</label>
+                        <div id="canvas">
+                          <canvas class="roundCorners" id="newSignature"
+                          style="position: relative; margin: 0; padding: 0; border: 1px solid #c4caac;"></canvas>
+                        </div>
+                        <script>signatureCapture();</script>
+                        <button type="button" onclick="signatureSave()">Save signature</button>
+                        <button type="button" onclick="signatureClear()">Clear signature</button>
                      </div>
                   </div>
                   <hr>
@@ -1064,7 +1040,6 @@
                                     </div>
                                  </div>
                                  <div class="form-group">
-                                    <!--<input type="hidden" id="csrf_token" value="JDaxfRlKgfw1zwaw8MV2xC7Cj00CuzBIpmvdBBbd">-->
                                     <input type="hidden" value="17" id="partner_id">
                                     <button type="button" class="btn btn-primary waves-effect waves-light" id="update_partner">Update</button>
                                     <button type="button" class="close_location_tab btn btn-default waves-effect waves-light" id="">Cancel</button>
@@ -1277,7 +1252,46 @@ function signatureCapture() {
 function signatureSave() {
   var canvas = document.getElementById("newSignature");// save canvas image as data url (png format by default)
   var dataURL = canvas.toDataURL("image/png");
-  document.getElementById("saveSignature").src = dataURL;
+  var trip_id = $('#trip_id').val();
+  var tempcsrf = $('#csrf_token').val();
+//   document.getElementById("saveSignature").src = dataURL;
+  
+            $.ajax({
+   	            type: 'POST',
+   	            url: '{{url('save_signature_details')}}',
+   	            dataType: "json",
+   	            fileName:"myfile",
+   	            data: {
+   	                    trip_id:trip_id,
+   	                    dataURL:dataURL,
+   	                    _token:tempcsrf
+   	                  },
+   	            beforeSend: function () {
+   	            },
+   	            success: function (data) {
+   	              if(data == 'success')
+   	              {
+   	              	$.confirm({
+   			            title: 'Success',
+   			            content: 'Partner Delete Successfully.',
+   			            autoClose: 'logoutUser|300',
+   			            buttons: {
+   			                logoutUser: {
+   			                text: 'OK',
+   			                },
+   			            }
+   			        });
+   	              }
+   	              else
+   	              {
+   	                $.alert({
+   	                  title: 'Alert!',
+   	                  content: data,
+   	                });
+   	              }
+   	            }
+            });
+  
 };
 
 function signatureClear() {
@@ -1354,6 +1368,8 @@ function signatureClear() {
                               			                },
                               			            }
                               			        });
+                              			        $("#signature_div").show();
+                              			        $("#otp_div").hide();
                               	              }
                               	              else
                               	              {
