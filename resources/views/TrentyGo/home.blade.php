@@ -307,7 +307,7 @@
       <div class="row">
          <div class="col-lg-12 mt-5 mt-lg-0 d-flex align-items-stretch" data-aos="fade-left">
             <!--<form role="form" class="php-email-form" style="background-color:transparent;border:none;">-->
-            <div style="background-color:transparent;border:none;">
+            <div style="background-color:transparent;border:none;width:100%;">
                <div class="form-row">
                   <div class="form-group col-md-6 without">
                      <input type="text" name="name" placeholder="Nom de la société" class="form-control" id="company_name" data-rule="minlen:4" data-msg="Please enter at least 4 chars" />
