@@ -1745,48 +1745,50 @@ $("#vehicle_rent_option").change(function(){
                 myarray1.push(option_name1);
             }
         });
-        if((myarray =='')){
-            $.alert({
-		        title: 'Alert!',
-		        content: "Please fill all mandatory fields !!!",
-		    });
-        }else{
-            $.ajax({
-          type: 'POST',
-          url: '{{ url('add_on_details') }}',
-          dataType: 'json',
-          data: {
-              vehicle_id:vehicle_id,
-              option_name:myarray,
-              option_value:myarray1,
-              _token:tempcsrf
-              },
-                beforeSend: function () {
-                },
-                success: function (data) {
-                    if(data == "success"){
-                         $.confirm({
-                            title: 'Success',
-                            content: 'Add on added successfully',
-                            autoClose: 'logoutUser|300',
-                             buttons: {
-                             logoutUser: {
-                                 text: 'OK',
-                                 action: function () {
-                                  location.reload();
-                              }
-                             },
-                          }
-                        });
-                    }else{
-                        $.alert({
-            		        title: 'Alert!',
-            		        content: "Add on already exists !!!",
-            		    });
-                    }
-  	            }
-              });
-        }
+        alert(myarray);
+        alert(myarray1);
+    //     if((myarray =='')){
+    //         $.alert({
+		  //      title: 'Alert!',
+		  //      content: "Please fill all mandatory fields !!!",
+		  //  });
+    //     }else{
+    //         $.ajax({
+    //       type: 'POST',
+    //       url: '{{ url('add_on_details') }}',
+    //       dataType: 'json',
+    //       data: {
+    //           vehicle_id:vehicle_id,
+    //           option_name:myarray,
+    //           option_value:myarray1,
+    //           _token:tempcsrf
+    //           },
+    //             beforeSend: function () {
+    //             },
+    //             success: function (data) {
+    //                 if(data == "success"){
+    //                      $.confirm({
+    //                         title: 'Success',
+    //                         content: 'Add on added successfully',
+    //                         autoClose: 'logoutUser|300',
+    //                          buttons: {
+    //                          logoutUser: {
+    //                              text: 'OK',
+    //                              action: function () {
+    //                               location.reload();
+    //                           }
+    //                          },
+    //                       }
+    //                     });
+    //                 }else{
+    //                     $.alert({
+    //         		        title: 'Alert!',
+    //         		        content: "Add on already exists !!!",
+    //         		    });
+    //                 }
+  	 //           }
+    //           });
+    //     }
     });
     
     $("#add_service_info").click(function(){
