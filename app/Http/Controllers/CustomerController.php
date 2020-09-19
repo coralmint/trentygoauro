@@ -325,6 +325,7 @@ class CustomerController extends Controller
     public function customer_reservation(Request $req){
         $customer_id = Session::get('user_id');
         $reservation_id = Crypt::decryptString($req->id);
+        $curent_date = date('Y-m-d');
         
         $reserv_details = DB :: table('reservation_details as rd')
                             ->join('location_master as lm','rd.pick_up_location_id','lm.location_master_id')
@@ -334,17 +335,44 @@ class CustomerController extends Controller
 
         $vehicle_details = DB :: table('vehicle_details')
                             ->where('vehicle_id',$reserv_details[0]->vehicle_id)
-                            ->get();                        
+                            ->get(); 
+                            
         $customercomment = DB::table('comments as cs')
                         ->where('cs.reservation_id',$reserv_details[0]->reservation_id)
                         ->where('cs.comment_from',1)
                         ->orderBy('cs.comment_date', 'asc')
                         ->get();
+        
+        $now = strtotime($curent_date); // or your date as well
+        $trip_date = strtotime($reserv_details[0]->start_date);
+        $datediff = $trip_date - $now;
+        $day_count = round($datediff / (60 * 60 * 24));
+        $cancellation_charge = DB::table('cancel_master')
+                                ->where('from', '<=',$day_count)
+                                ->where('to', '>=',$day_count)
+                                ->get();
+            // print_r($cancellation_charge);
+            // die();
+            
+       /* $cancel_value = DB :: table('master_data')
+                            ->where('master_for','cancel_value')
+                            ->where('master_key','brand')
+                            ->where('status',1)
+                            ->get(); */
+                            
+        /*$from_date = $reserv_details[0]->start_date;*/                    
+        /*$count_date = DB :: table('reservation_details')
+                        ->whereBetween('count(start_date)',$curent_date )
+                        ->get();*/
+       
+                        
         return view('customer_dashboard/customer_reservation')
                     ->with('customer_id',$customer_id)
                     ->with('reserv_details',$reserv_details)
                     ->with('vehicle_details',$vehicle_details)
-                    ->with('customercomment',$customercomment);
+                    ->with('customercomment',$customercomment)
+                    ->with('day_count',$day_count)
+                    ->with('cancellation_charge',$cancellation_charge);
     }
     
      public function cus_send_message(Request $req){
