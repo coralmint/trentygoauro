@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 use App\User;
 use App\General;
 use App\Http\Middleware\VerifyCsrfToken;
+
 use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;
 use Illuminate\Database\QueryException;
@@ -334,7 +335,7 @@ class ReservationController extends Controller
                     ->get();
         $db = new General();
         $data = array(
-                'reservation_id' => $info[0]->reserve_unique_id,
+                'reservation_id' => $info[0]->reservation_id,
                 'vehicle_id' => $info[0]->vehicle_id,
                 'partner_id' => $info[0]->partner_id,
                 'customer_id' => $info[0]->customer_id,
@@ -359,6 +360,7 @@ class ReservationController extends Controller
             );
         $db->updates('trip_details',$trip_updated_data,'trip_details_id',$inserted_id);
         $db->updates('reservation_details',$reservation_updated_data,'reservation_id',$reservation_id);
+        $db->updates('reservation_addons',$trip_updated_data,'reservation_id',$reservation_id);
         return json_encode('success');
     }
     
@@ -428,10 +430,44 @@ class ReservationController extends Controller
         return json_encode($inserted_id);
     }
     
-    private function summa($message, $recipients){
+    public function save_signature_details(Request $req){
+        $trip_id = $req->trip_id;
+        $image_url = $req->dataURL;
+        $fileName = "signature_image";
+        if (!file_exists('upload/trip_document/'.$trip_id.'/signatures/')) {
+            mkdir('upload/trip_document/'.$trip_id.'/signatures/', 0777, true);
+        }
+        $output_dir = 'upload/trip_document/'.$trip_id.'/signatures/photo11.png';
+        // move_uploaded_file($_FILES["myfile"]["tmp_name"],$output_dir.$fileName);
+        // $image = Image::make($req->get('dataURL'));
+        // $image->save('upload/trip_document/bar.jpg');
         
+        
+        $img = $_POST['dataURL'];
+        $img = str_replace('data:image/png;base64,', '', $img);
+        $img = str_replace(' ', '+', $img);
+        $fileData = base64_decode($img);
+        //saving
+        $fileName = 'photo11.png';
+        // file_put_contents($fileName, $fileName);
+        file_put_contents("$output_dir", $fileData);
+        
+        
+        
+        // move_uploaded_file($_FILES["dataURL"]["tmp_name"], $target_file);
+        
+        
+        
+        // if ($req->file('dataURL')) {
+        //     $asset = $req->file('dataURL')->getClientOriginalName();
+        //         $req->file('dataURL')->move(
+        //               base_path() . '/upload/trip_document/', $asset
+        //         );
+        // }
     }
-
+        
+    private function summa($message, $recipients){
+    }
     private function sendMessage($message, $recipients){
         $account_sid = getenv("TWILIO_SID");
         $auth_token = getenv("TWILIO_AUTH_TOKEN");
