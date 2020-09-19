@@ -56,6 +56,7 @@
     border-radius: 4px;
     border: none;
 }
+
 .datepicker table tr td.active, .datepicker table tr td.active.disabled, .datepicker table tr td.active.disabled:hover, .datepicker table tr td.active:hover {
     background-color: #006dcc;
     background-image: -moz-linear-gradient(to bottom,#08c,#04c);
@@ -70,6 +71,28 @@
         padding: 22px 0px;
         margin-top: -55px!important;
     }
+    @media (max-width: 760px){  
+    .form-group {
+    margin-bottom: 1rem;
+    width: 100%;
+    padding: 12px;
+}
+.input-group {
+    margin-bottom: 15px;
+}
+p.reserve {
+    padding-top: 25% !important;
+}
+.row.glpu {
+    position: relative;
+    top: 5px;
+    background-color: #fff;
+}
+.col-md-8.get_searched_vendor {
+    background-color: #fff;
+    margin: 10px;
+}
+}
 </style>
 <div id="preloader">
    <div id="status">&nbsp;</div>
@@ -917,8 +940,6 @@ $("#rent_price").change(function(){
      $('#status').fadeOut(); // will first fade out the loading animation 
      $('#preloader').delay(350).fadeOut('slow'); // will fade out the white DIV that covers the website. 
      $('body').delay(350).css({'overflow':'visible'});
-   });   
-   document.getElementById('output').innerHTML = location.search;
-   $(".chosen-select").chosen();     
+   });
 </script>
 @endsection
