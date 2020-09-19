@@ -181,6 +181,8 @@ Route::group(['middleware' => ['auth', 'admin']], function() {
     Route::post('add_trip_details', 'ReservationController@add_trip_details'); 
     Route::post('upload_trip_vehicle_pic', 'ReservationController@upload_trip_vehicle_pic');
     
+    Route::any('save_signature_details', 'ReservationController@save_signature_details');
+    
 //CustomerController
     Route::any('update_customer_details', 'CustomerController@update_customer_details');
     Route::any('cus_add_billing_details', 'CustomerController@cus_add_billing_details');
