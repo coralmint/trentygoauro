@@ -550,9 +550,9 @@
                               autoClose: 'logoutUser|300',
                                buttons: {
                                logoutUser: {
-                                   text: 'OK',
-                                   action: function () {
-                                   window.location.href = "../reservationdetail/";
+                                    text: 'OK',
+                                    action: function () {
+                                    window.location.href = '{{ url('home') }}';
                                    }
                                },
                             }
