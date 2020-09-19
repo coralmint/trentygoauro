@@ -21,6 +21,9 @@ class AdminController extends Controller
     public function index(){
         $role = Session::get('role');
         
+        // print_r($role);
+        // die();
+        
         if($role == 1)
         {
         $partner_location = DB::table('partner_details')->select('partner_area')->groupBy('partner_area')->get();
@@ -96,7 +99,6 @@ class AdminController extends Controller
                 $countries = $this->countries();
                 $customer_id = Session::get('user_id');
                 $customer_info = DB::table('customer_details')->where('customer_id',$customer_id)->get();
-                
                 if($customer_info[0]->customer_name != ''){
                     $user_name = "Wellcome !!!";
                 }else{
@@ -2132,9 +2134,6 @@ $unread_messages = DB::table('admin_partner_messages as apm')
                      ->join('vehicle_details as vd','td.vehicle_id','vd.vehicle_id')
                      ->where('td.trip_details_id',$trip_details_id)
                     ->get();
-                   /* print_r($cus_info);
-                    die();*/
-                    
         $rent_array = array();
         $date_array = array();
         $all_date_array = array();
@@ -2167,8 +2166,15 @@ $unread_messages = DB::table('admin_partner_messages as apm')
                             ->where('features_for',2)
                             ->select('vehicle_id',DB::raw("sum(addon_value) as addon_total"))
                             ->groupBy('vehicle_id')
-                            ->get();            
-      
+                            ->get();
+        $trip_addons = DB::table('reservation_addons')->where('trip_id',$trip_details_id)->where('status',1)->get();
+        $add_on_features = DB::table('master_data as md')
+                            ->leftJoin('vehicle_features as vf','md.master_data_id','=','vf.option_name')
+                            ->where('md.master_for','vehicle_option')
+                            ->where('md.master_key','add_on_services')
+                            ->where('md.status',1)
+                            ->where('vf.vehicle_id',$reserv_details[0]->vehicle_id)
+                            ->get();
         return view('admin_dashboard/tripdetails')
                     ->with('trip_info', $trip_info)
                     ->with('rent_array', $rent_array)
@@ -2180,6 +2186,8 @@ $unread_messages = DB::table('admin_partner_messages as apm')
                     ->with('Variable2', $Variable2)
                     ->with('default_count', $default_count)
                     ->with('vehicle_addons', $vehicle_addons)
+                    ->with('trip_addons', $trip_addons)
+                    ->with('add_on_features', $add_on_features)
                     ->with('total_addons_values', $total_addons_values);
                     
     }
@@ -2198,7 +2206,6 @@ $unread_messages = DB::table('admin_partner_messages as apm')
            $get_all_trip_list = DB::table('trip_details as td')
                                 ->join('reservation_details as rd','td.reservation_id','rd.reservation_id')
                                 ->join('partner_details as pd','td.partner_id','pd.partner_id')
-                                ->select('td.trip_details_id','rd.reserve_unique_id','rd.phone','rd.start_date','rd.return_date','td.status','pd.partner_name','pd.partner_id')
                                 ->where('td.status','1')->get();
                             
             return Datatables::of($get_all_trip_list)
@@ -2270,34 +2277,45 @@ $unread_messages = DB::table('admin_partner_messages as apm')
             $filter_start_date = $req->start_date;
             $filter_return_date = $req->return_date;
             $filter_from = $req->filter_from;
+            
+            
+            
             if($filter_from == '1'){
                  $get_all_trip_list = DB::table('trip_details as td')
                                 ->join('reservation_details as rd','td.reservation_id','rd.reservation_id')
                                 ->join('partner_details as pd','td.partner_id','pd.partner_id')
-                                ->select('rd.reserve_unique_id','rd.phone','rd.start_date','rd.return_date','td.status','pd.partner_name','pd.partner_id')
                                 ->where('td.status','1')->get();
                 
                 if(!empty($filter_name)){
+                    $aa = 1;
                     $get_all_trip_list->where('partner_name',$filter_name);
                 }
                 if(!empty($filter_phone)){
+                    $aa = 2;
                     $get_all_trip_list->where('phone',$filter_phone);
                 }
                 if(!empty($filter_res_id)){
+                    $aa = 3;
                     $get_all_trip_list->where('reserve_unique_id',$filter_res_id);
                 }
                 if(!empty($filter_start_date)){
+                    $aa = 4;
                     $get_all_trip_list->where('start_date',$filter_start_date);
                 }
                 if(!empty($filter_return_date)){
+                    $aa = 5;
                     $get_all_trip_list->where('return_date',$filter_return_date);
                 }
-                $result= $get_all_trip_list->get();  
+                else{
+                    $aa = 6;
+                    $result= $get_all_trip_list->get();  
+                }
+                print_r($aa);
+                die();
             }else if($filter_from == '2'){
                  $get_all_trip_list = DB::table('trip_details as td')
                                 ->join('reservation_details as rd','td.reservation_id','rd.reservation_id')
                                 ->join('partner_details as pd','td.partner_id','pd.partner_id')
-                                ->select('rd.reserve_unique_id','rd.phone','rd.start_date','rd.return_date','td.status','pd.partner_name','pd.partner_id')
                                 ->where('td.status','1')
                                 ->whereDay('td.created_at', '=', date('d'));
                 $result= $get_all_trip_list->get();        
@@ -2306,7 +2324,6 @@ $unread_messages = DB::table('admin_partner_messages as apm')
                 $get_all_trip_list = DB::table('trip_details as td')
                                 ->join('reservation_details as rd','td.reservation_id','rd.reservation_id')
                                 ->join('partner_details as pd','td.partner_id','pd.partner_id')
-                                ->select('rd.reserve_unique_id','rd.phone','rd.start_date','rd.return_date','td.status','pd.partner_name','pd.partner_id')
                                 ->where('td.status','1')
                                 ->whereDay('td.created_at', '=', date('d'));
                 $result= $get_all_trip_list->get();         
@@ -2315,13 +2332,12 @@ $unread_messages = DB::table('admin_partner_messages as apm')
                 $get_all_trip_list = DB::table('trip_details as td')
                                 ->join('reservation_details as rd','td.reservation_id','rd.reservation_id')
                                 ->join('partner_details as pd','td.partner_id','pd.partner_id')
-                                ->select('rd.reserve_unique_id','rd.phone','rd.start_date','rd.return_date','td.status','pd.partner_name','pd.partner_id')
                                 ->where('td.status','1')
                                 ->where('rd.start_date', '>=', date('Y-m-d'));
                 $result= $get_all_trip_list->get();         
             }
             
-            return Datatables::of($result)
+            return Datatables::of($get_all_trip_list)
                 ->addColumn('reserve_unique_id', function ($result) {
                         $reserve_unique_id = '';
                         $reserve_unique_id .= '<center>'.ucfirst($result->reserve_unique_id).'</center>';
@@ -2367,7 +2383,7 @@ $unread_messages = DB::table('admin_partner_messages as apm')
                         return $status.'';
                     })
                 ->addColumn('action', function ($result) {
-                  return '<center><a href="'.url('reservations_details/'.Crypt::encryptString($result->partner_id).'').'" class="on-default edit-row" title="" target=""><i class="fa fa-eye" data-toggle="tooltip" title="Trip_details!"></i></a></center>';
+                  return '<center><a href="'.url('reservations_details/'.Crypt::encryptString($result->trip_details_id).'').'" class="on-default edit-row" title="" target=""><i class="fa fa-eye" data-toggle="tooltip" title="Trip_details!"></i></a></center>';
 
                     }) 
              ->rawColumns(array("reserve_unique_id","phone","partner_name","start_date","return_date","status","action","crypt_id"))
@@ -2501,13 +2517,13 @@ $unread_messages = DB::table('admin_partner_messages as apm')
       }
     
     public function add_cancel_details(Request $req){
-            DB::table('master_data')
+            DB::table('cancel_master')
                 ->updateOrInsert(
-                    ['master_value' => $req->master_value],
-                    ['master_key' => $req->master_key,
-                    'master_value' => $req->master_value,
-                    'master_charge' => $req->master_charge,
-                    'master_for' => 'cancel_value']
+                    ['from' => $req->from],
+                    ['from' => $req->from,
+                    'to' => $req->to,
+                    'charge_method' => $req->charge_method,
+                    'charge_value' => $req->charge_value,]
                 );
             return json_encode("success");
     }
@@ -2527,32 +2543,26 @@ $unread_messages = DB::table('admin_partner_messages as apm')
     
     public function get_all_cancel_data(){
         try {
-            $get_all_cancel_data = DB::table('master_data')
-                            ->where('master_for','cancel_value')
+            $get_all_cancel_data = DB::table('cancel_master')
                             ->where('status','1')
                             ->get();
             return Datatables::of($get_all_cancel_data)
-            ->addColumn('master_key', function ($get_all_cancel_data) {
-                $master_key = '';
-                $master_key .= '<center>'.ucfirst($get_all_cancel_data->master_key).'</center>';
-               return $master_key.'';
+            ->addColumn('from', function ($get_all_cancel_data) {
+                $from = '';
+                $from .= '<center>'.$get_all_cancel_data->from.' - '.$get_all_cancel_data->to.'</center>';
+               return $from.'';
             })
-             ->addColumn('master_charge', function ($get_all_cancel_data) {
-                $master_charge = '';
-                $master_charge .= '<center>'.ucfirst($get_all_cancel_data->master_charge).'</center>';
-               return $master_charge.'';
-            })
-            ->addColumn('master_value', function ($get_all_cancel_data) {
-                $master_value = '';
-                $master_value .= '<center>'.ucfirst($get_all_cancel_data->master_value).'</center>';
-               return $master_value.'';
+            ->addColumn('charge_value', function ($get_all_cancel_data) {
+                $charge_value = '';
+                $charge_value .= '<center>'.$get_all_cancel_data->charge_value.' '.$get_all_cancel_data->charge_method.'</center>';
+               return $charge_value.'';
             })
              ->addColumn('action', function ($get_all_cancel_data) {
-               return '<a style="cursor:pointer; color:#007bff;" class="on-default remove-row" title="" data-original-title="Delete" onclick="return edit_master_tab( '.$get_all_cancel_data->master_data_id.' );"><i class="fa fa-pencil"></i></a>&nbsp;
+               return '<a style="cursor:pointer; color:#007bff;" class="on-default remove-row" title="" data-original-title="Delete" onclick="return edit_master_tab( '.$get_all_cancel_data->cm_id.' );"><i class="fa fa-pencil"></i></a>&nbsp;
                
-               <a style="cursor:pointer; color:#007bff;" class="on-default remove-row" title="" data-original-title="Delete" onclick="return un_delete_value_info( '.$get_all_cancel_data->master_data_id.',0);"><i class="fa fa-trash-o"></i></a>';
+               <a style="cursor:pointer; color:#007bff;" class="on-default remove-row" title="" data-original-title="Delete" onclick="return un_delete_value_info( '.$get_all_cancel_data->cm_id.',0);"><i class="fa fa-trash-o"></i></a>';
                 })
-             ->rawColumns(array("master_data_id","action","master_value","master_key","master_charge"))
+             ->rawColumns(array("cm_id","action","from","charge_value"))
              ->make(true);
         } catch (QueryException $e) {
             echo "Bad Request";
