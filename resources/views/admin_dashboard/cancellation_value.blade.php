@@ -84,21 +84,51 @@
                <h4 class="page-title">Add Cancellation Details<span id="" style="cursor: pointer;" class="close_new_master_value_tab pull-right"><i class=" mdi mdi-close"></i></span></h4>
                <hr>
                <div class="form-row">
-                   <div class="form-group col-md-4">
-                     <label>Number Of Days</label><span style="color: red;">*</span>
-                     <input data-parsley-type="number" type="text" class="form-control tribut" maxlength="30" required placeh older="Value..." id="master_key" />             
+                  <div class="form-group col-md-3">
+                     <label>Select From</label>
+                     <select title="Select mode" placeholder="Select mode" class="form-control" id="from">
+                        <option hidden="" value="">Select Type</option>
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                     </select>
                   </div>
-                  <div class="form-group col-md-4">
-                     <label>Select Option</label>
-                     <select title="Select mode" placeholder="Select mode" class="form-control" id="master_charge">
+                  <div class="form-group col-md-3">
+                     <label>Select To</label>
+                     <select title="Select mode" placeholder="Select mode" class="form-control" id="to">
+                        <option hidden="" value="">Select Type</option>
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                     </select>
+                  </div>
+                  <div class="form-group col-md-3">
+                     <label>Select Charge Method</label>
+                     <select title="Select mode" placeholder="Select mode" class="form-control" id="charge_method">
                         <option hidden="" value="">Select Type</option>
                         <option value="%">%</option>
                         <option value="$">$</option>
                      </select>
                   </div>
-                  <div class="form-group col-md-4">
+                  <div class="form-group col-md-3">
                      <label>Charge Value</label><span style="color: red;">*</span>
-                     <input data-parsley-type="number" type="text" class="form-control tribut" maxlength="30" required placeh older="Value..." id="master_value" />             
+                     <input data-parsley-type="number" type="text" class="form-control tribut" maxlength="30" required placeh older="Value..." id="charge_value" />             
                   </div>
                </div>
                <div class="form-group">
@@ -121,10 +151,6 @@
                   </div>
                   <div class="form-group col-md-4">
                      <label>Select Option</label>
-                     <select title="Select mode" placeholder="Select mode" class="form-control" id="edit_master_charge">
-                        <option value="%" @if($cancel_details[0]->master_charge == '%') selected="selected" @else @endif >%</option>
-                        <option value="$" @if($cancel_details[0]->master_charge == '$') selected="selected" @else @endif >$</option>
-                     </select>
                   </div>
                   <div class="form-group col-md-4">
                      <label>Charge Value</label><span style="color: red;">*</span>
@@ -153,22 +179,17 @@
                               <table class="table table-bordered dataTable no-footer mobile-table" id="cancel_list_datatable" style="table-layout:auto; width: 100%;">
                                  <thead>
                                     <tr>
-                                       <th>#</th>
+                                       <th width="10%">#</th>
                                        <th>
                                            <center>
-                                           Master Key
+                                           In Between Days
                                            <center>
                                         </th>
                                         <th>
                                            <center>
-                                           Master charge
+                                           Cancellation Charge
                                            <center>
                                         </th>
-                                       <th>
-                                          <center>
-                                          master value
-                                          <center>
-                                       </th>
                                        <th>Action</th>
                                     </tr>
                                  </thead>
@@ -236,10 +257,9 @@
    	        },
    	        columns: [                                               
    	           // {data:'master_table_id', name: 'master_table_id'},
-   	            {data:'master_data_id', name: 'master_data_id'},
-   	            {data:'master_key', name: 'master_key'},
-   	            {data:'master_charge', name: 'master_charge'},
-   	            {data:'master_value', name: 'master_value'},
+   	            {data:'cm_id', name: 'cm_id'},
+   	            {data:'from', name: 'from'},
+   	            {data:'charge_value', name: 'charge_value'},
    	            {data:'action', name: 'action'},
    	        ]
    	    });
@@ -250,24 +270,32 @@
    
        
        $("#add_cancel_date").click(function(){
-            var master_key = $('#master_key').val();
-   		    var master_charge = $('#master_charge').val();
-   		    var master_value = $('#master_value').val();
+            var from = $('#from').val();
+   		    var to = $('#to').val();
+   		    var charge_method = $('#charge_method').val();
+   		    var charge_value = $('#charge_value').val();
             var tempcsrf = $('#csrf_token').val();
-            if((master_charge =='')||(master_key =='')||(master_value =='')){
+            if((from =='')||(to =='')||(charge_method =='')||(charge_value =='')){
                $.alert({
                    title: 'Alert!',
                    content: "Please fill all mandatory fields !!!",
                });
-            }else{
+            }else if((from > to)||(from != to)){
+                $.alert({
+                   title: 'Alert!',
+                   content: "Please ensure to day will be greater then from day !!!",
+               });
+            }
+            else{
                $.ajax({
              type: 'POST',
              url: '{{ url('add_cancel_details') }}',
              dataType: 'json',
              data: {
-                 master_key:master_key,
-                 master_charge:master_charge,
-                 master_value:master_value,
+                 from:from,
+                 to:to,
+                 charge_method:charge_method,
+                 charge_value:charge_value,
                  _token:tempcsrf
                  },
                    beforeSend: function () {
@@ -276,7 +304,7 @@
                        if(data == "success"){
                            $.confirm({
                                title: 'Success',
-                               content: 'cancellation added successfully',
+                               content: 'cancellation charge added successfully',
                                autoClose: 'logoutUser|300',
                                 buttons: {
                                 logoutUser: {
@@ -285,8 +313,7 @@
                                     var table =  $('#cancel_list_datatable').DataTable();
              		                table.ajax.reload();
              		                $('#add_new_master_value_tab').hide();
-             		                $('#master_key').val('');
-                                    $('#value').val('');
+             		                $('#charge_value').val('');
                                  }
                                 },
                              }
