@@ -691,7 +691,8 @@
                   </div>
                      @foreach($add_on_features as $af)
                      <div class="form-group col-md-4">
-                        <label for="scales"> <input type="checkbox" name="option_name[]" id="{{$af->master_data_id}}check" value="{{ $af->master_value }} - {{ $af->addon_value }}" />
+                        <label for="scales">
+                        <input type="checkbox" option_value="{{ $af->addon_value }}" option_id="{{ $af->vehicle_features_id }}" name="option_name" id="{{$af->master_data_id}}check" value="{{ $af->master_value }}" />
                         {{ ucfirst($af->master_value) }}&nbsp/&nbsp<span style="font-weight: 800;">{{$af->addon_value}}</span>
                         </label>
                      </div>
@@ -1065,15 +1066,20 @@
         var cvc = $("#cvc").val();
         var expiry_month = $("#expiry_month").val();
         var expiry_year = $("#expiry_year").val();
-        
-        var addon_values = [];
+        var addon_names = [];
+        var addon_value = [];
+        var addon_id = [];        
             $("#add_on_services input[type='checkbox']").each(function(){
-                if ($(this).is(':checked')){ 
-                    var option_name1 = $(this).val();
-                  addon_values.push(option_name1);
+                if ($(this).is(':checked')){
+                    var option_name = $(this).val();
+                    addon_names.push(option_name);
+                    var option_value = $(this).attr('option_value');
+                    addon_value.push(option_value);
+                    var option_id = $(this).attr('option_id');
+                    addon_id.push(option_id);
                 }
             });
-        
+            
         var vehicle_id = $('#vehicle_id').val();
         var partner_id = $('#partner_id').val();
         var customer_id = $('#customer_id').val();
@@ -1121,10 +1127,12 @@
                             cvc:cvc,
                             expiry_month:expiry_month,
                             expiry_year:expiry_year,
-                            addon_values:addon_values,
                             partner_id:partner_id,
                             customer_id:customer_id,
                             input_dynamic_rent_value:input_dynamic_rent_value,
+                            addon_names:addon_names,
+                            addon_value:addon_value,
+                            addon_id:addon_id,
                             _token:tempcsrf
                     },
                     success:function(data){
@@ -1173,10 +1181,12 @@
                             cvc:cvc,
                             expiry_month:expiry_month,
                             expiry_year:expiry_year,
-                            addon_values:addon_values,
                             partner_id:partner_id,
                             customer_id:customer_id,
                             input_dynamic_rent_value:input_dynamic_rent_value,
+                            addon_names:addon_names,
+                            addon_value:addon_value,
+                            addon_id:addon_id,
                             _token:tempcsrf
                     },
                     success:function(data){
@@ -1563,7 +1573,5 @@
         $('#preloader').delay(350).fadeOut('slow'); // will fade out the white DIV that covers the website. 
         $('body').delay(350).css({'overflow':'visible'});
     });   
-   document.getElementById('output').innerHTML = location.search;
-   $(".chosen-select").chosen();     
 </script>
 @endsection
