@@ -495,12 +495,12 @@
          <div class="col-md-3 shadow">
             <!-- Tabs nav -->
             <div class="nav flex-column nav-pills nav-pills-custom" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-               <a class="nav-link p-3 active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">
+               <!--<a class="nav-link p-3 active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">
                <i class="fa fa-user-circle-o mr-2"></i>
                <span class="font-weight-bold small text-uppercase">Personal information</span></a>
                <a class="nav-link  p-3" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">
                <i class="fa fa-calendar-minus-o mr-2"></i>
-               <span class="font-weight-bold small text-uppercase">Bookings</span></a>
+               <span class="font-weight-bold small text-uppercase">Bookings</span></a>-->
                <a class="nav-link p-3  " id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="true">
                <i class="fa fa-star mr-2"></i>
                <span class="font-weight-bold small text-uppercase">Reservation Details</span></a>
@@ -536,7 +536,7 @@
                         <input type="hidden" value="" id="vehicle_id" />
                         <div class="form-group has-float-label">
                            <div class="input-group">
-                              <input type="text" class="form-control" value="{{ $reserv_details[0]->start_date }}" id="reservation_start_date">
+                              <input type="text" class="form-control" value="{{ $reserv_details[0]->start_date }}" disabled id="reservation_start_date">
                               <div class="input-group-append">
                                  <span class="input-group-text"><i class="mdi mdi-calendar"></i></span>
                                  <label for="Vehicle Color">Booked Date From</label>
@@ -547,7 +547,7 @@
                      <div class="form-group col-md-4">
                         <div class="form-group has-float-label">
                            <div class="input-group">
-                              <input type="text" class="form-control" value="{{ $reserv_details[0]->return_date }}" id="reservation_return_date">
+                              <input type="text" class="form-control" value="{{ $reserv_details[0]->return_date }}" disabled id="reservation_return_date">
                               <div class="input-group-append">
                                  <span class="input-group-text"><i class="mdi mdi-calendar"></i></span>
                                  <label for="Vehicle Color">Booked Date To</label>
@@ -710,6 +710,12 @@
                               <div class="form-group col-md-3">
                                  <div class="form-group">
                                     <label for="Vehicle Color" class="prolabel">Reservation Amount</label>
+                                    <div class="namelabel">{{ $reserv_details[0]->reservation_amount }}</div>
+                                 </div>
+                              </div>
+                              <div class="form-group col-md-3">
+                                 <div class="form-group">
+                                    <label for="Vehicle Color" class="prolabel">Paid Amount</label>
                                     <div class="namelabel">{{ $reserv_details[0]->paid_amount }}</div>
                                  </div>
                               </div>
@@ -719,56 +725,59 @@
                                     <div class="namelabel">{{ $reserv_details[0]->start_date }}To{{ $reserv_details[0]->return_date }}</div>
                                  </div>
                               </div>
-                              <div class="form-group col-md-3">
-                                 <div class="form-group">
-                                    <div class="namelabel">2 Days Go to trip</div>
-                                 </div>
-                              </div>
                            </div>
-                           <div class="warnbtn"> <button id="btnFA" class="btn btn-warning">
-                              Download Invoice
-                              <i class="fa fa-download"></i>
-                              </button>
+                           <h3 class="detailbook">Terms and Condition </h3>
+                           <div class="form-row formtab">
+                              <div class="col-md-12">
+                                     <p style="font-size: 12px;text-align: justify;">
+                                          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. 
+                                      </p>
+                              </div>
                            </div>
                         </div>
                      </div>
                      <div class="col-md-3">
-                        <div class="" style="padding-top:10px;">
-                           <div class="form-group col-md-12">
-                              <div class="form-group has-float-label">
-                                 <label for="vehicle Model" class="prolabel">Description</label>
-                                 <textarea class="description refun" name="" style="width:100%;"></textarea>
-                              </div>
-                           </div>
-                           <div class="form-group col-md-12">
-                              <div class="form-group has-float-label">
-                                 <label for="Location" class="prolabel">Cancellation Charge</label>
-                                 <input type="text" class="form-control refun" id="last_name" value="" onfocus="this.placeholder = ''" required autofocus >
-                              </div>
-                           </div>
-                           <div class="form-group col-md-12">
-                              <div class="form-group has-float-label">
-                                 <label for="Location" class="prolabel">Paid Amount</label>
-                                 <input type="text" class="form-control refun" id="last_name" value="" onfocus="this.placeholder = ''" required autofocus >
-                              </div>
-                           </div>
-                           <div class="form-group col-md-12">
-                              <div class="form-group has-float-label">
-                                 <label for="Location" class="prolabel">Refund Amount</label>
-                                 <input type="text" class="form-control refun" id="last_name" value="" onfocus="this.placeholder = ''" required autofocus >
-                              </div>
-                           </div>
-                           <div class="form-group col-md-12">
-                              <div class="form-row formtab">
-                                 <div class="form-group" style=" margin: 0 auto 18px;
-                                    display: block;    width: 100%;   ">
-                                    <input type="hidden" id="csrf_token" value="{!! csrf_token() !!}">
-                                    <button type="button" class="btn btn-primary waves-effect waves-light" id="add_cus_details" style="    background-color: #ffa91c !important;
-                                       border: none !important;    width: 100%;   ">Pay Refund</button>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
+                        <div class="form-group col-md-12">
+                          <div class="form-group has-float-label">
+                             <div class="warnbtn"> <button id="btnFA" class="btn btn-warning">
+                                  Download Invoice
+                                  <i class="fa fa-download"></i>
+                                  </button>
+                               </div>
+                          </div>
+                       </div>
+                       <div class="form-group col-md-12">
+                          <div class="form-group has-float-label">
+                             <label for="vehicle Model" class="prolabel">Description</label>
+                             <textarea class="description refun" name="" style="width:100%;"></textarea>
+                          </div>
+                       </div>
+                       <div class="form-group col-md-12">
+                          <div class="form-group has-float-label">
+                             <label for="Location" class="prolabel">Cancellation Charge</label>
+                             <input type="text" class="form-control refun" id="last_name" value="" onfocus="this.placeholder = ''" required autofocus >
+                          </div>
+                       </div>
+                      
+                       <div class="form-group col-md-12">
+                          <div class="form-group has-float-label">
+                             <label for="Location" class="prolabel">Expected Refund Amount</label>
+                             <input type="text" class="form-control refun" id="last_name" value="" onfocus="this.placeholder = ''" required autofocus >
+                          </div>
+                       </div>
+                       <div class="form-group col-md-12">
+                          <label style="font-size: 11px;" for="vehicle1"><input style="width: 22px;height: 13px !important;" type="checkbox" checked="" id="content_same" name="vehicle1"> Accepts this terms and condition</label>
+                       </div>
+                       <div class="form-group col-md-12">
+                          <div class="form-row formtab">
+                             <div class="form-group" style=" margin: 0 auto 18px;
+                                display: block;    width: 100%;   ">
+                                <input type="hidden" id="csrf_token" value="{!! csrf_token() !!}">
+                                <button type="button" class="btn btn-primary waves-effect waves-light" id="add_cus_details" style="    background-color: #ffa91c !important;
+                                   border: none !important;    width: 100%;   ">Pay Refund</button>
+                             </div>
+                          </div>
+                       </div>
                      </div>
                   </div>
                </div>
