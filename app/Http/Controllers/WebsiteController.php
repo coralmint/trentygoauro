@@ -312,13 +312,20 @@ class WebsiteController extends Controller
                                 ->where('vehicle_id',$req->vehicle_id)
                                 // ->select('date')
                                 ->pluck('date');
-                                // ->get();
+                                // ->get(); 
                                 // ->toArray();
         $available_dates1 = $available_dates111['data']->toArray();
-                                
+        
         $reserved_date_info = DB::table('reservation_details')                        
                             ->where('vehicle_id',$req->vehicle_id)
-                            ->whereNotIn('status', [6, 8])->get();
+                            ->whereNotIn('status', [6, 8])
+                            ->whereIn('start_date', $available_dates1)
+                            // ->pluck('start_date')
+                            ->get();
+                            
+                // print_r($available_dates1);
+                // die();
+                            
         if($reserved_date_info->count() > 0){
             foreach($reserved_date_info as $dd){
                 $Variable1 = strtotime($dd->start_date); 
@@ -330,9 +337,17 @@ class WebsiteController extends Controller
             }
             $return_dates1 = array_diff($available_dates1,$dates_array);
             $return_dates = array_splice($return_dates1, 0);
+                // print_r("if");
+                // print_r('<br><br>');
+                // print_r($return_dates1);
+                // die();
         }else{
+                // print_r("$dates_array");
+                // die();
             $return_dates = $available_dates1;
         }
+        
+        
         
         if(count($return_dates) > 0){
             $data['available_dates'] = $return_dates;
@@ -424,27 +439,45 @@ class WebsiteController extends Controller
                         'reserve_unique_id' => $unique_id
                         );  
             $customer_update_data = array(
-                        'customer_name' => $customer_first_name,
-                        'customer_phone' => $customer_phone,
-                        'customer_email' => $customer_email,
-                        );
+                                    'customer_name' => $customer_first_name,
+                                    'customer_phone' => $customer_phone,
+                                    'customer_email' => $customer_email,
+                                    );
             $line_item_data = array(
-                        'reservation_id' => $reservation_id,
-                        'start_date' => $from_datepicker,
-                        'return_date' => $to_datepicker,
-                        'vehicle_id' => $vehicle_id,
-                    );
+                                'reservation_id' => $reservation_id,
+                                'start_date' => $from_datepicker,
+                                'return_date' => $to_datepicker,
+                                'vehicle_id' => $vehicle_id,
+                            );
+            $user_data = array(
+                            'name' => $customer_first_name,
+                            'email' => $customer_email,
+                            'password' => Hash::make($customer_phone),  
+                            'role' => '3',
+                            'user_id' => $customer_id,
+                        );
+            if(!empty($req->addon_names)){
+                foreach($req->addon_names as $key=>$value){
+                        $reservation_addon_data = array(
+                                'reservation_id' => $reservation_id,
+                                'addons' => $req->addon_names[$key],
+                                'addons_values' => $req->addon_value[$key],
+                                'master_data_id' => $req->addon_id[$key],
+                            );
+                    $db->insert('reservation_addons',$reservation_addon_data);
+                }
+            }
             $db->insert('reservation_line_item',$line_item_data);
             $db->updates('reservation_details',$idata,'reservation_id',$reservation_id);
             $db->updates('customer_details',$customer_update_data,'customer_id',$customer_id);
-            $user_data = array(
-                'name' => $customer_first_name,
-                'email' => $customer_email,
-                'password' => Hash::make($customer_phone),  
-                'role' => '3',
-                'user_id' => $customer_id,
-            );
-            $db->insert('users',$user_data);
+            
+            DB::table('users')
+                ->updateOrInsert(
+                    ['email' => $customer_email],
+                    ['name' => $customer_first_name,
+                    'role' => '3',
+                    'user_id' => $customer_id,]
+                );
             $to_name = $customer_first_name;
             $to_email = $customer_email;
             $password = $customer_phone;
@@ -523,6 +556,8 @@ class WebsiteController extends Controller
         return view('TrentyGo/loginregister')->with('vehicle_id',$vehicle_id);
     }
     public function new_customer_register(Request $req){
+        $db = new General();
+        $curent_date = date('Y-m-d H:i:s');
         $customer_details = DB::table('customer_details')->where('customer_email',$req->customer_email)->count();
         $user_details = DB::table('users')->where('email',$req->customer_email)->count();
             $customer_data = array(
@@ -533,10 +568,22 @@ class WebsiteController extends Controller
                 'logged_status' => 1,
             );
         if($customer_details == 0){
-            $db = new General();
             $db->insert('customer_details',$customer_data);
-            $partner_id = DB::getPdo()->lastInsertId();
-            $data = Crypt::encryptString($partner_id);
+            $customer_id = DB::getPdo()->lastInsertId();
+            $data = Crypt::encryptString($customer_id);
+            
+            /**********/
+            $user_data = array(
+                'name' => $req->customer_name,
+                'email' => $req->customer_email,
+                'password' => Hash::make($req->customer_mobile),
+                'role' => '3',
+                'user_id' => $customer_id,
+                'created_at' => $curent_date,
+            );
+            $db->insert('users',$user_data);
+            /**********/
+            
         }else{
             $data = "failed";
         }
