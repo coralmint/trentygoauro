@@ -255,7 +255,7 @@ class PartnerController extends Controller
         $resul111t = DB::table('manage_vehicle_rent')
                         ->where('vehicle_id', $req->vehicle_id)
                         ->select('vehicle_manage_id as id','rent as title'
-                        // ,'date as start'
+                        ,'date as start'
                         ,DB::raw("STR_TO_DATE(date, '%d-%m-%Y') as start")
                         )
                         ->get();
@@ -505,7 +505,7 @@ class PartnerController extends Controller
         $value_result = $req->option_value;
         $curent_date = date('Y-m-d H:i:s');
         $db = new General();
-         foreach($req->feature_id as $key=>$value){
+        foreach($req->feature_id as $key=>$value){
             if(!empty($req->values[$key])){
                 $data = array(
                         'addon_value' => $req->values[$key],
@@ -515,7 +515,7 @@ class PartnerController extends Controller
             }else{
                 DB::table('vehicle_features')->where('vehicle_features_id',$value)->delete();   
             }
-         }
+        }
         return json_encode("success");
     }
     public function delete_addon_detail(Request $req){
