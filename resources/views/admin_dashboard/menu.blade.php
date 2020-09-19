@@ -99,6 +99,7 @@
                <ul class="dropdown-menu">
                   <li><a href="{{ url('master_table') }}"><i class="mdi mdi-account-multiple ">&nbsp;&nbsp;</i>Master Table</a></li>
                   <li><a href="{{ url('upload_setting_images') }}"><i class="mdi mdi-account-multiple ">&nbsp;&nbsp;</i>Option Images</a></li>
+                  <li><a href="{{ url('cancellation_value') }}"><i class="mdi mdi-account-multiple ">&nbsp;&nbsp;</i>Cancel Option</a></li>
                </ul>
             </li>
             
